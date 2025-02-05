@@ -10,38 +10,113 @@ class UserModel extends BaseModel
         parent::__construct();
     }
 
-    // Example using PDO initialized in base class (some methods not implemented)
-    // function create($email, $username, $password)
-    // {
-    //     $sql = "INSERT INTO users (email, username, password) VALUES (:email, :username, :password); SELECT LAST_INSERT_ID();";
-
-    //     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-    //     $stmt = self::$pdo->prepare($sql);
-    //     $stmt->bindParam(":email", $email);
-    //     $stmt->bindParam(":username", $username);
-    //     $stmt->bindParam(":password", $hashed_password);
-
-    //     $stmt->execute();
-
-    //     $user_id = self::$pdo->lastInsertId();
-    //     $stmt->closeCursor();
-
-    //     $user = $this->getUser($user_id, null);
-    //     return $this->mapDbUserToAuthUserDTO($user);
-    // }
-
+    /**
+     * Get all users.
+     */
     public function getAll(): array
     {
-        return [
-            new UserDTO(1, "foo@foo.com", "foo_user"),
-            new UserDTO(2, "bar@bar.com", "bar_user"),
-            new UserDTO(3, "baz@baz.com", "baz_user")
-        ];
+        $sql = "SELECT user_id, username, email, role, registration_date FROM [User]";
+        $stmt = self::$pdo->query($sql);
+
+        $users = [];
+        while ($row = $stmt->fetch()) {
+            $users[] = new UserDTO(
+                $row["user_id"],
+                $row["username"],
+                $row["email"],
+                $row["role"],
+                $row["registration_date"]
+            );
+        }
+        return $users;
     }
 
-    public function get(int $id): UserDTO
+    /**
+     * Get a user by ID.
+     */
+    public function get(int $id): ?UserDTO
     {
-        return new UserDTO(1, "foo@foo.com", "foo_user");
+        $sql = "SELECT user_id, username, email, role, registration_date FROM [User] WHERE user_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $row = $stmt->fetch();
+        if ($row) {
+            return new UserDTO(
+                $row["user_id"],
+                $row["username"],
+                $row["email"],
+                $row["role"],
+                $row["registration_date"]
+            );
+        }
+        return null;
+    }
+
+    /**
+     * Create a new user.
+     */
+    public function create(string $username, string $email, string $password, string $role): ?UserDTO
+    {
+        $sql = "INSERT INTO [User] (username, email, password, role, registration_date) 
+                VALUES (:username, :email, :password, :role, NOW())";
+
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":password", $hashed_password);
+        $stmt->bindParam(":role", $role);
+
+        if ($stmt->execute()) {
+            $id = self::$pdo->lastInsertId();
+            return $this->get($id);
+        }
+        return null;
+    }
+
+    /**
+     * Update user information.
+     */
+    public function update(int $id, string $username, string $email, string $role): bool
+    {
+        $sql = "UPDATE [User] SET username = :username, email = :email, role = :role WHERE user_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":username", $username);
+        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":role", $role);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Update user password.
+     */
+    public function updatePassword(int $id, string $newPassword): bool
+    {
+        $sql = "UPDATE [User] SET password = :password WHERE user_id = :id";
+        $hashed_password = password_hash($newPassword, PASSWORD_BCRYPT);
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":password", $hashed_password);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Delete a user.
+     */
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM [User] WHERE user_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
     }
 }
+?>
