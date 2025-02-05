@@ -1,8 +1,5 @@
 <?php
 
-var_dump($_POST);
-die();
-
 /**
  * Set env variables and enable error reporting in local environment
  */
@@ -14,6 +11,7 @@ require_once(__DIR__ . "/lib/error_reporting.php");
  */
 session_start();
 
+
 /**
  * Require routing library
  */
@@ -24,6 +22,7 @@ require_once(__DIR__ . "/lib/Route.php");
  */
 require_once(__DIR__ . "/routes/index.php");
 require_once(__DIR__ . "/routes/user.php");
+require_once(__DIR__ . "/routes/api/UserApiRoutes.php");
 
 // run router
 Route::run();
