@@ -64,5 +64,26 @@ class EventDetailModel extends BaseModel {
     
         return array_map(fn($row) => $this->mapToDTO($row), $results);
     }
+
+    public function getUniqueTags(): array {
+        $sql = "SELECT DISTINCT CAST(tags AS VARCHAR(MAX)) AS tags FROM Event_Detail WHERE type = 'Restaurant';
+";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        
+        $allTags = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $tags = explode(", ", $row["tags"]); // Split tags into an array
+            foreach ($tags as $tag) {
+                $trimmedTag = trim($tag); // Remove extra spaces
+                if (!in_array($trimmedTag, $allTags) && !empty($trimmedTag)) {
+                    $allTags[] = $trimmedTag;
+                }
+            }
+        }
+        
+        return $allTags; // Return an array of unique food types
+    }
+    
     
 }

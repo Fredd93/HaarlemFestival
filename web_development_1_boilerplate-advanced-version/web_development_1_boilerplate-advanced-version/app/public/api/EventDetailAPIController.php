@@ -47,5 +47,13 @@ class EventDetailAPIController {
             ResponseHelper::sendError("Failed to retrieve event details by type", 500);
         }
     }
+    public function getUniqueFoodTypes() {
+        try {
+            $tags = $this->eventDetailModel->getUniqueTags();
+            ResponseHelper::sendJson($tags);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve food types", 500);
+        }
+    }
     
 }
