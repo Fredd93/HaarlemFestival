@@ -6,8 +6,13 @@ require_once(__DIR__ . "/../partials/navbar.php");
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="../../assets/css/navbarStyle.css">
     <link rel="stylesheet" href="../../assets/css/yummyMainStyles.css">
+    <link rel="stylesheet" href="../../assets/css/footer.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
@@ -44,14 +49,51 @@ require_once(__DIR__ . "/../partials/navbar.php");
             </div>
         </div>
     </div>
-    
+
     <div class="restaurant-section">
         <h2>Participating Restaurants</h2>
         <div class="restaurant-container" id="restaurant-list">
         </div>
     </div>
+    <div class="map-section">
+            <h2>Find Your Way!</h2>
+            <p>Explore our curated dining experiences across Haarlem. Click a location for more details.</p>
+        <div class="map-container">
+            <div id="festival-map"></div>
+            <div class="map-legend">
+                <h3>Legend</h3>
+                <ul>
+                    <li data-category="jazz">🎷 Jazz</li>
+                    <li data-category="yummy">🍽 Yummy</li>
+                    <li data-category="teylers">🏛 Teylers Museum</li>
+                    <li data-category="history">🏰 A Stroll Through History</li>
+                    <li data-category="dance">💃 Dance</li>
+                </ul>
+                <h4>Filter by</h4>
+                <div class="filter-buttons">
+                    <button data-filter="jazz">🎷</button>
+                    <button data-filter="yummy">🍽</button>
+                    <button data-filter="teylers">🏛</button>
+                    <button data-filter="history">🏰</button>
+                    <button data-filter="dance">💃</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="none">
+        <?php
+            require(__DIR__ . "/../partials/footer.php");
+        ?>
+    </div>
+
+    
     
 
     <script src="../../assets/js/yummyMain.js"></script>
+    <script src="../../assets/js/maps.js"></script>
+    
+
+
 </body>
 </html>

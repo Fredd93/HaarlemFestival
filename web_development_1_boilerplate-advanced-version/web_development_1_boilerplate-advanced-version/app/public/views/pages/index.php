@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/navbarStyle.css">
     <link rel="stylesheet" href="../../assets/css/homepageStyle.css">
+    <link rel="stylesheet" href="../../assets/css/footer.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -93,6 +94,14 @@
                 <button data-filter="dance">💃</button>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="footer-section">
+    <h2>Don’t miss out on The Haarlem Festival!</h2>
+    <div class="footer-buttons">
+        <a href="tickets.php" class="footer-btn">Get Tickets Now</a>
+        <a href="schedule.php" class="footer-btn">View Full Schedule</a>
     </div>
 </div>
     <script src="assets/js/homePage.js"></script>

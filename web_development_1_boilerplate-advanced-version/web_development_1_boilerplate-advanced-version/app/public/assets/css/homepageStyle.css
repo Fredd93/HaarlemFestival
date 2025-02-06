@@ -21,13 +21,21 @@ body {
 /* Hero Section Wrapper */
 .hero-section {
     width: 100%;
+    height: 596px; /* Specified height */
+    background-image: url('../images/yummy/Mainpageheroimage.png'); /* Replace with actual image */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
 
 /* Hero Banner */
 .hero-banner {
     position: relative;
     width: 100%;
-    height: 500px; /* Adjusted height */
+    height: 596px; /* Adjusted height */
     background: url('/assets/images/homepage/home_banner.png') no-repeat center center/cover;
     display: flex;
     align-items: center;
@@ -52,39 +60,42 @@ body {
 .hero-content {
     position: relative;
     z-index: 2; /* Above overlay */
-    max-width: 600px;
     color: white;
-    padding: 20px;
+    padding-left: 100px;
 }
 
 /* Main Hero Title */
 .hero-content h1 {
-    font-size: 48px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-size: 111px;
+    font-weight: 700px;
+    margin-bottom: 0px;
 }
 
 /* Subtitle */
 .hero-content p {
-    font-size: 18px;
+    font-size: 23px;
     margin-bottom: 15px;
+    font-weight: 400px;
+    margin-left: 5px;
 }
 
 /* CTA Button */
 .hero-btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #007BFF;
-    color: white;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px 12px;
+    background-color: #22668D; /* Blue CTA */
+    color: #FFFADD;
     text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background 0.3s ease-in-out;
+    border-radius: 10px;
+    display: inline-block;
+    transition: background 0.3s;
 }
 
 .hero-btn:hover {
-    background: #0056b3;
+    background-color: #FFFADD;
+    color: #22668D;
 }
 
 /* Responsive Design */
@@ -216,7 +227,7 @@ body {
 }
 /* Events Section */
 .events-section {
-    margin-top: 158px; /* Maintain spacing */
+    margin-top: 75px; /* Maintain spacing */
     text-align: center;
     padding: 40px 10%;
 }
@@ -254,18 +265,20 @@ body {
 
 /* Event Card */
 .event-card {
+    width: 350px;
     flex: 0 0 auto;
-    width: 340px;
     background: white;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
+    justify-content: space-between;
+    text-align: left;
 }
 
 .event-card img {
     width: 100%;
-    height: 180px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -275,29 +288,34 @@ body {
 
 .event-content h3 {
     font-size: 20px;
-    margin-bottom: 10px;
+    font-weight: 700;
 }
 
 .event-content p {
     font-size: 14px;
-    color: #555;
+    color: #666;
+    margin: 5px 0;
 }
 
 /* Learn More Button */
 .event-btn {
+    background-color: #22668D;
+    color: #FFFADD;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
     display: inline-block;
-    padding: 8px 16px;
-    background: #17587D;
-    color: white;
     text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background 0.3s ease-in-out;
+
 }
 
 .event-btn:hover {
-    background: #0e3e5b;
+    background: #FFFADD;
+    color:  #22668D;
 }
 
 /* Carousel Navigation Arrows */
@@ -383,8 +401,21 @@ body {
 }
 .map-section h2 {
     margin-bottom: 40px; /* Adjust spacing */
+    text-align: left;
+    margin-bottom: 0px;
+   
 }
-
+h2{
+    display: block;
+    font-size: 3em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+    text-align: left;
+}
 
 /* Map Container */
 .map-container {
@@ -459,79 +490,4 @@ body {
     background: #0e3e5b;
     color: white;
 }
-/* Footer Section */
-.footer-section {
-    background-color: #1e5c87; /* Blue background */
-    color: white;
-    text-align: center;
-    padding: 30px 0;
-}
 
-.footer-section h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.footer-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.footer-btn {
-    display: inline-block;
-    padding: 12px 20px;
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    font-size: 16px;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease-in-out;
-}
-
-.footer-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* Bottom Footer */
-.site-footer {
-    background-color: #1e5c87;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 20px;
-}
-
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.footer-logo {
-    width: 60px; /* Adjust logo size */
-}
-
-.footer-links {
-    list-style: none;
-    display: flex;
-    gap: 15px;
-}
-
-.footer-links li a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.footer-links li a:hover {
-    text-decoration: underline;
-}
-
-.site-footer p {
-    font-size: 12px;
-    margin-top: 10px;
-}

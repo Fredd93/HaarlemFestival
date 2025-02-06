@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <div class="event-content">
                         <h3>${event.event_name}</h3>
                         <p>${event.event_description}</p>
-                        <a href="event.php?id=${event.event_id}" class="event-btn">Learn More</a>
+                        <a href="${event.event_name}" class="event-btn">Learn More</a>
                     </div>
                 `;
 
