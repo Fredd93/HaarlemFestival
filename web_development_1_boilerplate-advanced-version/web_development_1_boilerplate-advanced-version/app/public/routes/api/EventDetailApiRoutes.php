@@ -24,3 +24,9 @@ Route::add('/api/eventDetails/type/([a-zA-Z]+)', function ($type) {
     $controller = new EventDetailAPIController();
     $controller->getEventDetailsByType($type);
 }, ['GET']);
+// Get Unique Food Types (Tags)
+Route::add('/api/eventDetails/uniqueTags', function () {
+    $controller = new EventDetailAPIController();
+    $controller->getUniqueFoodTypes();
+}, ['GET']);
+

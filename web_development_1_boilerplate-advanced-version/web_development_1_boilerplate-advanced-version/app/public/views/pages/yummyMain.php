@@ -52,9 +52,14 @@ require_once(__DIR__ . "/../partials/navbar.php");
 
     <div class="restaurant-section">
         <h2>Participating Restaurants</h2>
-        <div class="restaurant-container" id="restaurant-list">
+        <div class="filter-container">
+            <button id="filter-btn" class="filter-button">Filter ▼</button>
+            <div id="filter-dropdown" class="filter-dropdown">
+            <!-- Filter options will be populated dynamically -->
         </div>
     </div>
+    <div class="restaurant-container" id="restaurant-list"></div>
+</div>
     <div class="map-section">
             <h2>Find Your Way!</h2>
             <p>Explore our curated dining experiences across Haarlem. Click a location for more details.</p>
