@@ -37,7 +37,7 @@ class UserApiController {
         if ($user) {
             ResponseHelper::sendJson($user);
         } else {
-            ResponseHelper::sendError('User not found', 404);
+            ResponseHelper::sendError('Users not found', 404);
         }
     }
 
