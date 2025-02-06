@@ -4,28 +4,16 @@
     align-items: center;
     justify-content: space-between;
     background: white;
-    padding: 10px 20px;
+    padding: 5px 20px;
     position: relative;
     z-index: 1000;
     border-bottom: 2px solid #ddd;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.nav-links a {
-    text-decoration: none;
-    color: black;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px;
-    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
-}
 
-.nav-links a.active {
-    color: #c00; /* Highlight color */
-    border-bottom: 3px solid red; /* Underline effect */
-}
 /* Logo */
 .logo img {
-    height: 50px;
+    height: 74px;
 }
 
 /* Navigation Links */
@@ -46,7 +34,7 @@
     font-size: 18px;
     font-weight: bold;
     padding: 10px;
-    transition: color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
 }
 
 /* Hover Effect */
@@ -56,6 +44,7 @@
 
 /* Active Page Underline */
 .nav-links a.active {
+    color: #c00;
     border-bottom: 3px solid red;
 }
 
