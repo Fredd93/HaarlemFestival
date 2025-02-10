@@ -75,58 +75,63 @@ class UserApiController {
      */
     public function updateUser() {
         if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendError('Unauthorized', 401);
+            ResponseHelper::sendJson(['error' => 'Unauthorized'], 401);
             return;
         }
-
+    
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-
-            if (!isset($data['username'], $data['email'], $data['role'])) {
-                ResponseHelper::sendError('Invalid input', 400);
+    
+            if (!isset($data['username']) && !isset($data['email'])) {
+                ResponseHelper::sendJson(['error' => 'Invalid input'], 400);
                 return;
             }
-
-            $success = $this->userModel->update($_SESSION['user_id'], $data['username'], $data['email'], $data['role']);
-
+    
+            $userId = $_SESSION['user_id'];
+            $userModel = new UserModel();
+            $success = $userModel->update($userId, $data['username'] ?? "", $data['email'] ?? "", "user");
+    
             if ($success) {
                 ResponseHelper::sendJson(['message' => 'User updated successfully']);
             } else {
-                ResponseHelper::sendError('Failed to update user', 500);
+                ResponseHelper::sendJson(['error' => 'Failed to update user'], 500);
             }
         } catch (Exception $e) {
-            ResponseHelper::sendError('Internal Server Error', 500);
+            ResponseHelper::sendJson(['error' => 'Internal Server Error'], 500);
         }
     }
-
+    
     /**
      * Update user password.
      */
     public function updatePassword() {
         if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendError('Unauthorized', 401);
+            ResponseHelper::sendJson(['error' => 'Unauthorized'], 401);
             return;
         }
-
+    
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-
-            if (!isset($data['password'])) {
-                ResponseHelper::sendError('Invalid input', 400);
+    
+            if (!isset($data['password']) || empty($data['password'])) {
+                ResponseHelper::sendJson(['error' => 'Password cannot be empty'], 400);
                 return;
             }
-
-            $success = $this->userModel->updatePassword($_SESSION['user_id'], $data['password']);
-
+    
+            $userId = $_SESSION['user_id'];
+            $userModel = new UserModel();
+            $success = $userModel->updatePassword($userId, $data['password']);
+    
             if ($success) {
                 ResponseHelper::sendJson(['message' => 'Password updated successfully']);
             } else {
-                ResponseHelper::sendError('Failed to update password', 500);
+                ResponseHelper::sendJson(['error' => 'Failed to update password'], 500);
             }
         } catch (Exception $e) {
-            ResponseHelper::sendError('Internal Server Error', 500);
+            ResponseHelper::sendJson(['error' => 'Internal Server Error'], 500);
         }
     }
+    
 
     /**
      * Delete user account.
