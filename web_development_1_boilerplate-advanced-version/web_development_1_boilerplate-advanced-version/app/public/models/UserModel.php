@@ -99,6 +99,7 @@ class UserModel extends BaseModel
     {
         $sql = "UPDATE [User] SET password = :password WHERE user_id = :id";
         $hashed_password = password_hash($newPassword, PASSWORD_BCRYPT);
+        error_log("New Hashed Password: " . $hashed_password);
 
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(":password", $hashed_password);
