@@ -30,7 +30,7 @@ require_once(__DIR__ . "/../partials/navbar.php");
     </div>
 
     <!-- About Yummy Section -->
-    <div id="about-yummy" class="about-yummy-section">
+    <div  class="about-yummy-section">
         <div class="about-content">
             <div class="about-text">
                 <h2>About the Yummy! Experience</h2>
@@ -50,7 +50,7 @@ require_once(__DIR__ . "/../partials/navbar.php");
         </div>
     </div>
 
-    <div class="restaurant-section">
+    <div id="about-yummy" class="restaurant-section">
         <h2>Participating Restaurants</h2>
         <div class="filter-container">
             <button id="filter-btn" class="filter-button">Filter ▼</button>

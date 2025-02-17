@@ -1,24 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let slides = document.querySelectorAll(".about-slide");
-    let index = 0;
-
-    function showSlide() {
-        slides.forEach(slide => slide.style.display = "none");
-        slides[index].style.display = "block";
-        index = (index + 1) % slides.length;
-    }
-
-    setInterval(showSlide, 3000); 
-});
-document.addEventListener("DOMContentLoaded", function () {
     fetchRestaurants();
     fetchFoodTypes(); 
 });
 
-let allRestaurants = []; 
+let allRestaurants = []; // Store all restaurants globally for filtering
 
 function fetchRestaurants() {
-    fetch('/api/eventDetails/type/Restaurant') 
+    fetch('/api/yummyEvents')  // 🔹 New API endpoint for Yummy events
         .then(response => response.json())
         .then(data => {
             allRestaurants = data;
@@ -29,22 +17,27 @@ function fetchRestaurants() {
 
 function renderRestaurants(restaurants) {
     const container = document.getElementById("restaurant-list");
-    container.innerHTML = ""; 
+    container.innerHTML = ""; // Clear previous content
+
     restaurants.forEach(restaurant => {
         const card = document.createElement("div");
         card.classList.add("restaurant-card");
 
+        // 🔹 Format time correctly as HH:mm (24-hour format)
+        const formattedStartTime = formatTime(restaurant.startTime);
+        const formattedEndTime = formatTime(restaurant.endTime);
+
         card.innerHTML = `
             <div class="card">
-                <img src="${restaurant.image_url || '../../assets/images/default-restaurant.jpg'}" alt="${restaurant.name}" class="restaurant-image">
+                <img src="${restaurant.img || '../../assets/images/default-restaurant.jpg'}" alt="${restaurant.name}" class="restaurant-image">
                 <div class="card-content">
                     <h3 class="restaurant-name">${restaurant.name}</h3>
                     <p class="restaurant-description">${restaurant.description || "No description available."}</p>
-                    <p class="restaurant-tags">${restaurant.tags}</p>
-                    <p class="restaurant-time">${restaurant.event_time} - ${restaurant.event_date}</p>
-                    <p class="restaurant-price">€${restaurant.event_price}</p>
-                    <div class="restaurant-rating">${generateStars(restaurant.rating)}</div>
-                    <button class="details-button">View Details</button>
+                    <p class="restaurant-tags">${restaurant.type}</p>
+                    <p class="restaurant-time">${formattedStartTime} - ${formattedEndTime}</p>
+                    <p class="restaurant-price">€${restaurant.price}</p>
+                    <div class="restaurant-rating">${generateStars(restaurant.stars)}</div>
+                    <a href="/yummy/${restaurant.name}" class="details-button">View Details</a>
                 </div>
             </div>
         `;
@@ -52,32 +45,40 @@ function renderRestaurants(restaurants) {
         container.appendChild(card);
     });
 }
+function formatTime(timeString) {
+    if (!timeString) return "Unknown"; // Handle empty or undefined time
+
+    const time = timeString.split(":"); 
+    return `${time[0]}:${time[1]}`; // Extracts hours and minutes only
+}
+
 
 function fetchFoodTypes() {
-    fetch('/api/eventDetails/uniqueTags')
+    fetch('/api/yummyEvents/types')  // 🔹 Updated API route for types
         .then(response => response.json())
-        .then(tags => populateFilter(tags))
+        .then(types => populateFilter(types))
         .catch(error => console.error("Error fetching food types:", error));
 }
 
-function populateFilter(tags) {
+function populateFilter(types) {
     const dropdown = document.getElementById("filter-dropdown");
+    dropdown.innerHTML = ""; 
 
+    // "All" button
     const allButton = document.createElement("button");
     allButton.classList.add("filter-option");
     allButton.innerText = "All";
     allButton.dataset.type = "all";
-    allButton.addEventListener("click", () => filterRestaurants("all")); 
-
-    dropdown.innerHTML = "";
+    allButton.addEventListener("click", () => filterRestaurants("all"));
     dropdown.appendChild(allButton);
 
-    tags.forEach(tag => {
+    // Create buttons for each type
+    types.forEach(type => {
         const button = document.createElement("button");
         button.classList.add("filter-option");
-        button.innerText = tag;
-        button.dataset.type = tag;
-        button.addEventListener("click", () => filterRestaurants(tag));
+        button.innerText = type;
+        button.dataset.type = type;
+        button.addEventListener("click", () => filterRestaurants(type));
         dropdown.appendChild(button);
     });
 
@@ -85,7 +86,6 @@ function populateFilter(tags) {
         dropdown.classList.toggle("show");
     });
 }
-
 
 function filterRestaurants(type) {
     document.getElementById("filter-dropdown").classList.remove("show");
@@ -95,14 +95,9 @@ function filterRestaurants(type) {
         return;
     }
 
-    const filtered = allRestaurants.filter(restaurant => {
-        if (!restaurant.tags) return false; // 
-        return restaurant.tags.split(',').map(tag => tag.trim()).includes(type);
-    });
-
+    const filtered = allRestaurants.filter(restaurant => restaurant.type.includes(type));
     renderRestaurants(filtered);
 }
-
 
 function generateStars(rating) {
     let stars = "";
@@ -111,4 +106,3 @@ function generateStars(rating) {
     }
     return stars;
 }
-
