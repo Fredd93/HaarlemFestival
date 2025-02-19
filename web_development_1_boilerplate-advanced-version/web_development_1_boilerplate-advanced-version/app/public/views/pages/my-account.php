@@ -50,7 +50,6 @@
             <!-- Settings Section -->
             <section id="settings" class="content-section">
                 <h1>Settings</h1>
-
                 <div class="settings-section">
                     <h2>User Details <button id="edit-btn" class="edit-btn">Edit</button></h2>
                     <div id="userDetails">

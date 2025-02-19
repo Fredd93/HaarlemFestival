@@ -11,3 +11,7 @@ Route::add('/my-account', function () {
 Route::add('/yummy', function () {
     require(__DIR__ . "/../views/pages/yummyMain.php");
 });
+
+Route::add('/dance', function () {
+    require(__DIR__ . "/../views/pages/danceMain.php");
+});
