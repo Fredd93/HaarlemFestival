@@ -57,8 +57,6 @@ require_once(__DIR__ . "/../partials/navbar.php");
         </table>
     </div>
 
-
-
     <script src="../../assets/js/dance.js"></script>
 </body>
 </html>
