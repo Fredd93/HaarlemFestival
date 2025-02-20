@@ -245,6 +245,7 @@ body {
     width: 40%;
     margin-top: 10px;
     transition: background 0.3s;
+    text-decoration: none;
 }
 
 .details-button:hover {
