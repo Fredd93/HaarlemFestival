@@ -106,10 +106,16 @@
 </div>
     <script src="assets/js/homePage.js"></script>
     <script src="assets/js/maps.js"></script>
+    <script src="../../assets/js/personalProgram.js"></script>
+
     <?php
         require(__DIR__ . "/../partials/footer.php");
     ?>
 </body>
+<footer>
+<?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
+
+</footer>
 </html>
 
 
