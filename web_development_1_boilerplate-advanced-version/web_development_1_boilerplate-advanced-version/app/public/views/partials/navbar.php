@@ -1,6 +1,5 @@
 <?php
 
-
 // Define event names mapping
 $eventNames = [
     'yummy' => 'Yummy',
@@ -37,5 +36,13 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
 
         <li><a href="tickets.php" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
         <li><a href="program.php" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+        <li>
+        <div class="nav-right">
+            <?php include(__DIR__ . "/personalProgram.php"); ?> <!-- 🔹 Now inside Navbar -->
+        </div>
+        </li>
     </ul>
+
+    <!-- Personal Program Button -->
+    
 </nav>

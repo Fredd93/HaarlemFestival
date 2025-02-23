@@ -97,8 +97,13 @@ require_once(__DIR__ . "/../partials/navbar.php");
 
     <script src="../../assets/js/yummyMain.js"></script>
     <script src="../../assets/js/maps.js"></script>
-    
+    <script src="../../assets/js/personalProgram.js"></script>
+
 
 
 </body>
+<footer>
+<?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
+
+</footer>
 </html>

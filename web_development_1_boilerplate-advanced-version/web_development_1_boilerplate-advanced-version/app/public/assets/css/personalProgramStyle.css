@@ -1,0 +1,72 @@
+/* Personal Program Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Initially hidden */
+    width: 350px;
+    height: 100vh;
+    background: #d1d1d1; /* Grey background */
+    box-shadow: -2px 0px 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Show overlay */
+.overlay.show {
+    right: 0;
+}
+
+/* Overlay Content */
+.overlay-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Close Button */
+.close-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+/* Title */
+.overlay-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fdf8e5; /* Light beige color */
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    text-decoration: underline;
+    margin-bottom: 15px;
+}
+
+/* Program Items */
+.program-items {
+    flex-grow: 1;
+    overflow-y: auto; /* Allow scrolling if many items */
+}
+
+/* Purchase Button */
+.purchase-btn {
+    background: #46e0b6; /* Green button */
+    border: none;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out;
+}
+
+.purchase-btn:hover {
+    background: #38c29e;
+}
