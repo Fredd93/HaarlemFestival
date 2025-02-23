@@ -26,6 +26,7 @@
             <p>Tickets for a Stroll through History are sold as personal ticket or as a family ticket. <br>• Regular Participant: € 17,50  <br>• Family ticket (max. 4 participants): € 60,-</p>
         </div>
     </div>
+    <h2>Schedule</h2>
     <div class="schedule-area">
         <div>
             <h2>Thursday</h2>
@@ -150,6 +151,7 @@
         </div>
     </div>
     <img class="tourMap" src="https://s3-alpha-sig.figma.com/img/c924/1021/f98b646d9aba34925d54e0bfb6fbe5e7?Expires=1740960000&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=FDt4YrLVxVVmZPpdfJwQrHTbKplwvZYmLquK6DA3UVZGcGdcLDq3U-udwsvsS3MxxBOIZWibYEqI1NvbV5zczzATGUIrPWJk2VhKdkWwDKWCxSlajN9Znw5YWmI6XC3Ok584ZrwUV55nlDhedp-Wx3fQoFVB0xkzyZR5LDW22oySFx8HNpM2DBs~0IHpz3VCuHuUZFcu1~399grhdYZ1~kHa0nVFusLQwKnol7I63ZHOg0AywQkhuIWLvVTXlY2QHhXhbR9sv-HnI9Lv6Ig835lNrtquiuMie8PafvmGvTJyDT49E0dmVGekcM~QSfPzwGTUiu6zV2hXZtyEXwovVQ__" alt="Tour map" width="941" height="554">
+    <h2>The locations that are visited</h2>
     <div class="locationContainer">
         <div class="locationCard left">
             <img src="" width="200" height="150" alt="Location Image">
