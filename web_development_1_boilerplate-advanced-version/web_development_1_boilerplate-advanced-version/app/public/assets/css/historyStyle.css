@@ -1,0 +1,177 @@
+:root {
+    --primaryCTA: #FFCC70BF;
+    --secondaryCTA: #8ECDDD;
+    --situationalCTA: #22668D;
+    --negativeCTA: #FFFADD;
+}
+.navbar {
+    background-color: #FFCC70BF;
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap');
+
+/* Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+.about-text > * {
+    padding: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.schedule-area {
+    width: 90vw;
+    height: auto;
+    padding:0.5em;
+    margin:5vw;
+    margin-top: 0vw;
+    margin-bottom: 0vw;
+    background-color: var(--secondaryCTA);
+    border: solid 5px var(--situationalCTA);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: space-between;
+    justify-content: space-around;
+}
+.schedule-item-collection {
+    display: flex;
+    width: calc(calc(90vw - 1em) / 2.05);
+    height: 12em;
+    justify-content: space-around;
+    align-content: flex-end;
+    flex-wrap: wrap;
+}
+.schedule-area > * > h2 {
+    padding: 1em;
+    text-align: center;
+    color:var(--negativeCTA);
+    -webkit-text-stroke: 1px var(--situationalCTA);
+}
+.schedule-item .top {
+    background-color: var(--situationalCTA);
+    /*width and height use vw to have consistent ratio*/
+    width: 9em;
+    height: 4em;
+    line-height: 4em;
+    text-align:center;
+    border-top-left-radius:25px;
+    border-top-right-radius:25px;
+}
+.schedule-item .bottom {
+    background-color: var(--negativeCTA);
+    width:9em;
+    height:8em;
+    border-bottom-left-radius:25px;
+    border-bottom-right-radius:25px;
+    position:relative;
+}
+.schedule-item .bottom p {
+    padding:3px;
+}
+.schedule-item .bottom img {
+    padding:0px 3px;
+    width: 25px;
+}
+.schedule-item .top h2 {
+    color: var(--negativeCTA);
+}
+.ticketButton {
+    left:10%;
+    background-color: #22668D;
+    color: #FFFADD;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width:80%;
+    height:20%;
+    line-height:12px;
+    position:absolute;
+    bottom:10%
+}
+.ticketButton:hover {
+    background: #FFFADD;
+    color:  #22668D;
+    border:1px solid var(--situationalCTA);
+}
+.locationButton {
+    background-color: #22668D;
+    color: #FFFADD;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width:10em;
+    height:1.7em;
+    line-height:12px;
+    position:absolute;
+    bottom:10%;
+}
+.locationCard.left .locationButton {
+    right:5%;
+}
+.locationCard.right .locationButton {
+    left:5%;
+}
+.locationButton:hover {
+    background: #FFFADD;
+    color:  #22668D;
+    border:1px solid var(--situationalCTA);
+}
+.tourMap {
+    width:100vw;
+    height:auto;
+    padding: 5em calc(calc(100vw - 70vw)/2);
+}
+.locationContainer {
+    /* something probably */
+}
+.locationCard {
+    height:12em;
+    width:80vw;
+    margin:5% 10%;
+    background-color: var(--negativeCTA);
+    position:relative;
+}
+.locationCard img {
+    background-color: grey;
+    width:15em;
+    height:9em;
+    position:absolute;
+    top:10%;
+}
+.locationCard.left img {
+    left:5%;
+}
+.locationCard.right img {
+    right:5%;
+}
+.locationCard.left .locationCardText {
+    left:37%;
+}
+.locationCard.right .locationCardText {
+    left:5%;
+}
+.locationCard .locationCardText {
+    top:10%;
+    position:absolute;
+    text-wrap: wrap;
+}
