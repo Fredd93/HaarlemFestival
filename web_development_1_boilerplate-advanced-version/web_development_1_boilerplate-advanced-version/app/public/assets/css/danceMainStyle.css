@@ -405,4 +405,121 @@ html {
    margin: 0;
 }
 
+/* Personal Program Button */
+.personal-program-container {
+    position: relative;
+    display: inline-block;
+}
+
+.personal-program-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.personal-program-icon {
+    width: 40px;
+    transition: transform 0.2s;
+}
+
+.personal-program-btn:hover .personal-program-icon {
+    transform: scale(1.1);
+}
+
+/* Notification Badge */
+/* Notification Badge */
+.program-count {
+    position: absolute;
+    top: 2px;
+    right: 28.1px;
+    background: #FAF5DB;
+    color: black;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+.program-count.show {
+    display: inline-block; /* Show when items are added */
+}
+
+
+/* Personal Program Overlay */
+/* Personal Program Overlay */
+.overlay {
+    position: fixed;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between; /* Ensures spacing between header, content, and footer */
+    top: 0;
+    right: -440px; /* Initially hidden */
+    width: 400px;
+    height: 100%;
+    background: #D4D4D4;
+    color: black;
+    padding: 20px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.overlay.show {
+    right: 0;
+}
+
+/* Overlay Header */
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center; /* Allows content to expand */
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    align-self: flex-start;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Program Items (Dynamic Content) */
+.program-items {
+    flex-grow: 1; /* Takes up all available space */
+    overflow-y: auto; /* Enables scrolling when there are many items */
+    padding-bottom: 20px; /* Space before the button */
+}
+
+/* Purchase Button at Bottom */
+.purchase-btn {
+    width: 60%;
+    padding: 12px;
+    background: #31D0AA;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: auto;
+    text-decoration: none;
+    /* Push to the bottom */
+}
+.programOVerlayText {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    text-decoration: underline;
+    margin-bottom: 15px;
+    
+
+}
+
+.purchase-btn:hover {
+    background: #14a396;
+}
+
+
 

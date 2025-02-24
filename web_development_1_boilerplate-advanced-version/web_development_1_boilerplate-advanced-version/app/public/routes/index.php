@@ -11,6 +11,7 @@ Route::add('/yummy', function () {
 });
 Route::add('/dance', function () {
     require(__DIR__ . "/../views/pages/danceMain.php");
+});
 
 Route::add('/yummy/Ratatouille', function () {
     require(__DIR__ . "/../views/pages/ratatouille.php");
