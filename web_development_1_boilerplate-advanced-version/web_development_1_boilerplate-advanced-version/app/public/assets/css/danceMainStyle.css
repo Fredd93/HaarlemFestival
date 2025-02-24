@@ -1,0 +1,525 @@
+body {
+    background-image: linear-gradient(180deg, black, #241A90);
+    margin: 0;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1E167A;
+    padding: 5px 20px;
+    position: relative;
+    z-index: 1000;
+    border-bottom: 2px solid #000000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo */
+.logo img {
+    height: 74px;
+}
+
+/* Navigation Links */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links li {
+    position: relative;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+.nav-links a:hover {
+    color: #c00;
+}
+
+/* Active Page Underline */
+.nav-links a.active {
+    color: #c00;
+    border-bottom: 3px solid red;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: white;
+    width: 150px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: none;
+    flex-direction: column;
+    border-radius: 5px;
+    z-index: 1100;
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a {
+    padding: 10px;
+    display: block;
+    color: black;
+    font-size: 16px;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: flex;
+}
+
+/* Video Container */
+.video-container {
+    position: relative;
+    width: 1919px; /* Fixed width */
+    height: 442px; /* Fixed height */
+    max-width: 100%; /* Ensure responsiveness */
+    margin: 0 auto; /* Center it horizontally */
+    overflow: hidden;
+}
+
+/* Video Styling */
+.video-frame {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the video covers the frame */
+    display: block;
+}
+
+/* Logo Overlay - Positioned in Center of Video */
+.logo-overlay {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%);
+    width: 406px; /* Adjust logo size */
+    height: 442px;
+    z-index: 2; /* Ensure it's above the video */
+    opacity: 1; /* Fully visible */
+}
+
+.header-container{
+    padding: 70px 0;
+    justify-items: center;
+    color: #ffffffff;
+}
+
+.header1{
+    font-size: 100px;
+}
+
+.header2{
+    font-size: 64px;
+}
+
+.header3{
+    font-size: 38px;
+    color: #ffffff; /* No need for #ffffffff, just #ffffff is fine */
+    text-align: center; /* ✅ Center text */
+    display: block; /* Ensures it's a block-level element */
+    width: 100%; /* Make sure it spans the full width */
+    margin-top: 50px;  /* Adjust space above */
+    margin-bottom: 20px;
+}
+
+/* Artists Container */
+.artists-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Container for artist cards */
+.artist-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Ensures the cards are centered */
+    gap: 100px; /* Space between cards */
+    max-width: 1700px; /* Prevents stretching */
+    padding: 50px;
+}
+
+/* Individual card styling */
+.artist-card {
+    max-width: 450px; /* Prevents too large cards */
+    height: 600px; /* Fixed height */
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+/* Image container inside the card */
+.artist-image img {
+    width: 100%;
+    height: 330px; /* Set the height so the title starts immediately below */
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Text content inside the card */
+.artist-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start; /* Align text to the left */
+    padding: 20px; /* Adds space inside the content */
+    position: relative;
+    text-align: left; /* Ensures all text inside is left-aligned */
+}
+
+/* Ensure title and description are closer together */
+.artist-content h2 {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 5px; /* Reduce space below title */
+    font-size: 22px; /* Adjust title size if needed */
+}
+
+.artist-content p {
+    text-align: left;
+    width: 100%;
+    margin-top: 0; /* Remove extra space above paragraph */
+    font-size: 16px; /* Adjust text size if needed */
+    line-height: 1.4; /* Adjust line spacing for better readability */
+}
+
+
+/* View details button */
+.view-details {
+    background-color: #22668D;
+    color: white;
+    height: 35px;
+    width: 143px;
+    border: none;
+    padding: 6px 6px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    align-self: flex-end; /* Moves button to the right */
+    margin-top: auto; /* Pushes button to the bottom */
+}
+
+.view-details:hover {
+    background-color: #FFFADD;
+    color: #000000;
+    border: 2px solid #000000;
+}
+
+/* Ensures exactly two cards per row */
+@media (max-width: 1600px) {
+    .artist-card {
+        width: calc(50% - 30px); /* Maintain 2 per row */
+    }
+}
+
+/* For tablets and smaller screens, switch to 1 per row */
+@media (max-width: 900px) {
+    .artist-card {
+        width: 100%; /* Full width on small screens */
+    }
+}
+
+/* Table Container (White Box) */
+.table-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    position: relative;
+}
+
+/* Tabs Styling */
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0px;
+    margin-bottom: 15px;
+    position: absolute;
+    top: -40px; /* Moves buttons to the top-left corner */
+    left: 20px;
+}
+
+/* Tab Buttons */
+.tab-button {
+    padding: 10px 20px;
+    background-color: #2A185E;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: background 0.3s, color 0.3s, border 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+.tab-button.active {
+    background-color: #9A84D8;
+    color: #FFFFFF;
+}
+
+/* Table Styling */
+#event-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#event-table th, #event-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+#event-table th {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+}
+
+#event-table tr:nth-child(even) {
+    background-color: #E5DAF6;
+}
+
+#event-table tr:nth-child(odd) {
+    background-color: #FFFFFF;
+}
+
+/* Add To Program Button */
+.add-to-program {
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.add-to-program:hover {
+    background-color: #7d6fd7;
+}
+
+/* Footer Section */
+.footer-section {
+    background-color: #1E167A;
+    color: white;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.footer-section h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.footer-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.footer-btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+}
+
+.footer-btn:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Bottom Footer */
+.site-footer {
+    background-color: #1E167A;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo {
+    width: 60px; /* Adjust logo size */
+}
+
+.footer-links {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.footer-links li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footer-links li a:hover {
+    text-decoration: underline;
+}
+
+.site-footer p {
+    font-size: 12px;
+    margin-top: 10px;
+}
+html {
+   margin: 0;
+}
+
+/* Personal Program Button */
+.personal-program-container {
+    position: relative;
+    display: inline-block;
+}
+
+.personal-program-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.personal-program-icon {
+    width: 40px;
+    transition: transform 0.2s;
+}
+
+.personal-program-btn:hover .personal-program-icon {
+    transform: scale(1.1);
+}
+
+/* Notification Badge */
+/* Notification Badge */
+.program-count {
+    position: absolute;
+    top: 2px;
+    right: 28.1px;
+    background: #FAF5DB;
+    color: black;
+    font-size: 12px;
+    border-radius: 50%;
+}
+
+.program-count.show {
+    display: inline-block; /* Show when items are added */
+}
+
+
+/* Personal Program Overlay */
+/* Personal Program Overlay */
+.overlay {
+    position: fixed;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: space-between; /* Ensures spacing between header, content, and footer */
+    top: 0;
+    right: -440px; /* Initially hidden */
+    width: 400px;
+    height: 100%;
+    background: #D4D4D4;
+    color: black;
+    padding: 20px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.overlay.show {
+    right: 0;
+}
+
+/* Overlay Header */
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center; /* Allows content to expand */
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    align-self: flex-start;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Program Items (Dynamic Content) */
+.program-items {
+    flex-grow: 1; /* Takes up all available space */
+    overflow-y: auto; /* Enables scrolling when there are many items */
+    padding-bottom: 20px; /* Space before the button */
+}
+
+/* Purchase Button at Bottom */
+.purchase-btn {
+    width: 60%;
+    padding: 12px;
+    background: #31D0AA;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: auto;
+    text-decoration: none;
+    /* Push to the bottom */
+}
+.programOVerlayText {
+    font-size: 40px;
+    font-weight: bold;
+    color: black;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    text-decoration: underline;
+    margin-bottom: 15px;
+    
+
+}
+
+.purchase-btn:hover {
+    background: #14a396;
+}
+
+
+

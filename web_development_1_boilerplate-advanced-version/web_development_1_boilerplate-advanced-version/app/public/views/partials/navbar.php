@@ -28,7 +28,7 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
             <ul class="dropdown-menu">
                 <li><a href="yummy" class="<?= ($activePage === 'yummy') ? 'active' : '' ?>">Yummy</a></li>
                 <li><a href="jazz.php" class="<?= ($activePage === 'jazz') ? 'active' : '' ?>">Jazz</a></li>
-                <li><a href="dance.php" class="<?= ($activePage === 'dance') ? 'active' : '' ?>">Dance</a></li>
+                <li><a href="dance" class="<?= ($activePage === 'dance') ? 'active' : '' ?>">Dance</a></li>
                 <li><a href="history" class="<?= ($activePage === 'history') ? 'active' : '' ?>">History</a></li>
                 <li><a href="teylers.php" class="<?= ($activePage === 'teylers') ? 'active' : '' ?>">Teyler's</a></li>
             </ul>
