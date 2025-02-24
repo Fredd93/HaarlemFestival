@@ -18,3 +18,9 @@ Route::add('/yummy/Ratatouille', function () {
 Route::add('/yummy/Café de Roemer', function () {
     require(__DIR__ . "/../views/pages/roemer.php");
 });
+Route::add('/a stroll through history', function() {
+    require(__DIR__ . "/../views/pages/history.php");
+});
+Route::add('/history', function() {
+    require(__DIR__ . "/../views/pages/history.php");
+});
