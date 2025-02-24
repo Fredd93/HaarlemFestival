@@ -443,9 +443,6 @@ html {
     display: inline-block; /* Show when items are added */
 }
 
-
-/* Personal Program Overlay */
-/* Personal Program Overlay */
 .overlay {
     position: fixed;
     display: flex;
@@ -520,6 +517,7 @@ html {
 .purchase-btn:hover {
     background: #14a396;
 }
+
 
 
 
