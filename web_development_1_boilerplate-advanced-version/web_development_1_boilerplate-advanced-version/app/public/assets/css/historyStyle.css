@@ -26,6 +26,22 @@ body {
     padding-bottom: 5px;
     padding-top: 5px;
 }
+@media (max-width: 1050px) {
+    .schedule-area {
+        flex-direction: column;
+    }
+    .schedule-item-collection {
+        width: 90vw;
+    }
+}
+@media (min-width: 1050px) {
+    .schedule-area {
+        flex-direction: row;
+    }
+    .schedule-item-collection {
+        width: calc(calc(90vw - 1em) / 2.05);
+    }
+}
 .schedule-area {
     width: 90vw;
     height: auto;
@@ -37,13 +53,11 @@ body {
     border: solid 5px var(--situationalCTA);
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
     align-content: space-between;
     justify-content: space-around;
 }
 .schedule-item-collection {
     display: flex;
-    width: calc(calc(90vw - 1em) / 2.05);
     height: 12em;
     justify-content: space-around;
     align-content: flex-end;
@@ -152,17 +166,21 @@ body {
     position:relative;
 }
 .locationCard img {
-    background-color: grey;
+    background-color: rgba(128, 128, 128, 0.193);
     width:15em;
     height:9em;
     position:absolute;
     top:10%;
+    filter: grayscale(100%); -webkit-filter: grayscale(100%);
 }
 .locationCard.left img {
     left:5%;
 }
 .locationCard.right img {
     right:5%;
+}
+.locationCard img:hover {
+    filter: grayscale(0%); -webkit-filter: grayscale(0%);
 }
 .locationCard.left .locationCardText {
     left:37%;
@@ -173,5 +191,9 @@ body {
 .locationCard .locationCardText {
     top:10%;
     position:absolute;
+    text-wrap: wrap;
+}
+.locationCardText {
+    max-width: 500px;
     text-wrap: wrap;
 }
