@@ -10,9 +10,9 @@ class DanceAPIController{
         $this->DanceModel = new DanceModel();
     }
 
-    public function getAllById()
+    public function getAllArtists()
     {
-        $Artists = $this->DanceModel->getAllById();
+        $Artists = $this->DanceModel->getAllArtists();
         if ($Artists) {
             ResponseHelper::sendJson($Artists);
         } else {

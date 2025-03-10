@@ -3,7 +3,7 @@ require_once(__DIR__ . '/../../api/DanceAPIController.php');
 $Controller = new DanceAPIController();
 
 Route::add('/api/artists/all', function () use ($Controller) {
-    $Controller->getAllById();
+    $Controller->getAllArtists();
 }, ['GET']);
 
 Route::add('/api/artists/events', function () use ($Controller) {

@@ -12,7 +12,9 @@ Route::add('/yummy', function () {
 Route::add('/dance', function () {
     require(__DIR__ . "/../views/pages/danceMain.php");
 });
-
+Route::add('/danceDetail1', function() {
+    require(__DIR__ . "/../views/pages/danceDetail1.php");
+});
 Route::add('/yummy/Ratatouille', function () {
     require(__DIR__ . "/../views/pages/ratatouille.php");
 });

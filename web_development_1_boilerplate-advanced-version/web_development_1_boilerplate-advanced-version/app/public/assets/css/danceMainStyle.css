@@ -113,7 +113,7 @@ body {
 }
 
 .header-container{
-    padding: 70px 0;
+
     justify-items: center;
     color: #ffffffff;
 }
@@ -517,6 +517,7 @@ html {
 .purchase-btn:hover {
     background: #14a396;
 }
+
 
 
 

@@ -10,8 +10,18 @@ Class DanceModel extends BaseModel
         parent::__construct();
     }
 
-    public function getAllById(): array {
-        $sql = "SELECT * FROM Artists WHERE event_id = 10"; 
+    public function getAllArtists(): array {
+        $sql = "SELECT DISTINCT 
+        A.artist_id, 
+        A.name, 
+        A.careerHighlights,
+        A.Tracks,
+        A.Albums,
+        A.LegacyAndInfluence,
+        CAST(A.description AS VARCHAR(MAX)) AS description
+        FROM Artists A
+        JOIN Dance_Event_Artists DEA ON A.artist_id = DEA.artist_id
+        JOIN Dance_Events DE ON DEA.event_detail_id = DE.event_detail_id;"; 
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,10 +33,14 @@ Class DanceModel extends BaseModel
         return new DanceArtistDTO(
             (int) $row["artist_id"],
             $row["name"], 
-            $row["description"] ?? "" 
+            $row["description"] ?? "", 
+            $row["careerHighlights"] ?? "", 
+            $row["tracks"] ?? "", 
+            $row["albums"] ?? "", 
+            $row["legacyAndInfluence"] ?? ""
         );
     }
-
+    
     private function mapToEventsDTO(array $row): DanceEventDTO{
         return new DanceEventDTO(
             $row["artists"],
