@@ -31,115 +31,57 @@
         <div>
             <h2>Thursday</h2>
             <div class="schedule-item-collection">
-                <?php require("../partials/historyScheduleCard.php");
-                <div class="schedule-item">
-                    <div class="top"><h2>13:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>16:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
+                <?php 
+                $tourTime = "10:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "13:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
             </div>
         </div>
         <div>
             <h2>Friday</h2>
             <div class="schedule-item-collection">
-                <div class="schedule-item">
-                    <div class="top"><h2>10:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>13:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <p>1 Chinese tour<img src="https://em-content.zobj.net/source/twitter/408/flag-china_1f1e8-1f1f3.png" alt="Chinese flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>16:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
+            <?php 
+                $tourTime = "10:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "13:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 1;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
             </div>
         </div>
         <div>
             <h2>Saturday</h2>
             <div class="schedule-item-collection">
-                <div class="schedule-item">
-                    <div class="top"><h2>10:00</h2></div>
-                    <div class="bottom">
-                        <p>2 Dutch tours<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>2 English tours<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>13:00</h2></div>
-                    <div class="bottom">
-                        <p>2 Dutch tours<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>2 English tours<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <p>1 Chinese tour<img src="https://em-content.zobj.net/source/twitter/408/flag-china_1f1e8-1f1f3.png" alt="Chinese flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>16:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <p>1 Chinese tour<img src="https://em-content.zobj.net/source/twitter/408/flag-china_1f1e8-1f1f3.png" alt="Chinese flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
+            <?php 
+                $tourTime = "10:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "13:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 1;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                                <?php 
+                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 1;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
             </div>
         </div>
         <div>
             <h2>Sunday</h2>
             <div class="schedule-item-collection">
-                <div class="schedule-item">
-                    <div class="top"><h2>10:00</h2></div>
-                    <div class="bottom">
-                        <p>2 Dutch tours<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>2 English tours<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <p>1 Chinese tour<img src="https://em-content.zobj.net/source/twitter/408/flag-china_1f1e8-1f1f3.png" alt="Chinese flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>13:00</h2></div>
-                    <div class="bottom">
-                        <p>3 Dutch tours<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>3 English tours<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <p>2 Chinese tours<img src="https://em-content.zobj.net/source/twitter/408/flag-china_1f1e8-1f1f3.png" alt="Chinese flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="top"><h2>16:00</h2></div>
-                    <div class="bottom">
-                        <p>1 Dutch tour<img src="https://em-content.zobj.net/source/twitter/408/flag-netherlands_1f1f3-1f1f1.png" alt="Dutch flag" width="20" height="15"></p>
-                        <p>1 English tour<img src="https://em-content.zobj.net/source/twitter/408/flag-united-kingdom_1f1ec-1f1e7.png" alt="UK flag" width="20" height="15"></p>
-                        <div class="ticketButton">Buy tickets</div>
-                    </div>
-                </div>
+                <?php 
+                $tourTime = "10:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 1;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                <?php 
+                $tourTime = "13:00"; $dutchTours = 3; $englishTours = 3; $chineseTours = 2;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
+                <?php 
+                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
+                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
             </div>
         </div>
     </div>
