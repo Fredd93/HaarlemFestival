@@ -23,4 +23,18 @@ Route::add('/api/yummyEvents/types', function () {
     $controller->getFoodTypes();
 }, ['GET']);
 
+Route::add('/api/yummyEvents/create', function () use ($controller) {
+    $controller->createYummyEvent();
+}, ['POST']);
+
+// ✅ Update an existing Yummy Event
+Route::add('/api/yummyEvents/update/([0-9]+)', function ($id) use ($controller) {
+    $controller->updateYummyEvent(intval($id));
+}, ['PUT']);
+
+// ✅ Delete a Yummy Event
+Route::add('/api/yummyEvents/delete/([0-9]+)', function ($id) use ($controller) {
+    $controller->deleteYummyEvent(intval($id));
+}, ['DELETE']);
+
 ?>

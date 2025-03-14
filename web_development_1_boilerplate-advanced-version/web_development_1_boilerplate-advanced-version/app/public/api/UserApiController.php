@@ -14,20 +14,15 @@ class UserApiController {
      * Get the authenticated user's information.
      */
     public function getUserById() {
-        $_SESSION['user_id'] = 1;
-        if (isset($_SESSION['user_id'])) {
-            try {
-                $user = $this->userModel->get($_SESSION['user_id']);
-                if ($user) {
-                    ResponseHelper::sendJson($user);
-                } else {
-                    ResponseHelper::sendError('User not found', 404);
-                }
-            } catch (Exception $e) {
-                ResponseHelper::sendError('Failed to fetch user', 500);
+        try {
+            $user = $this->userModel->get($_SESSION['user_id']);
+            if ($user) {
+                ResponseHelper::sendJson($user);
+            } else {
+                ResponseHelper::sendError('User not found', 404);
             }
-        } else {
-            ResponseHelper::sendError('Unauthorized', 401);
+        } catch (Exception $e) {
+            ResponseHelper::sendError('Failed to fetch user', 500);
         }
     }
 
@@ -74,10 +69,7 @@ class UserApiController {
      * Update user details (excluding password).
      */
     public function updateUser() {
-        if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendJson(['error' => 'Unauthorized'], 401);
-            return;
-        }
+        
     
         try {
             $data = json_decode(file_get_contents("php://input"), true);
