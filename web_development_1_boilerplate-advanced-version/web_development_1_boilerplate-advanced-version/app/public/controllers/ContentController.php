@@ -25,7 +25,7 @@ class ContentController {
 
     /**
      * Fetch the allowed content types for a specific page
-     * from the database (e.g., 'hero', 'slideshow-image', etc.).
+     * from the database.
      */
     public function getContentTypesForPage(string $page): array {
         return $this->contentModel->getContentTypesByPage($page);
@@ -33,12 +33,6 @@ class ContentController {
 
     /**
      * Handle the updating of content via a normal POST request.
-     * This method:
-     * 1. Validates input.
-     * 2. Validates the content_type against what's allowed for this page.
-     * 3. Handles image upload (if provided).
-     * 4. Updates the content in the database.
-     * 5. Redirects back to the CMS content list.
      */
     public function updateContent(array $post, array $files): void {
         // Extract POST data
@@ -66,7 +60,7 @@ class ContentController {
         }
 
         // 3. Handle image upload (if a new file is uploaded)
-        $newImageUrl = $this->handleImageUpload($files, $currentImageUrl);
+        $newImageUrl = $this->handleImageUpload($files, $page, $currentImageUrl);
 
         // 4. Perform the update in the model
         $success = $this->contentModel->updateContent(
@@ -87,16 +81,19 @@ class ContentController {
     }
 
     /**
-     * Handle local image upload and return the new file path (or existing path if no new file).
+     * Handle local image upload.
+     * Stores the file inside `/assets/images/{page}/` and deletes the old image.
      */
-    private function handleImageUpload(array $files, ?string $existingPath): ?string {
-        // If no file was uploaded or there's an error, keep existing path
+    private function handleImageUpload(array $files, string $page, ?string $existingPath): ?string {
         if (!isset($files['image_upload']) || $files['image_upload']['error'] !== UPLOAD_ERR_OK) {
-            return $existingPath;
+            return $existingPath; // No new image uploaded, return existing path
         }
 
-        // Ensure upload directory exists (e.g., /public/images/)
-        $uploadDir = __DIR__ . "/../../public/assets/images/";
+        // Determine the base folder for images
+        $basePage = explode("/", $page)[0]; // Extract the parent page name
+        $uploadDir = __DIR__ . "/../../public/assets/images/{$basePage}/";
+
+        // Ensure the directory exists
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -105,13 +102,19 @@ class ContentController {
         $filename = time() . "_" . basename($files['image_upload']['name']);
         $targetPath = $uploadDir . $filename;
 
-        // Move uploaded file to target
+        // Move the uploaded file
         if (move_uploaded_file($files['image_upload']['tmp_name'], $targetPath)) {
-            // Return the relative path to store in DB
-            return "/assets/images/" . $filename;
+            // Delete the old image if it exists
+            if ($existingPath && file_exists(__DIR__ . "/../../public" . $existingPath)) {
+                unlink(__DIR__ . "/../../public" . $existingPath);
+            }
+
+            // Return the relative path to store in the DB
+            return "/assets/images/{$basePage}/" . $filename;
         }
 
         // If move fails, fallback to existing path
         return $existingPath;
     }
 }
+?>

@@ -11,24 +11,22 @@ if (isset($_GET['id'])) {
     $content = $contentController->getContentById($id);
 }
 
-// If not found, show error
+// If content is not found, show error and exit
 if (!$content) {
     echo "<p class='alert alert-danger'>Content not found.</p>";
     exit;
 }
 
-// 2. Fetch content types for this specific page from DB
+// 2. Fetch content types for this specific page from the database
 $contentTypes = $contentController->getContentTypesForPage($content->page);
 ?>
 
 <div class="container mt-5">
     <h2>Edit Content</h2>
 
-    <!-- Submitting to a normal route that calls 
-         ContentController->updateContent($_POST, $_FILES)
-    -->
+    <!-- Form submits to ContentController->updateContent($_POST, $_FILES) -->
     <form action="/cms/content/update" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="content_id" value="<?= $content->content_id ?>">
+        <input type="hidden" name="content_id" value="<?= htmlspecialchars($content->content_id, ENT_QUOTES, 'UTF-8') ?>">
 
         <div class="mb-3">
             <label for="content_page" class="form-label">Page</label>
@@ -38,12 +36,11 @@ $contentTypes = $contentController->getContentTypesForPage($content->page);
 
         <div class="mb-3">
             <label for="content_title" class="form-label">Title</label>
-            <!-- Provide a fallback empty string if title is null -->
             <input type="text" class="form-control" name="content_title" id="content_title" 
                    value="<?= htmlspecialchars($content->title ?? '', ENT_QUOTES, 'UTF-8') ?>" required>
         </div>
 
-        <!-- 3. Dynamic Content Types from DB -->
+        <!-- 3. Content Types dynamically fetched from the database -->
         <div class="mb-3">
             <label for="content_type" class="form-label">Type</label>
             <select class="form-control" name="content_type" id="content_type">
@@ -68,7 +65,6 @@ $contentTypes = $contentController->getContentTypesForPage($content->page);
 
         <div class="mb-3">
             <label for="content_description" class="form-label">Description</label>
-            <!-- Provide a fallback empty string if description is null -->
             <textarea class="form-control tinymce-editor" name="content_description" id="content_description">
                 <?= htmlspecialchars($content->description ?? '', ENT_QUOTES, 'UTF-8') ?>
             </textarea>
@@ -80,8 +76,8 @@ $contentTypes = $contentController->getContentTypesForPage($content->page);
 
         <div class="mb-3">
             <label class="form-label">Current Image</label>
-            <?php if ($content->image_url): ?>
-                <img src="<?= htmlspecialchars($content->image_url, ENT_QUOTES, 'UTF-8') ?>" 
+            <?php if (!empty($content->image_url)): ?>
+                <img width="50%" src="<?= htmlspecialchars($content->image_url, ENT_QUOTES, 'UTF-8') ?>" 
                      class="img-thumbnail d-block mb-2" width="150">
             <?php else: ?>
                 <p>No image available</p>
