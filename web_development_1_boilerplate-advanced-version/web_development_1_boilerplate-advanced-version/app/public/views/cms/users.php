@@ -9,7 +9,6 @@ require_once(__DIR__ . "/header.php");
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
-                <th>ID</th>
                 <th>Username</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -33,7 +32,7 @@ require_once(__DIR__ . "/header.php");
             </div>
             <div class="modal-body">
                 <form id="userForm">
-                    <input type="hidden" id="user_id">
+                    <input type="hidden" id="user_id"> <!-- Hidden User ID -->
 
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>

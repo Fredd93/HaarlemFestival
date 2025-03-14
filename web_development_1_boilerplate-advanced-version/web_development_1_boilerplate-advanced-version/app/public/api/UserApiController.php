@@ -69,29 +69,38 @@ class UserApiController {
      * Update user details (excluding password).
      */
     public function updateUser() {
-        
-    
         try {
             $data = json_decode(file_get_contents("php://input"), true);
     
-            if (!isset($data['username']) && !isset($data['email'])) {
-                ResponseHelper::sendJson(['error' => 'Invalid input'], 400);
+            // Validate user_id exists
+            $user_id = isset($data['user_id']) ? (int) $data['user_id'] : null;
+            if ($user_id === null || $user_id === 0) {
+                ResponseHelper::sendError("User ID is required for updating", 400);
                 return;
             }
     
-            $userId = $_SESSION['user_id'];
+            $username = $data['username'] ?? null;
+            $email = $data['email'] ?? null;
+            $role = $data['role'] ?? null;
+    
+            if (!$username || !$email || !$role) {
+                ResponseHelper::sendError("Missing required fields", 400);
+                return;
+            }
+    
             $userModel = new UserModel();
-            $success = $userModel->update($userId, $data['username'] ?? "", $data['email'] ?? "", "user");
+            $success = $userModel->update($user_id, $username, $email, $role);
     
             if ($success) {
-                ResponseHelper::sendJson(['message' => 'User updated successfully']);
+                ResponseHelper::sendJson(["message" => "User updated successfully"]);
             } else {
-                ResponseHelper::sendJson(['error' => 'Failed to update user'], 500);
+                ResponseHelper::sendError("Failed to update user", 500);
             }
         } catch (Exception $e) {
-            ResponseHelper::sendJson(['error' => 'Internal Server Error'], 500);
+            ResponseHelper::sendError("Internal Server Error: " . $e->getMessage(), 500);
         }
     }
+    
     
     /**
      * Update user password.
