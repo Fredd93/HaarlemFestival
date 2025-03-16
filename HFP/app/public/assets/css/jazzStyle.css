@@ -1,0 +1,422 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap');
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navbar, body, hero, slideshow, etc. (unchanged) ... */
+body {
+    background: linear-gradient(to bottom, #954E4C, #00275D);
+    color: white;
+    font-family: 'Lato', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+.hero-section {
+    width: 100%;
+    height: 596px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-banner {
+    position: relative;
+    width: 100%;
+    height: 596px;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-banner::before {
+    content: "";
+    position: absolute;
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+/* Slideshow container and slides */
+.slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.slide {
+    display: none;
+    position: absolute;
+    width: 100%; 
+    height: 100%;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slideshow-container .slide:first-child {
+    display: block;
+}
+
+/* Text overlay in hero slides */
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    text-align: left;
+    color: white;
+    z-index: 3;
+}
+
+.hero-content h1 {
+    font-size: 111px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 23px;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.ticket-price {
+    font-size: 23px;
+    font-weight: 700;
+}
+
+/* CTA Button */
+.hero-btn {
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px 20px;
+    background-color: #22668D;
+    color: #FFFADD;
+    text-decoration: none;
+    border-radius: 10px;
+    display: inline-block;
+    transition: background 0.3s;
+}
+
+.hero-btn:hover {
+    background-color: #FFFADD;
+    color: #22668D;
+}
+
+/* Dot Indicators */
+.dot-container {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 4;
+}
+
+.dot {
+    width: 12px; 
+    height: 12px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.dot.active {
+    background-color: black;
+}
+
+/* Jazz Events Section */
+.jazz-events-section {
+    margin-top: 60px; 
+    font-size: 1.7rem; 
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Day Header (e.g., "Thursday, August 7") */
+.day-header {
+    margin-top: 60px;
+    text-align: left;
+    margin-left: 20px;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    width: 100%;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    font-family: 'Lato', sans-serif;
+}
+
+/* day-wrapper: container for each day's carousel */
+.day-wrapper {
+    margin-bottom: 40px;
+}
+
+/* 
+   .carousel-wrapper is position: relative so that the arrow buttons 
+   remain pinned in place (don't scroll horizontally).
+*/
+.carousel-wrapper {
+    position: relative;
+    min-height: 300px; /* ensures enough vertical space for arrows */
+    display: flex;  
+    align-items: center; 
+    justify-content: center;
+    padding: 0 40px;
+}
+
+/*
+   The actual scrollable container for the event cards
+*/
+.event-carousel {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;      /* Horizontal scrolling occurs here */
+    scrollbar-width: none; /* Firefox hide scrollbar */
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    flex-shrink: 0;
+    width: 100%; 
+    padding: 10px 0; 
+    -ms-overflow-style: none; /* IE/Edge hide scrollbar */
+}
+
+.event-carousel::-webkit-scrollbar {
+    /* For Chrome, Safari, and Opera */
+    display: none;
+}
+
+/* Navigation arrows pinned on .carousel-wrapper */
+.prev-event, .next-event {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 30px;
+    padding: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    z-index: 3;
+    transition: background 0.3s ease, transform 0.1s ease;
+}
+
+.prev-event {
+    left: 10px;
+}
+
+.next-event {
+    right: 30px;
+}
+
+/* Hover effect */
+.prev-event:hover, .next-event:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Click (active) animation: slight scale */
+.prev-event:active, .next-event:active {
+    transform: translateY(-50%) scale(0.9);
+}
+
+/* Event card styling */
+.event-card {
+    width: 300px;
+    margin: 10px 0; 
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    flex-shrink: 0; 
+}
+
+.event-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+/* Card text */
+.event-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+    color: #000;
+    padding: 0 10px;
+}
+
+.event-card p {
+    font-size: 14px;
+    margin: 5px 0;
+    color: #000;
+    padding: 0 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 10px;
+}
+
+/* Buttons in card */
+.details-btn, .save-btn {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    padding: 5px 12px;
+    background-color: #22668D;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+    width: auto;
+    max-width: fit-content;
+}
+
+.details-btn:hover, .save-btn:hover {
+    background-color: #FFFADD;
+    color: #22668D;
+}
+
+/***** Ticket Section *****/
+.ticket-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;   
+    text-align: center;
+    color: #FFF;      
+    padding: 60px 20px; 
+}
+
+.ticket-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.ticket-section p {
+    font-size: 1.2rem;
+    margin: 0 auto 40px; 
+    max-width: 800px;   
+    line-height: 1.5;
+}
+
+/* Container holding the three panels */
+.ticket-panels {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* 
+   Each panel: tall column with a background image 
+   Now using `background: url(...) center center / cover no-repeat`
+   so the image fills the entire panel.
+*/
+.ticket-panel {
+    width: 300px;    
+    height: 550px;   
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px; 
+}
+
+/* Update these to use cover for full fill */
+.ticket-panel.single-event {
+    background: url("../images/jazz/Tickets/jazzSingleTicket.png") center center / cover no-repeat;
+}
+.ticket-panel.all-day {
+    background: url("../../assets/images/jazz/Tickets/jazzFullDayTicket.png") center center / cover no-repeat;
+}
+.ticket-panel.full-festival {
+    background: url("../../assets/images/jazz/Tickets/jazzFullFestivalTicket.png") center center / cover no-repeat;
+}
+
+/* The semi-transparent overlay box that holds text & button */
+.panel-content {
+    background: rgba(0, 0, 0, 0.5); 
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.panel-content h3 {
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.panel-content p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+/* Button styling */
+.panel-btn {
+    background-color: #22668D;
+    color: #FFFADD;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.panel-btn:hover {
+    background-color: #FFFADD;
+    color: #22668D;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .event-card {
+        width: 100%;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ticket-panel {
+        width: 100%;
+        height: 400px; 
+    }
+}
