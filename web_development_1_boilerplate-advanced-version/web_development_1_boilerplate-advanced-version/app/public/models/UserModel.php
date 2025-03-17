@@ -60,7 +60,7 @@ class UserModel extends BaseModel
     public function create(string $username, string $email, string $password, string $role): ?UserDTO
     {
         $sql = "INSERT INTO [User] (username, email, password, role, registration_date) 
-                VALUES (:username, :email, :password, :role, NOW())";
+                VALUES (:username, :email, :password, :role, CURRENT_TIMESTAMP)";
 
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 

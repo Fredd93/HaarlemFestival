@@ -10,23 +10,36 @@ class LoginApiCOntroller{
 
     }
 
-    public function loginUser($username, $password){
+    public function registerUser($username, $email, $password){
         try{
-            if($username === null || $password === null){
-                ResponseHelper::sendError("Username or Password missing", 400);
+            if($username === null || $password === null || $email === null){
+                ResponseHelper::sendError("Username, Email or Password missing", 400);
             }
-            $this->loginModel->loginUser($username, $password);
+            $this->loginModel->registerUser($username, $email, $password);
+        }catch(Exception $e){
+            ResponseHelper::sendError("Database connection error", 500);
+        }
+    }
+
+    public function loginUser($username, $email, $password){
+        try{
+            if($username === null || $password === null || $email === null){
+                ResponseHelper::sendError("Username, Email or Password missing", 400);
+            }
+            $this->loginModel->loginUser($username, $email, $password);
         }catch(Exception $e){
             ResponseHelper::sendError("Could not retrieve user", 500);
         }
     }
 
-    public function addUser(){
-        ResponseHelper::sendError("Not yet implemented", 404);
+    public function logoutUser(){
+        try{
+            $this->loginModel->logoutUser();
+        }catch(Exception $e){
+            ResponseHelper::sendError("General error", 400);
+        }
     }
-    public function deleteUser(){
-        ResponseHelper::sendError("Not yet implemented", 404);
-    }
+
     public function getUser($username, $password){
         try{
             if($username === null || $password === null){
