@@ -14,10 +14,6 @@ Class DanceModel extends BaseModel
         $sql = "SELECT DISTINCT 
         A.artist_id, 
         A.name, 
-        A.careerHighlights,
-        A.Tracks,
-        A.Albums,
-        A.LegacyAndInfluence,
         CAST(A.description AS VARCHAR(MAX)) AS description
         FROM Artists A
         JOIN Dance_Event_Artists DEA ON A.artist_id = DEA.artist_id
@@ -25,7 +21,7 @@ Class DanceModel extends BaseModel
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        
         return array_map(fn($row) => $this->mapToDTO($row), $results);
     }
 
@@ -34,13 +30,9 @@ Class DanceModel extends BaseModel
             (int) $row["artist_id"],
             $row["name"], 
             $row["description"] ?? "", 
-            $row["careerHighlights"] ?? "", 
-            $row["tracks"] ?? "", 
-            $row["albums"] ?? "", 
-            $row["legacyAndInfluence"] ?? ""
         );
     }
-    
+
     private function mapToEventsDTO(array $row): DanceEventDTO{
         return new DanceEventDTO(
             $row["artists"],
