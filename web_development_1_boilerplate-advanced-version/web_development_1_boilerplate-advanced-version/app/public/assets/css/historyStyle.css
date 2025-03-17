@@ -155,9 +155,6 @@ body {
     height:auto;
     padding: 5em calc(calc(100vw - 70vw)/2);
 }
-.locationContainer {
-    /* something probably */
-}
 .locationCard {
     height:12em;
     width:80vw;

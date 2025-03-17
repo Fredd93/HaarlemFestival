@@ -28,6 +28,7 @@
     </div>
     <h2>Schedule</h2>
     <div class="schedule-area">
+        <?php require(__DIR__ . "/../partials/historySchedulePluralHelper.php"); ?>
         <div>
             <h2>Thursday</h2>
             <div class="schedule-item-collection">
