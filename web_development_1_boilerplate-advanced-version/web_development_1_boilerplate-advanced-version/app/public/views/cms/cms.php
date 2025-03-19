@@ -11,7 +11,7 @@ require_once(__DIR__ . "/header.php");
             <div class="card">
                 <div class="card-body text-center">
                     <h3>Manage Events</h3>
-                    <a href="events" class="btn btn-primary">Go to Events</a>
+                    <a href="cms/events" class="btn btn-primary">Go to Events</a>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@ require_once(__DIR__ . "/header.php");
             <div class="card">
                 <div class="card-body text-center">
                     <h3>Manage Users</h3>
-                    <a href="users" class="btn btn-primary">Go to Users</a>
+                    <a href="cms/users" class="btn btn-primary">Go to Users</a>
                 </div>
             </div>
         </div>
