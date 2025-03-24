@@ -12,7 +12,9 @@ else {
     <?php    
 }
 ?>
-    <img src=<?php echo $locationImage ?> width="200" height="150" alt="Location Image">
+    <a href=<?php echo "history/" . str_replace(" ", "_", $locationName) ?>>
+        <img src=<?php echo $locationImage ?> width="200" height="150" alt="Location Image">
+    </a>
     <a class="locationButton" href=<?php echo "history/" . str_replace(" ", "_", $locationName) ?>>Learn more</a>
     <p class="locationCardText"><strong><?php echo $locationName ?></strong> <br><?php echo $locationDescription ?></p>
 </div>
