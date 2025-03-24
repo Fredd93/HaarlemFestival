@@ -1,8 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-    fetchSchedule();
-});
-
-function fetchSchedule() {
+function FetchSchedule() {
     fetch('/api/history/schedule')
         .then(response => {
             if (!response.ok) {
@@ -17,20 +13,6 @@ function fetchSchedule() {
         .catch(error => {
             console.error("Error fetching schedule:", error);
         });
-}
-class HistoryScheduleCard {
-    dutchTours = 0;
-    englishTours = 0;
-    chineseTours = 0;
-    constructor(date) {
-        this.date = date;
-    }
-}
-class HistoryScheduleDay {
-    constructor(day) {
-        this.day = day;
-    }
-    cards = [];
 }
 function DisplaySchedule(schedule) {
     const container = document.getElementById("schedule-cards-container");
@@ -70,7 +52,6 @@ function DisplaySchedule(schedule) {
             combinedSchedule.push(newCard);
         }
     });
-    console.log(combinedSchedule);
     fullSchedule = [];
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     combinedSchedule.forEach(scheduleItem => {
@@ -106,7 +87,6 @@ function DisplaySchedule(schedule) {
     })
 }
 function CreateScheduleCard(scheduleItem) {
-    console.log(scheduleItem);
     time = scheduleItem.date.substring((scheduleItem.date.indexOf(":")-2), (scheduleItem.date.indexOf(":")+3));
     dutchTours = scheduleItem.dutchTours;
     englishTours = scheduleItem.englishTours;
@@ -116,34 +96,72 @@ function CreateScheduleCard(scheduleItem) {
     `<div class="schedule-item">
         <div class="top"><h2>${time}</h2></div>
             <div class="bottom" id="bottom"> 
-            ${checkTours(dutchTours, "dutch")}
-            ${checkTours(englishTours, "english")}
-            ${checkTours(chineseTours, "chinese")}
+            ${CheckTours(dutchTours, "dutch")}
+            ${CheckTours(englishTours, "english")}
+            ${CheckTours(chineseTours, "chinese")}
             <div class="ticketButton">Buy tickets</div>
         </div>
     </div>`;
     return card;
 }
-function checkPlural(tourCount) {
+function CheckPlural(tourCount) {
     if (tourCount > 1) {
         return "s";
     }
     else return "";
 }
-function checkTours(tourCount, language) {
+function CheckTours(tourCount, language) {
     if (tourCount > 0){ 
         if (language == "dutch") {
-            return `<p>${tourCount} Dutch tour${checkPlural(tourCount)} <img src="assets/images/history/dutchFlag.png" alt="Dutch flag" width="20" height="15"></p>`;
+            return `<p>${tourCount} Dutch tour${CheckPlural(tourCount)} <img src="assets/images/history/dutchFlag.png" alt="Dutch flag" width="20" height="15"></p>`;
         }
         else if (language == "english") {
-            return `<p>${tourCount} English tour${checkPlural(tourCount)} <img src="assets/images/history/englishFlag.png" alt="English flag" width="20" height="15"></p>`;
+            return `<p>${tourCount} English tour${CheckPlural(tourCount)} <img src="assets/images/history/englishFlag.png" alt="English flag" width="20" height="15"></p>`;
         }
         else if (language == "chinese") {
-            return `<p>${tourCount} Chinese tour${checkPlural(tourCount)} <img src="assets/images/history/chineseFlag.png" alt="Chinese flag" width="20" height="15"></p>`;
+            return `<p>${tourCount} Chinese tour${CheckPlural(tourCount)} <img src="assets/images/history/chineseFlag.png" alt="Chinese flag" width="20" height="15"></p>`;
         }
         else {
             return "";
         }
     }
     else return "";
+}
+function FetchLocations() {
+    fetch('/api/history/locations')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch locations');
+            }
+            return response.json();
+        })
+        .then(locations => {
+            console.log("Locations fetched:", locations);
+            DisplayLocations(locations);
+        })
+        .catch(error => {
+            console.error("Error fetching locations:", error);
+        });
+}
+function DisplayLocations(locations) {
+    const container = document.getElementById("locationContainer");
+    counter = 0;
+    locations.forEach(location => {
+        locationCard = document.createElement("div");
+        locationCard.classList.add("locationCard");
+        if (counter % 2 == 0) {
+            locationCard.classList.add("left");
+        }
+        else {
+            locationCard.classList.add("right");
+        }
+        counter++;
+        linkResult = location.name.replaceAll(" ", "_");
+        locationCard.innerHTML = `<a href="history/${linkResult}">
+        <img src=assets/images/history/${location.image_name} width="200" height="150" alt="${location.name} Image">
+        </a>
+        <a class="locationButton" href="history/${linkResult}">Learn more</a>
+        <p class="locationCardText"><strong>${location.name}</strong> <br>${location.description}</p>`;
+        container.appendChild(locationCard);
+    })
 }

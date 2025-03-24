@@ -10,13 +10,21 @@ class HistoryAPIController{
         $this->historyModel = new HistoryModel();
     }
 
-    public function getAllById(int $id)
+    public function getLocationById(int $id)
     {
-        $schedule = $this->historyModel->getAllById($id);
+        $schedule = $this->historyModel->getLocationById($id);
         if ($schedule) {
             ResponseHelper::sendJson($schedule);
         } else {
-            ResponseHelper::sendError('Schedule not found', 404);
+            ResponseHelper::sendError('Location not found', 404);
+        }
+    }
+    public function getAllLocations() {
+        $locations = $this->historyModel->getAllLocations();
+        if ($locations) {
+            ResponseHelper::sendJson($locations);
+        } else {
+            ResponseHelper::sendError('Locations not found', 404);
         }
     }
 
@@ -26,7 +34,7 @@ class HistoryAPIController{
         if ($schedule) {
             ResponseHelper::sendJson($schedule);
         } else {
-            ResponseHelper::sendError('schedule not found', 404);
+            ResponseHelper::sendError('Schedule not found', 404);
         }
     }
 }

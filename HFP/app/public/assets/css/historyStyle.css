@@ -180,7 +180,8 @@ body {
     filter: grayscale(0%); -webkit-filter: grayscale(0%);
 }
 .locationCard.left .locationCardText {
-    left:37%;
+    left: calc(7% + 15em);
+    max-width: calc(95% - 15em - 5%);
 }
 .locationCard.right .locationCardText {
     left:5%;
@@ -191,6 +192,6 @@ body {
     text-wrap: wrap;
 }
 .locationCardText {
-    max-width: 500px;
+    max-width: calc(95% - 15em - 7%);
     text-wrap: wrap;
 }
