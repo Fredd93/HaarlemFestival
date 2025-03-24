@@ -28,5 +28,8 @@
     Route::add('/jazz', function () {
         require(__DIR__ . "/../views/pages/jazz.php");
     });
+    Route::add('/payment', function () {
+        require(__DIR__ . "/../views/pages/paymentPage.php");
+    });
 
 ?>
