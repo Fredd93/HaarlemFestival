@@ -168,6 +168,7 @@ $activePage = 'login';
             
             if (response.ok) {
                     alert("Login successful!");
+                    window.location.href = "/"; // Redirect to homepage
             } else {
                 const data = await response.json();
                 alert("Error: " + data.error);
