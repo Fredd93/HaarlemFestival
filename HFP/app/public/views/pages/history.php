@@ -27,107 +27,17 @@
         </div>
     </div>
     <h2>Schedule</h2>
-    <div class="schedule-area">
-        <?php require(__DIR__ . "/../partials/historySchedulePluralHelper.php"); ?>
-        <div>
-            <h2>Thursday</h2>
-            <div class="schedule-item-collection">
-                <?php 
-                $tourTime = "10:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "13:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-            </div>
-        </div>
-        <div>
-            <h2>Friday</h2>
-            <div class="schedule-item-collection">
-            <?php 
-                $tourTime = "10:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "13:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 1;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-            </div>
-        </div>
-        <div>
-            <h2>Saturday</h2>
-            <div class="schedule-item-collection">
-            <?php 
-                $tourTime = "10:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "13:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 1;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                                <?php 
-                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 1;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-            </div>
-        </div>
-        <div>
-            <h2>Sunday</h2>
-            <div class="schedule-item-collection">
-                <?php 
-                $tourTime = "10:00"; $dutchTours = 2; $englishTours = 2; $chineseTours = 1;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                <?php 
-                $tourTime = "13:00"; $dutchTours = 3; $englishTours = 3; $chineseTours = 2;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-                <?php 
-                $tourTime = "16:00"; $dutchTours = 1; $englishTours = 1; $chineseTours = 0;
-                require(__DIR__ . "/../partials/historyScheduleCard.php"); ?>
-            </div>
-        </div>
+    <div class="schedule-area" id="schedule-cards-container">
     </div>
     <img class="tourMap" src="assets/images/history/tourMap.png" alt="Tour map" width="941" height="554">
     <h2>The locations that are visited</h2>
     <div class="locationContainer">
-        <?php $direction = "left"; $locationName = "Church of St.Bavo"; $locationImage = "bavoKerkImage.png"; 
-        $locationDescription = "The church of St.Bavo is a major landmark in the middle of the old center of Haarlem build around 1370-1520 after the previous church burned down."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "right"; $locationName = "Grote markt"; $locationImage = "groteMarktImage.jpg"; 
-        $locationDescription = "The grote markt is in the old center of Haarlem next to the church of St.Bavo. It is one of the busiest places of Haarlem."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "left"; $locationName = "De Hallen"; $locationImage = "hallenImage.jpg"; 
-        $locationDescription = "A museum in Haarlem dedicated to the famous painter Frans Hals who lived from 1582 to 1666."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "right"; $locationName = "Proveniershof"; $locationImage = "proveniersHofImage.jpg"; 
-        $locationDescription = "The Proverniershof is a court on the busiest shopping street of Haarlem that is unique among its kind."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "left"; $locationName = "Jopenkerk"; $locationImage = "jopenKerkImage.jpg"; 
-        $locationDescription = "The Jopenkerk used to be a church but has since been transformed into a brewery with both a Café and restaurant by the Jopen brewery. \n\nBreak Location"; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "right"; $locationName = "Waalse Kerk"; $locationImage = "waalseKerkImage.jpg"; 
-        $locationDescription = "The Waalse church dates back to 1348, making it the oldest church that Haarlem has."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "left"; $locationName = "Molen de Adriaan"; $locationImage = "adriaanMolenImage.jpg"; 
-        $locationDescription = "Molen de Adriaan is a windmill that has been used to make a variety of different of products over the years, such as trass, tobacco and corn, but is now a museum."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "right"; $locationName = "Amsterdamse Poort"; $locationImage = "amsterdamsePoortImage.jpg"; 
-        $locationDescription = "The Amsterdamse poort is one of Haarlem’s city gates from the 14th century. The gate was build on the path from Haarlem to Amsterdam."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-
-        <?php $direction = "left"; $locationName = "Hof van Bakenes"; $locationImage = "bakenesHofImage.jpg"; 
-        $locationDescription = "The hof van Bakenes is a court that was meant exclusively for women that were 60 years or older and could house 20 women. Later, one of the buildings got changed into something else, leaving room for only 12."; 
-        require(__DIR__ . "/../partials/historyLocation.php"); ?>
-        
+        <?php
+        require(__DIR__ . "/../partials/combinedHistoryLocations.php"); ?>
     </div>
     <?php
         require(__DIR__ . "/../partials/footer.php");
     ?>
 </body>
+<script src="assets/js/history.js"></script>
 </html>
