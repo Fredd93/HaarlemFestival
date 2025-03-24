@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../../api/LoginAPIController.php');
+require_once(__DIR__ . '/../../api/AuthController.php');
 
 
 //Because passwords and such have to be kept secure i'm not using query parameters. 
@@ -12,7 +12,7 @@ Route::add('/api/login/get', function () {
     $username = $_POST['username'] ?? null;
     $password = $_POST['password'] ?? null;
     $role = $_SESSION['user_role'];
-    $Controller = new LoginAPIController();
+    $Controller = new AuthController();
     //Information is only returned if the password and username is given OR the role is admins
     if($role === 'admin'){
         $Controller->getUserByUsername($username);
@@ -25,7 +25,7 @@ Route::add('/api/login/register', function () {
     $username = $_POST['username'] ?? null;
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
-    $Controller = new LoginAPIController();
+    $Controller = new AuthController();
     $Controller->registerUser($username, $email, $password);
 }, ['POST']);
 
@@ -33,11 +33,11 @@ Route::add('/api/login/login', function () {
     $username = $_POST['username'] ?? null;
     $email = $_POST['email'] ?? null;
     $password = $_POST['password'] ?? null;
-    $Controller = new LoginAPIController();
+    $Controller = new AuthController();
     $Controller->loginUser($username, $email, $password);
 }, ['POST']);
 
 Route::add('/api/login/logout', function () {
-    $Controller = new LoginAPIController();
+    $Controller = new AuthController();
     $Controller->logoutUser();
 }, ['POST']); //Keeping it as POST so its the same as the rest although its not really needed in this case.

@@ -1,12 +1,12 @@
 <?php
-require_once(__DIR__ . '/../models/LoginModel.php');
+require_once(__DIR__ . '/../models/UserModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
 
-class LoginApiCOntroller{
-    private $loginModel;
+class AuthController{
+    private $UserModel;
     public function __construct()
     {
-        $this->loginModel = new LoginModel();
+        $this->UserModel = new UserModel();
 
     }
 
@@ -15,7 +15,7 @@ class LoginApiCOntroller{
             if($username === null || $password === null || $email === null){
                 ResponseHelper::sendError("Username, Email or Password missing", 400);
             }
-            $this->loginModel->registerUser($username, $email, $password);
+            $this->UserModel->registerUser($username, $email, $password);
         }catch(Exception $e){
             ResponseHelper::sendError("Database connection error", 500);
         }
@@ -26,7 +26,7 @@ class LoginApiCOntroller{
             if($username === null || $password === null || $email === null){
                 ResponseHelper::sendError("Username, Email or Password missing", 400);
             }
-            $this->loginModel->loginUser($username, $email, $password);
+            $this->UserModel->loginUser($username, $email, $password);
         }catch(Exception $e){
             ResponseHelper::sendError("Could not retrieve user", 500);
         }
@@ -34,7 +34,7 @@ class LoginApiCOntroller{
 
     public function logoutUser(){
         try{
-            $this->loginModel->logoutUser();
+            $this->UserModel->logoutUser();
         }catch(Exception $e){
             ResponseHelper::sendError("General error", 400);
         }
@@ -45,7 +45,7 @@ class LoginApiCOntroller{
             if($username === null || $password === null){
                 ResponseHelper::sendError("Username or Password missing", 400);
             }
-            $user = $this->loginModel->getUser($username, $password);
+            $user = $this->UserModel->getUser($username, $password);
             if($user){
                 ResponseHelper::sendJson($user);
             }
@@ -61,7 +61,7 @@ class LoginApiCOntroller{
             if($username === null){
                 ResponseHelper::sendError("Username missing", 400);
             }
-            $user = $this->loginModel->getUserByUsername($username);
+            $user = $this->UserModel->getUserByUsername($username);
             if($user){
                 ResponseHelper::sendJson($user);
             }
