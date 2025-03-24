@@ -63,7 +63,6 @@ class YummyEventModel extends BaseModel {
     
     
 
-    // Map a database row to YummyEventDTO
     private function mapToDTO(array $row): YummyEventDTO {
         return new YummyEventDTO(
             $row["event_detail_id"],
@@ -77,8 +76,10 @@ class YummyEventModel extends BaseModel {
             (int) $row["seats"],
             (int) $row["stars"],
             $row["img"] ?? null,
-            $row["description"] ?? null
+            $row["description"] ?? null,
+            // Pass child_price if present, otherwise default to 0.0
+            isset($row["child_price"]) ? (float)$row["child_price"] : 0.0
         );
-    }
+    }    
 }
 ?>

@@ -34,7 +34,7 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
             </ul>
         </li>
 
-        <li><a href="tickets.php" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
+        <li><a href="ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
         <li><a href="program.php" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
         <li>
         <div class="nav-right">
