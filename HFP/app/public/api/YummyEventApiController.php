@@ -48,5 +48,84 @@ class YummyEventApiController {
             ResponseHelper::sendError("Failed to retrieve Yummy events by type", 500);
         }
     }
+
+    public function createYummyEvent() {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['name'], $data['sessions'], $data['session_duration'], $data['start_time'], $data['end_time'], $data['type'], $data['price'], $data['seats'])) {
+                ResponseHelper::sendError("Invalid input", 400);
+                return;
+            }
+
+            $event = $this->yummyEventModel->createYummyEvent(
+                $data['name'],
+                (int) $data['sessions'],
+                (float) $data['session_duration'],
+                $data['start_time'],
+                $data['end_time'],
+                $data['type'],
+                (float) $data['price'],
+                (int) $data['seats'],
+                $data['img'] ?? null,
+                $data['description'] ?? null,
+                (int) ($data['stars'] ?? 0)
+            );
+
+            if ($event) {
+                ResponseHelper::sendJson($event, 201);
+            } else {
+                ResponseHelper::sendError("Failed to create event", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+
+    public function updateYummyEvent($id) {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['name'], $data['sessions'], $data['session_duration'], $data['start_time'], $data['end_time'], $data['type'], $data['price'], $data['seats'])) {
+                ResponseHelper::sendError("Invalid input", 400);
+                return;
+            }
+
+            $success = $this->yummyEventModel->updateYummyEvent(
+                (int) $id,
+                $data['name'],
+                (int) $data['sessions'],
+                (float) $data['session_duration'],
+                $data['start_time'],
+                $data['end_time'],
+                $data['type'],
+                (float) $data['price'],
+                (int) $data['seats'],
+                $data['img'] ?? null,
+                $data['description'] ?? null,
+                (int) ($data['stars'] ?? 0)
+            );
+
+            if ($success) {
+                ResponseHelper::sendJson(["message" => "Event updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update event", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+
+    public function deleteYummyEvent($id) {
+        try {
+            if ($this->yummyEventModel->deleteYummyEvent((int) $id)) {
+                ResponseHelper::sendJson(["message" => "Event deleted successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to delete event", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
 }
 ?>

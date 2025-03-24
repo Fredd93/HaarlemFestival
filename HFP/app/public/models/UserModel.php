@@ -82,7 +82,7 @@ class UserModel extends BaseModel
      */
     public function update(int $id, string $username, string $email, string $role): bool
     {
-        $sql = "UPDATE [User] SET username = :username, email = :email, role = :role WHERE user_id = :id";
+        $sql = "UPDATE [User] SET username = :username, email = :email, [role] = :role WHERE user_id = :id";
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":email", $email);
