@@ -14,7 +14,6 @@ class UserApiController {
      * Get the authenticated user's information.
      */
     public function getUserById() {
-<<<<<<< HEAD
         if (isset($_SESSION['user_id'])) {
             try {
                 $user = $this->userModel->get($_SESSION['user_id']);
@@ -25,17 +24,7 @@ class UserApiController {
                 }
             } catch (Exception $e) {
                 ResponseHelper::sendError('Failed to fetch user', 500);
-=======
-        try {
-            $user = $this->userModel->get($_SESSION['user_id']);
-            if ($user) {
-                ResponseHelper::sendJson($user);
-            } else {
-                ResponseHelper::sendError('User not found', 404);
->>>>>>> e2dd4534c293df385adee09a9550fb37bdc5b407
             }
-        } catch (Exception $e) {
-            ResponseHelper::sendError('Failed to fetch user', 500);
         }
     }
 
