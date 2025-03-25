@@ -25,6 +25,9 @@
     Route::add('/history', function() {
         require(__DIR__ . "/../views/pages/history.php");
     });
+    Route::add('/teylers', function() {
+        require(__DIR__ . "/../views/pages/teylersMain.php");
+    });
     Route::add('/jazz', function () {
         require(__DIR__ . "/../views/pages/jazz.php");
     });
