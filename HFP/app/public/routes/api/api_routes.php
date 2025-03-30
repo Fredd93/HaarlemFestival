@@ -6,3 +6,5 @@ require_once(__DIR__."/DanceApiRoutes.php");
 require_once(__DIR__."/YummyApiRoutes.php");
 require_once(__DIR__."/contentRoutes.php");
 require_once(__DIR__."/JazzApiRoutes.php");
+require_once(__DIR__."/eventDetailReferenceApiRoutes.php");
+

@@ -1,8 +1,16 @@
 <?php
 header("Content-Type: application/json");
 
-$uploadDir = __DIR__ . "/../assets/uploads/";
-$uploadUrl = "/assets/uploads/";
+$page = $_POST["page"] ?? "default";
+$page = preg_replace("/[^a-zA-Z0-9_-]/", "", strtolower($page)); // Sanitize
+
+$uploadDir = __DIR__ . "/../assets/images/{$page}/";
+$uploadUrl = "/assets/images/{$page}/";
+
+// Ensure the folder exists
+if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+}
 
 if (!isset($_FILES["file"])) {
     echo json_encode(["success" => false, "message" => "No file uploaded"]);

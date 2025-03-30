@@ -1,4 +1,6 @@
 <?php
+    require_once(__DIR__ . "/../controllers/ContentController.php");
+
 
     Route::add('/', function () {
         require(__DIR__ . "/../views/pages/index.php");
@@ -13,9 +15,18 @@
         require(__DIR__ . "/../views/pages/danceMain.php");
     });
 
-    Route::add('/yummy/Ratatouille', function () {
+    Route::add('/yummy/ratatouille', function () {
+    
+        $controller = new ContentController();
+        $page = 'yummy';
+        $detailId = 2;
+    
+        $contentBlocks = $controller->getContentForPage($page, $detailId);
+    
+        // Now pass $contentBlocks to the view
         require(__DIR__ . "/../views/pages/ratatouille.php");
     });
+    
     Route::add('/yummy/Café de Roemer', function () {
         require(__DIR__ . "/../views/pages/roemer.php");
     });

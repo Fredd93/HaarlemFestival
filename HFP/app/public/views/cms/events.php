@@ -53,22 +53,27 @@ $events = $eventModel->getAllEvents();
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="eventForm">
-                    <input type="hidden" id="event_id">
-                    <div class="mb-3">
-                        <label for="event_name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="event_name" required>
+            <form id="eventForm" enctype="multipart/form-data">
+                <input type="hidden" id="event_id">
+                <div class="mb-3">
+                    <label for="event_name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="event_name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="event_description" class="form-label">Description</label>
+                    <textarea class="form-control" id="event_description" rows="4"></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="event_description" class="form-label">Description</label>
-                        <textarea class="form-control tinymce-editor" id="event_description"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="event_image" class="form-label">Image URL</label>
-                        <input type="text" class="form-control" id="event_image">
-                    </div>
-                    <button type="submit" class="btn btn-success">Save</button>
-                </form>
+                <div class="mb-3">
+                    <label class="form-label">Current Image</label>
+                    <img id="event_preview" src="" class="img-thumbnail mb-2 d-block" width="120">
+                </div>
+                <div class="mb-3">
+                    <label for="event_image" class="form-label">Upload New Image</label>
+                    <input type="file" class="form-control" id="event_image" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+            </form>
+
             </div>
         </div>
     </div>
@@ -76,7 +81,4 @@ $events = $eventModel->getAllEvents();
 
 <?php require_once(__DIR__ . "/footer.php"); ?>
 
-<!-- Include TinyMCE -->
-<script src="https://cdn.tiny.cloud/1/jzaxsgdy1peu0fk6h4zk1hp8a4zpnu7zvckpgzdp2urvvq3w/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-<script src="editor.js"></script>
-<script src="api.js"></script>
+<script src="../../assets/js/events.js"></script>

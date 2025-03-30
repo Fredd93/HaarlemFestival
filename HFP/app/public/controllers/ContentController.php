@@ -12,9 +12,13 @@ class ContentController {
     /**
      * Fetch all content for a specific page.
      */
-    public function getContentForPage(string $page): array {
+    public function getContentForPage(string $page, ?int $detailId = null): array {
+        if ($detailId !== null) {
+            return $this->contentModel->getContentByPageAndDetail($page, $detailId);
+        }
         return $this->contentModel->getContentByPage($page);
     }
+    
 
     /**
      * Fetch a specific content block by ID.

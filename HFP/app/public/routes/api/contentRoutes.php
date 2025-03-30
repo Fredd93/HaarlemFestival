@@ -37,3 +37,13 @@ Route::add('/api/content/types/([a-zA-Z0-9_-]+)', function ($page) use ($control
 Route::add('/api/upload-image', function () {
     require(__DIR__ . '/../../api/uploadImage.php');
 }, ['POST']);
+// Get all detail pages for a main event page
+Route::add('/api/content/details/([a-zA-Z0-9_-]+)', function ($page) use ($controller) {
+    $controller->getDetailPages($page);
+}, ['GET']);
+// Get content by page + detail ID (for detail pages)
+Route::add('/api/content/page/([a-zA-Z0-9_-]+)/detail/([0-9]+)', function ($page, $detailId) use ($controller) {
+    $controller->getContentByPageAndDetail($page, (int)$detailId);
+}, ['GET']);
+
+
