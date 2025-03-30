@@ -36,37 +36,18 @@ class EventApiController {
     // Create a new event
     public function createEvent() {
         try {
-            // Access fields from FormData
-            $name = $_POST['name'] ?? null;
-            $description = $_POST['description'] ?? null;
+            // Get JSON input
+            $data = json_decode(file_get_contents("php://input"), true);
     
-            if (!$name || !$description) {
+            // Validate
+            if (!isset($data['name'], $data['description'], $data['image'])) {
                 ResponseHelper::sendError("Invalid input", 400);
                 return;
             }
     
-            // Handle image upload
-            $imagePath = "";
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = __DIR__ . '/../assets/uploads/events/';
-                $uploadUrl = '/assets/uploads/events/';
-    
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-    
-                $filename = time() . '_' . basename($_FILES['image']['name']);
-                $targetPath = $uploadDir . $filename;
-    
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
-                    $imagePath = $uploadUrl . $filename;
-                } else {
-                    ResponseHelper::sendError("Image upload failed", 500);
-                    return;
-                }
-            } elseif (isset($_POST['image'])) {
-                $imagePath = $_POST['image']; // Existing image for update case
-            }
+            $name = $data['name'];
+            $description = $data['description'];
+            $imagePath = $data['image'];
     
             // Save event to DB
             $success = $this->eventModel->createEvent($name, $description, $imagePath);
@@ -76,6 +57,7 @@ class EventApiController {
             } else {
                 ResponseHelper::sendError("Failed to create event", 500);
             }
+    
         } catch (Exception $e) {
             ResponseHelper::sendError("Internal Server Error", 500);
         }

@@ -26,7 +26,7 @@ $events = $eventModel->getAllEvents();
                 <td><?= $event->event_id ?></td>
                 <td><?= htmlspecialchars($event->event_name) ?></td>
                 <td><?= htmlspecialchars($event->event_description) ?></td>
-                <td><img src="/<?= htmlspecialchars($event->image) ?>" alt="Event Image" width="80"></td>
+                <td><img src="<?= '/' . ltrim($event->image, '/') ?>" alt="Event Image" width="80"></td>
                 <td>
                     <button class="btn btn-primary btn-sm edit-btn" 
                         data-id="<?= $event->event_id ?>" 

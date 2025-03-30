@@ -6,6 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let existingImagePath = "";
 
+    // Handle "Add Event" button click: reset form and preview
+    document.querySelector('[data-bs-target="#eventModal"]').addEventListener("click", () => {
+        eventForm.reset();
+        document.getElementById("event_id").value = "";
+        existingImagePath = "";
+        previewImage.src = "";
+        previewImage.classList.add("d-none");
+    });
+
     // Auto-fill form on Edit
     document.querySelectorAll(".edit-btn").forEach(button => {
         button.addEventListener("click", function () {
@@ -15,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             existingImagePath = this.dataset.image;
 
             if (previewImage && existingImagePath) {
-                previewImage.src = "/" + existingImagePath;
+                previewImage.src = existingImagePath.startsWith("/") ? existingImagePath : "/" + existingImagePath;
                 previewImage.classList.remove("d-none");
             }
         });
@@ -33,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Delete logic (no changes)
+    // Delete event
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", function () {
             const eventId = this.dataset.id;
@@ -48,34 +57,65 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Handle form submit
-    eventForm.addEventListener("submit", function (e) {
+    // Handle form submit (Add or Edit)
+    eventForm.addEventListener("submit", async function (e) {
         e.preventDefault();
 
         const eventId = document.getElementById("event_id").value;
         const name = document.getElementById("event_name").value;
         const description = document.getElementById("event_description").value;
-        const method = eventId ? "POST" : "POST"; // Always POST because we're uploading files
+        const method = eventId ? "PUT" : "POST";
         const url = eventId ? `/api/events/update/${eventId}` : "/api/events/create";
 
-        const formData = new FormData();
-        formData.append("name", name);
-        formData.append("description", description);
+        let imagePath = existingImagePath;
 
+        // Upload new image if selected
         if (eventImageInput.files.length > 0) {
-            formData.append("image", eventImageInput.files[0]);
-        } else if (eventId) {
-            formData.append("existingImage", existingImagePath); // let backend fallback to this
+            const formData = new FormData();
+            formData.append("file", eventImageInput.files[0]);
+            formData.append("page", "homepage"); // Optional if you're organizing by page
+
+            try {
+                const uploadRes = await fetch("/api/upload-image", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const uploadData = await uploadRes.json();
+                if (uploadData.success) {
+                    imagePath = uploadData.fileUrl;
+                } else {
+                    alert("Image upload failed.");
+                    return;
+                }
+            } catch (err) {
+                console.error("Upload failed:", err);
+                alert("Image upload error.");
+                return;
+            }
         }
+
+        const body = {
+            name,
+            description,
+            image: imagePath
+        };
+
+        console.log("📤 Sending to API:", JSON.stringify(body, null, 2));
 
         fetch(url, {
             method,
-            body: formData
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body)
         })
             .then(res => res.json())
             .then(data => {
-                if (data.message) location.reload();
-                else alert("Error saving event");
+                if (data.message) {
+                    location.reload();
+                } else {
+                    alert("Error saving event");
+                    console.error("Response error:", data);
+                }
             })
             .catch(err => {
                 console.error("Event save failed", err);
