@@ -12,6 +12,7 @@ $eventNames = [
 // Determine if we should replace "Events" with an active event name
 $eventActive = in_array($activePage, array_keys($eventNames));
 $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
+$isLoggedIn = isset($_SESSION['user_id']);
 
 ?>
 
@@ -37,6 +38,14 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
         <li><a href="tickets.php" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
         <li><a href="program.php" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
         <li>
+            <a href="<?= $isLoggedIn ? '#' : 'login' ?>" 
+                id="auth-button" 
+                class="<?= ($activePage === 'login') ? 'active' : '' ?>"
+                onclick="<?= $isLoggedIn ? 'logoutUser(event)' : '' ?>">
+                <?= $isLoggedIn ? 'Logout' : 'Login' ?>
+            </a>
+        </li>
+        <li>
         <div class="nav-right">
             <?php include(__DIR__ . "/personalProgram.php"); ?> <!-- 🔹 Now inside Navbar -->
         </div>
@@ -46,3 +55,24 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
     <!-- Personal Program Button -->
     
 </nav>
+
+<script>
+function logoutUser(event) {
+    event.preventDefault(); // Prevent navigation
+    fetch('/api/login/logout', { method: 'POST' })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Logout request failed");
+            }
+            return response.text(); // Assuming your endpoint doesn't return JSON
+        })
+        .then(() => {
+            window.location.href = "/"; // Redirect to homepage after successful logout
+        })
+        .catch(error => {
+            console.error("Logout error:", error);
+            alert("Logout failed. Please try again.");
+        });
+    
+}
+</script>
