@@ -1,0 +1,27 @@
+<?php
+require_once(__DIR__ . '/BaseModel.php');
+
+class EventDetailReferenceModel extends BaseModel {
+    public function __construct() {
+        parent::__construct();
+    }
+
+    // Fetch all entries for a given event type (e.g., 'yummy', 'jazz', 'dance')
+    public function getByEventType(string $eventType): array {
+        $sql = "SELECT * FROM Event_Detail_Reference WHERE event_type = :event_type";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":event_type", $eventType, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Optional: Fetch a single detail reference by detail_id
+    public function getByDetailId(int $detailId): ?array {
+        $sql = "SELECT * FROM Event_Detail_Reference WHERE event_detail_id = :detail_id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":detail_id", $detailId, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ?: null;
+    }
+}

@@ -10,11 +10,12 @@ class ContentApiController {
     }
 
     /**
-     * Get all content for a specific page.
+     * Get all content for a specific page (optionally filtered by detail_id).
      */
     public function getContentByPage($page) {
         try {
-            $content = $this->contentModel->getContentByPage($page);
+            $detailId = isset($_GET['detail_id']) ? (int)$_GET['detail_id'] : null;
+            $content = $this->contentModel->getContentByPage($page, $detailId);
             ResponseHelper::sendJson($content);
         } catch (Exception $e) {
             ResponseHelper::sendError("Failed to retrieve content", 500);
@@ -50,6 +51,7 @@ class ContentApiController {
             }
 
             $image_url = $data['image_url'] ?? null;
+            $detail_id = isset($data['detail_id']) ? (int)$data['detail_id'] : null;
 
             $content = $this->contentModel->createContent(
                 $data['page'],
@@ -57,7 +59,8 @@ class ContentApiController {
                 $data['description'],
                 $image_url,
                 $data['content_type'],
-                $data['description_tag']
+                $data['description_tag'],
+                $detail_id
             );
 
             if ($content) {
@@ -85,10 +88,11 @@ class ContentApiController {
             $image_url = $data['image_url'] ?? null;
 
             $success = $this->contentModel->updateContent(
-                $id, 
-                $data['title'], 
-                $data['description'], 
-                $image_url, 
+                $id,
+                $data['title'],
+                $data['description'],
+                $data['content_type'],
+                $image_url,
                 $data['description_tag']
             );
 
@@ -130,4 +134,25 @@ class ContentApiController {
             ResponseHelper::sendError("Failed to fetch content types", 500);
         }
     }
+
+        // Get all detail pages (detail_id) for an event page like 'yummy'
+    public function getDetailPages($page) {
+        try {
+            $pages = $this->contentModel->getDetailPagesForEvent($page);
+            ResponseHelper::sendJson($pages);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve detail pages", 500);
+        }
+    }
+    
+    // Get content for a specific detail page
+    public function getContentByPageAndDetail($page, $detailId) {
+        try {
+            $content = $this->contentModel->getContentByPageAndDetail($page, (int)$detailId);
+            ResponseHelper::sendJson($content);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve detailed content", 500);
+        }
+    }
+    
 }

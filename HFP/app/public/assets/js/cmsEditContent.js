@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const type = document.getElementById("content_type").value;
         const descriptionTag = document.getElementById("description_tag").value;
         const description = tinymce.activeEditor.getContent();
-        let imageUrl = imagePreview.src; // Keep existing image unless changed
+        let imageUrl = imagePreview ? imagePreview.src : null;
 
         // If an image is selected, upload it first
         if (imageUpload.files.length > 0) {
@@ -43,9 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
      * Upload Image File Locally & Get Path
      */
     function uploadImageFile(file, callback) {
+        const page = document.getElementById("content_page").value;
         let formData = new FormData();
         formData.append("file", file);
-
+        formData.append("page", page); // Pass the page name
+    
         fetch("/api/upload-image", {
             method: "POST",
             body: formData
@@ -55,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success) {
                     callback(data.fileUrl);
                 } else {
-                    alert("Failed to upload image.");
+                    alert("Image upload failed.");
                 }
             })
             .catch(error => console.error("Error uploading image:", error));
@@ -69,12 +71,11 @@ document.addEventListener("DOMContentLoaded", function () {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                page,
                 title,
+                description,
+                image_url: imageUrl,
                 content_type: type,
                 description_tag: descriptionTag,
-                description,
-                image_url: imageUrl
             })
         })
             .then(response => response.json())

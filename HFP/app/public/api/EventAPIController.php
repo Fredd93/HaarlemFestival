@@ -36,28 +36,33 @@ class EventApiController {
     // Create a new event
     public function createEvent() {
         try {
+            // Get JSON input
             $data = json_decode(file_get_contents("php://input"), true);
-
+    
+            // Validate
             if (!isset($data['name'], $data['description'], $data['image'])) {
                 ResponseHelper::sendError("Invalid input", 400);
                 return;
             }
-
-            $success = $this->eventModel->createEvent(
-                $data['name'],
-                $data['description'],
-                $data['image']
-            );
-
+    
+            $name = $data['name'];
+            $description = $data['description'];
+            $imagePath = $data['image'];
+    
+            // Save event to DB
+            $success = $this->eventModel->createEvent($name, $description, $imagePath);
+    
             if ($success) {
                 ResponseHelper::sendJson(["message" => "Event created successfully"], 201);
             } else {
                 ResponseHelper::sendError("Failed to create event", 500);
             }
+    
         } catch (Exception $e) {
             ResponseHelper::sendError("Internal Server Error", 500);
         }
     }
+    
 
     // Update an existing event
     public function updateEvent($id) {

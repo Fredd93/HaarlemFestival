@@ -25,8 +25,8 @@ $contentTypes = $contentController->getContentTypesForPage($content->page);
     <h2>Edit Content</h2>
 
     <!-- Form submits to ContentController->updateContent($_POST, $_FILES) -->
-    <form action="/cms/content/update" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="content_id" value="<?= htmlspecialchars($content->content_id, ENT_QUOTES, 'UTF-8') ?>">
+    <form id="editContentForm">
+        <input type="hidden" name="content_id" id="content_id" value="<?= htmlspecialchars($content->content_id, ENT_QUOTES, 'UTF-8') ?>">
 
         <div class="mb-3">
             <label for="content_page" class="form-label">Page</label>
@@ -94,6 +94,8 @@ $contentTypes = $contentController->getContentTypesForPage($content->page);
 </div>
 
 <?php require_once(__DIR__ . "/footer.php"); ?>
+<script src="/assets/js/cmsEditContent.js"></script>
+
 
 <!-- TinyMCE Integration -->
 <script src="https://cdn.tiny.cloud/1/khvhmotzuceh8kzk60ml7xmqejpnp6td7ng8he45bdyb64wh/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
