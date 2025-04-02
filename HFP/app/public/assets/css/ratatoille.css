@@ -216,11 +216,11 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.0);
     color: white;
     font-size: 24px;
     padding: 12px;
-    border-radius: 50%;
+    border-radius: 100%;
     cursor: pointer;
     border: none;
     transition: background 0.3s ease-in-out;
