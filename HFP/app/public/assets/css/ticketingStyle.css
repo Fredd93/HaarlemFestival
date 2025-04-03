@@ -1,0 +1,406 @@
+/* ticketingStyle.css */
+/* Make the entire page have a cream background */
+body {
+    background-color: #fff8e1; /* or another cream color you prefer */
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* MAIN NAV TABS - Figma-like design */
+
+/* Remove default list styles & horizontal margin/padding */
+.main-tabs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; 
+    /* If you want them side by side horizontally. 
+       If you want spacing, you can add gap: 0.5rem; */
+}
+
+.main-tabs li {
+    margin: 0; 
+    padding: 0;
+}
+
+/* The "tab" links themselves */
+.main-tabs li a {
+    display: inline-flex;
+    align-items: center; /* so icons + text center vertically */
+    gap: 0.5rem;         /* space between icon and text */
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    font-size: 0.95rem;
+    color: #333;         /* default text color */
+    background-color: #ddd; /* non-active tab background */
+    border: 1px solid #ccc;
+    border-bottom: none;  /* so the bottom merges with content area */
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    /* Slight top margin to appear "attached" to content if desired:
+       margin-top: 2px; 
+    */
+    transition: background-color 0.2s;
+}
+
+/* Hover effect on inactive tabs */
+.main-tabs li a:hover {
+    background-color: #ccc;
+    color: #000;
+}
+
+/* The active (selected) tab - lighter background, top layer, etc. */
+.main-tabs li a.active {
+    background-color: #fff8e1; /* or any lighter color from your Figma */
+    color: #000; 
+    border-bottom: 1px solid #fff8e1; /* merges with content background if content has same color */
+    z-index: 2; /* ensure it sits on top of the content border if needed */
+    font-weight: bold;
+}
+
+/* If you want a small bottom border for the entire tab row 
+   to visually separate from the content:
+*/
+.main-tabs {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+}
+
+/* 
+   ----------------------------------------------------
+   DANCE TABLE + TABS (Purple theme)
+   ----------------------------------------------------
+   #2A185E = dark purple
+   #9A84D8 = light purple
+*/
+
+/* Container for the Dance table & its day tabs */
+.dance-table-container {
+    position: relative;
+    margin-bottom: 2rem;
+    border-radius: 8px;   /* round corners */
+    background-color: #fff;
+    overflow: hidden;     /* so table corners are clipped by border-radius */
+}
+
+/* The row of "bookmark" style day tabs at the top (Friday, Saturday, etc.) */
+.dance-day-tabs {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-bottom: 0; /* so it looks attached to the table */
+}
+
+/* Each day tab (default/inactive) */
+.dance-day-tabs button {
+    background-color: #2A185E;  /* dark purple */
+    color: #fff;
+    border: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: -2px;     /* slight overlap with the table border */
+    position: relative;
+    top: 2px;             /* so it sits on top of the table border */
+    transition: background-color 0.2s;
+}
+.dance-day-tabs button:hover {
+    background-color: #3e2b87; /* slightly lighter purple on hover */
+}
+
+/* ACTIVE day tab uses the light purple */
+.dance-day-tabs button.active {
+    background-color: #9A84D8; 
+    color: #fff;
+    font-weight: bold;
+    z-index: 2; /* ensure it stays on top of the table edge */
+}
+
+/* The main Dance table */
+.dance-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;   /* round corners */
+    overflow: hidden;
+    border: 2px solid #2A185E; /* dark purple border */
+    margin-top: 0;             /* so the tabs appear attached */
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Table header row (dark purple) */
+.dance-table thead {
+    background-color: #2A185E;
+}
+.dance-table thead th {
+    color: #fff;     /* white text */
+    padding: 0.75rem;
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* Alternate row colors: even row = light purple, odd row = white */
+.dance-table tbody tr:nth-child(even) {
+    background-color: #9A84D8;
+    color: #000; /* black text for contrast */
+}
+.dance-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Table cells */
+.dance-table td {
+    padding: 0.75rem;
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* "Add to Program" button in Dance table cells */
+.dance-table .add-to-program {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+.dance-table .add-to-program:hover {
+    background-color: #285e8e;
+}
+
+/* 
+   ----------------------------------------------------
+   JAZZ TABLE + TABS (Burgundy theme)
+   ----------------------------------------------------
+   #800020 = dark burgundy
+   #f5cdd6 = light burgundy/pink
+*/
+
+/* Container for the Jazz table & its day tabs */
+.jazz-table-container {
+    position: relative;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+/* The row of "bookmark" style day tabs (Thursday, Friday, etc.) */
+.jazz-day-tabs {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin-bottom: 0;
+}
+
+/* Each day tab (default/inactive) */
+.jazz-day-tabs button {
+    background-color: #800020; /* dark burgundy */
+    color: #fff;
+    border: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-top: -2px;
+    position: relative;
+    top: 2px;
+    transition: background-color 0.2s;
+}
+.jazz-day-tabs button:hover {
+    background-color: #9b2543;
+}
+
+/* ACTIVE day tab uses the lighter pinkish shade */
+.jazz-day-tabs button.active {
+    background-color: #f5cdd6;
+    color: #000;
+    font-weight: bold;
+    z-index: 2;
+}
+
+/* The main Jazz table */
+.jazz-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #800020; /* dark burgundy border */
+    margin-top: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Table header row (dark burgundy) */
+.jazz-table thead {
+    background-color: #800020;
+}
+.jazz-table thead th {
+    color: #fff;
+    padding: 0.75rem;
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* Alternate row colors: even row = #f5cdd6, odd row = white */
+.jazz-table tbody tr:nth-child(even) {
+    background-color: #f5cdd6;
+    color: #000;
+}
+.jazz-table tbody tr:nth-child(odd) {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Table cells */
+.jazz-table td {
+    padding: 0.75rem;
+    border: none;
+    font-size: 0.9rem;
+}
+
+/* "Add to Program" button in Jazz table cells */
+.jazz-table .add-to-program {
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+.jazz-table .add-to-program:hover {
+    background-color: #285e8e;
+}
+
+/* 
+  YUMMY SECTION
+  A warm, cream-ish background (#FFF9E6), 
+  with a form on the left and a table on the right.
+*/
+
+/* Yummy container (the entire #tab-yummy content) */
+.yummy-container {
+    background-color: #fff;  /* white background for the container */
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem auto;  /* optional margin around the container */
+    max-width: 1200px;  /* optional: center and limit width */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* The flex container that holds the form on left, table on right */
+.yummy-layout {
+    display: flex;
+    flex-wrap: wrap; /* allow wrapping on small screens */
+    gap: 1.5rem;
+}
+
+/* The form column */
+.yummy-form-section {
+    flex: 1 1 300px;    /* can shrink/grow, min size 300px */
+    max-width: 400px;   /* optional max width for the form */
+    background-color: #fff; /* keep it white, same as container */
+}
+
+/* The table column */
+.yummy-table-section {
+    flex: 2 1 500px;    /* can grow bigger than the form */
+    background-color: #fff; /* also white */
+}
+
+/* Basic styling for the form groups */
+.yummy-form-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* space between fields */
+    padding: 1rem; /* some internal padding */
+}
+
+/* Each label + input pair */
+.yummy-form-section .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.yummy-form-section .form-group label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.yummy-form-section .form-group input,
+.yummy-form-section .form-group select,
+.yummy-form-section .form-group textarea {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+/* Side-by-side for "Adults" & "Children" fields */
+.yummy-form-section .side-by-side {
+    flex-direction: row; 
+    gap: 1rem;
+}
+
+/* The "Add to Program" button */
+.yummy-form-section .add-to-program-btn {
+    align-self: flex-start; /* or center, if you prefer */
+    background-color: #337ab7;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.yummy-form-section .add-to-program-btn:hover {
+    background-color: #285e8e;
+}
+
+.yummy-table-section h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.yummy-table-section .reservation-note {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #d80d0d;
+}
+
+/* If your partial uses a class like .yummy-table */
+.yummy-table {
+    width: 100%;
+    border-collapse: collapse; /* ensures single lines instead of double */
+    border: 1px solid #ccc;    /* outer border */
+    border-radius: 8px;        /* curved edges */
+    overflow: hidden;          /* clips corners on header & rows */
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Slightly darker grey header row */
+.yummy-table thead {
+    background-color: #ddd; /* pick a darker grey, e.g. #ddd or #ccc */
+    color: #333;
+}
+
+/* Cells in header & body share single-line borders */
+.yummy-table th,
+.yummy-table td {
+    border: 1px solid #ccc;   /* single partition lines */
+    padding: 0.75rem;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.yummy-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
