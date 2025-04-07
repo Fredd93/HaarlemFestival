@@ -79,7 +79,7 @@ class DanceTicketApiController {
             // Add to personal program
             $eventId = $this->danceTicketModel->getEventIdByDetailId($eventDetailId);
             if ($eventId !== null) {
-                $userId = 1; // TEMP user ID (replace with session logic later)
+                $userId = $_SESSION['user_id']; 
                 $this->programModel->addToProgram(
                     $userId,
                     $eventId,

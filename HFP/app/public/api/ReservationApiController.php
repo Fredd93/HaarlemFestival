@@ -43,7 +43,7 @@ class YummyReservationController
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $userId = 1 ?? null;
+        $userId = $_SESSION['user_id'] ?? null;
         $eventId = $data['event_id'] ?? null;
         $eventDetailId = $data['event_detail_reference_id'] ?? null;
         $sessionId = $data['session_id'] ?? null;
