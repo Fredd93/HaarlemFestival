@@ -19,9 +19,38 @@
                 <li class="nav-item"><a class="nav-link" href="/cms/content">Content</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cms/users">Users</a></li>
                 <li class="nav-item"><a class="nav-link" href="/cms/orders">Orders</a></li>
-                <li class="nav-item"><a class="nav-link text-danger" href="/logout">Logout</a></li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="#" onclick="logoutUser(event)">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+function logoutUser(event) {
+    event.preventDefault();
+
+    fetch("/api/user/logout", {
+        method: "POST"
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("Logout failed");
+        return res.json();
+    })
+    .then(() => {
+        // Clear local storage (optional if you’re using it)
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("role");
+
+        // Redirect to login page
+        window.location.href = "/login";
+    })
+    .catch(err => {
+        alert("Logout failed. Please try again.");
+        console.error(err);
+    });
+}
+</script>
+
 
