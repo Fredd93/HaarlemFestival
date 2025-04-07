@@ -31,10 +31,21 @@
         require(__DIR__ . "/../views/pages/roemer.php");
     });
     Route::add('/a stroll through history', function() {
-        require(__DIR__ . "/../views/pages/history.php");
+        //redirecting to make it easier for detailpages
+        //I don't know why I am doing this instead of making 
+        //the button that sends you to this link send you to /history instead
+        header('Location: /history');
+        //Some functions really sound brutal
+        die();
     });
     Route::add('/history', function() {
         require(__DIR__ . "/../views/pages/history.php");
+    });
+    Route::add('/history/Church_of_St.Bavo', function() {
+        require(__DIR__ . "/../views/pages/St_Bavo.php");
+    });
+    Route::add('/history/Amsterdamse_Poort', function() {
+        require(__DIR__ . "/../views/pages/Amsterdam_gate.php");
     });
     Route::add('/teylers', function() {
         require(__DIR__ . "/../views/pages/teylersMain.php");
