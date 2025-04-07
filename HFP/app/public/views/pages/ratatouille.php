@@ -81,11 +81,16 @@ foreach ($contentBlocks as $block) {
 </section>
 
 <!-- Reservation Section -->
-<section id="form" class="reservation-section">
+<section class="reservation-section">
     <div class="reservation-container">
         <div class="reservation-form">
             <h2>Reserve Your Table</h2>
-            <form>
+            <form id="restaurant-reservation-form">
+                <!-- Hidden fields -->
+                <input type="hidden" id="restaurant_id" value="6">
+                <input type="hidden" id="event_detail_reference_id" value="2">
+                <input type="hidden" id="session_id">
+
                 <label for="name">Name *</label>
                 <input type="text" id="name" required>
 

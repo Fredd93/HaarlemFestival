@@ -75,56 +75,70 @@ foreach ($contentBlocks as $block) {
 </section>
 
 <!-- Reservation Form -->
-<section id="form" class="reservation-section">
+<section class="reservation-section">
     <div class="reservation-container">
         <div class="reservation-form">
             <h2>Reserve Your Table</h2>
-            <form>
+            <form id="restaurant-reservation-form">
+                <!-- Hidden fields -->
+                <input type="hidden" id="restaurant_id" value="6">
+                <input type="hidden" id="event_detail_reference_id" value="2">
+                <input type="hidden" id="session_id">
+
                 <label for="name">Name *</label>
-                <input type="text" id="name" placeholder="Type here" required>
+                <input type="text" id="name" required>
+
                 <div class="form-group">
                     <div class="date-field">
                         <label for="date">Date and Session *</label>
-                        <input type="date" id="date" required>
+                        <select id="date" required>
+                            <option value="">Select a date</option>
+                        </select>
                     </div>
                     <div class="session-field">
                         <label for="session">&nbsp;</label>
                         <select id="session" required>
-                            <option value="">Session</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:30">19:30</option>
-                            <option value="21:00">21:00</option>
+                            <option value="">Select a session</option>
                         </select>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="people-field">
-                        <label for="adults">Adults *</label>
+                        <label for="adults">Number of People *</label>
                         <select id="adults" required>
-                            <option value="">Adults</option>
-                            <option value="1">1</option><option value="2">2</option>
-                            <option value="3">3</option><option value="4">4</option><option value="5+">5+</option>
+                            <option value="1">1 Adult</option>
+                            <option value="2">2 Adults</option>
+                            <option value="3">3 Adults</option>
+                            <option value="4">4 Adults</option>
+                            <option value="5">5 Adults</option>
                         </select>
                     </div>
                     <div class="people-field">
                         <label for="children">&nbsp;</label>
                         <select id="children">
-                            <option value="">Children</option>
-                            <option value="0">0</option><option value="1">1</option>
-                            <option value="2">2</option><option value="3">3</option><option value="4+">4+</option>
+                            <option value="0">0 Children</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
                         </select>
                     </div>
                 </div>
+
                 <label for="requests">Special Requests</label>
                 <textarea id="requests" placeholder="Type here"></textarea>
+
                 <button type="submit" class="reservation-btn">Add To Program</button>
             </form>
         </div>
+
         <div class="reservation-image">
-            <img src="../../assets/images/yummy/roemerformimage.png" alt="Café de Roemer">
+            <img src="../../assets/images/yummy/roemerformimage.png" alt="Restaurant">
         </div>
     </div>
 </section>
+
 
 <!-- Contact Info -->
 <?php
