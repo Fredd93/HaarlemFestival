@@ -18,29 +18,21 @@
     <div class="banner-image">
         <img class="banner-image" src="../../assets/images/teyler/lorentz-top.jpeg" alt="Front view of the Teylers museum seen from the water.">
     </div>
-    <h1 class="teyler-title">The Lorentz Formula</h1>
-    <p class = "teyler-text">In this fun show for those 10 and up you will be shown a small glimpse into the life of Lorentz.</p>
+    <h1 class="teyler-title">The Secret of Professor Teyler</h1>
+    <p class = "teyler-text">Through this interactive experience, children aged 4 to 8 will explore the wonders of science with six exciting, hands-on activities designed to spark curiosity, creativity, and a love for learning.</p>
     <div class="teyler-detail-container">
         <div class="teyler-detail-top">
-            <h2>A fun experience for all</h2>
+            <h2>Science for the youngest</h2>
             <p>In six tasks children will learn various facts about the world around them</p>
-            <p>For The Lorentz Formula register at the museum, you can sign up to participate. There is room for 20 people at a time. The performance is suitable for anyone ages 10 and up.</p>
+            <p>Participants of The Secret of Professor Teyler need to download the app, buy tickets at the Teylers Museum, no additional cost for participation in Magic@Teylers.</p>
         </div>
         <div class="teyler-detail-times-container">
-            <?php
-            $days = ["Friday", "Saturday", "Sunday"];
-            $times = ["12:30 - 13:20", "14:00 - 14:50", "15:00 - 15:50"];
-            foreach ($days as $day){?>
-                <div class = "teyler-detail-time-column">
-                    <h2><?php echo "$day"?></h2>
-                    <?php foreach ($times as $time) {
-                        ?><p><?php echo "$time"?></p><?php
-                    }?>
-                    </div>
-                    <?php
-                }
-            ?>
-            
+            <div class = "teyler-detail-bottom">Friday 10:00-17:00</div>
+            <div class = "teyler-detail-bottom">Saturday 10:00-17:00</div>
+            <div class = "teyler-detail-bottom">Sunday 10:00-17:00</div>
+        </div>
+        <div style="display:flex; justify-content:center">
+        <img class="teyler-mobile-only" style="max-width:70%; min-width:70%" src="../../assets/images/teyler/secret-download.png" alt="Front view of the Teylers museum seen from the water.">
         </div>
     </div>
     <?php

@@ -160,10 +160,29 @@ h2.teyler-text{
 .teyler-detail-times-container{
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 70%;
     align-items: center;
     justify-content: space-evenly;
+    gap: 1em;
 }
+
+.teyler-detail-time-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--negativeCTA);
+    padding: 4%;
+    border-radius: 25px;
+    min-width: 25%;
+}
+
+.teyler-detail-time-column h2{
+    padding-bottom: 10px;
+}
+.teyler-detail-time-column p{
+    padding-bottom: 10px;
+}
+
 .teyler-detail-top{
     background-color: color-mix(in srgb, var(--primaryCTA) 50%, transparent);
     padding: 5%;
