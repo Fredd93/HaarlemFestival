@@ -120,5 +120,6 @@
     <script src="../../assets/js/jazzTicketing.js"></script>
     <!-- Main ticketing JS for tab switching -->
     <script src="../../assets/js/ticketing.js"></script>
+    <script src="../../assets/js/danceBooking.js"></script>
 </body>
 </html>

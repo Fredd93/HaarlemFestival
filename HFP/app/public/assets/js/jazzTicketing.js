@@ -172,12 +172,51 @@ function renderJazzPassesStatic() {
  * Adds a selected event or pass to the user's program/cart (placeholder).
  */
 function addJazzToProgram(eventId) {
-    console.log("Adding event to program:", eventId);
-    // Example: localStorage usage or an AJAX POST to the server.
-}
+    // Find the event row by ID (from the already rendered events)
+    const row = [...document.querySelectorAll('#jazzTableBody tr')]
+        .find(r => r.innerHTML.includes(`addJazzToProgram(${eventId})`));
 
+    if (!row) {
+        alert("Event not found.");
+        return;
+    }
+
+    const priceText = row.children[3].textContent.replace('€', '').trim();
+    const price = parseFloat(priceText);
+    let jazzType = 'free';
+
+    if (price === 15.0) jazzType = 'main event';
+    else if (price === 10.0) jazzType = 'secondary event';
+
+    const payload = {
+        jazz_type: jazzType,
+        ticket_type: "standard", // or customize later
+        event_detail_id: eventId
+    };
+
+    fetch('/api/jazzTickets/book', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.message) {
+            alert(`✅ ${result.message}`);
+            // Optionally refresh table or disable button
+        } else {
+            alert(`❌ ${result.error}`);
+        }
+    })
+    .catch(err => {
+        console.error("Booking error:", err);
+        alert("❌ Failed to book ticket.");
+    });
+}
 /* ----------------------------------------------------
-   TIME FORMAT HELPERS (unchanged)
+   TIME FORMAT HELPERS
 ---------------------------------------------------- */
 function parseTime(timeStr) {
     const [hh, mm] = timeStr.split(':');
