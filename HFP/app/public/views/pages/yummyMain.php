@@ -115,6 +115,5 @@ document.addEventListener("DOMContentLoaded", showSlides);
 </body>
 
 <footer>
-<?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
 </footer>
 </html>

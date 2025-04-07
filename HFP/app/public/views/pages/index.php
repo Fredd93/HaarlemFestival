@@ -107,6 +107,5 @@ foreach ($homepageContent as $content) {
 
 </body>
 <footer>
-    <?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
 </footer>
 </html>
