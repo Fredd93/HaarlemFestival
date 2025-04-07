@@ -1,57 +1,111 @@
 <?php
-require_once(__DIR__ . '/../models/RestaurantReservationModel.php');
-require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
 
-class ReservationApiController {
+require_once(__DIR__ . "/../models/RestaurantReservationModel.php");
+require_once(__DIR__ . "/../models/YummySessionModel.php");
+require_once(__DIR__ . "/../models/PersonalProgramModel.php");
+require_once(__DIR__ . "/utils/ResponseHelper.php");
+
+class YummyReservationController
+{
     private $reservationModel;
-    
-    public function __construct() {
-        $this->reservationModel = new RestaurantReservationModel();
+    private $sessionModel;
+    private $programModel;
+
+    public function __construct()
+    {
+        $this->reservationModel = new YummyReservationModel();
+        $this->sessionModel = new YummySessionModel();
+        $this->programModel = new PersonalProgramModel();
     }
-    
+
     /**
-     * Processes a booking request.
+     * GET /api/yummy/sessions?event_id=1&date=YYYY-MM-DD
+     * Get all available sessions for a restaurant on a given date.
      */
-    public function bookReservation() {
-        // Read JSON from request body
+    public function getAvailableSessions(): void
+    {
+        $eventId = $_GET['event_id'] ?? null;
+        $date = $_GET['date'] ?? null;
+
+        if (!$eventId || !$date) {
+            ResponseHelper::sendError("Missing event_id or date.");
+        }
+
+        $sessions = $this->sessionModel->getAvailableSessions((int)$eventId, $date);
+        ResponseHelper::sendJson($sessions);
+    }
+
+    /**
+     * POST /api/yummy/book
+     * Create a reservation if seats are available.
+     */
+    public function bookReservation(): void
+    {
         $data = json_decode(file_get_contents("php://input"), true);
-        if (!$data) {
-            ResponseHelper::sendError("Invalid input", 400);
-            return;
+
+        $userId = 1 ?? null;
+        $eventId = $data['event_id'] ?? null;
+        $eventDetailId = $data['event_detail_reference_id'] ?? null;
+        $sessionId = $data['session_id'] ?? null;
+        $restaurantId = $data['restaurant_id'] ?? null;
+        $numAdults = $data['num_adults'] ?? 0;
+        $numChildren = $data['num_children'] ?? 0;
+        $clientName = $data['client_name'] ?? '';
+        $specialRequest = $data['special_request'] ?? '';
+
+        if (!$userId || !$eventId || !$eventDetailId || !$sessionId || !$restaurantId) {
+            ResponseHelper::sendError("Missing required fields.");
         }
-        
-        // Retrieve fields from request
-        $restaurant_id    = $data['restaurant_id']    ?? null;
-        $client_name      = $data['client_name']      ?? null;
-        $reservation_date = $data['reservation_date'] ?? null;
-        $reservation_time = $data['reservation_time'] ?? null;
-        $num_adults       = $data['num_adults']       ?? null;
-        $num_children     = $data['num_children']     ?? null;
-        $special_request  = $data['special_request']  ?? '';
-        
-        // Validate required fields (special_request is optional)
-        if (!$restaurant_id || !$client_name || !$reservation_date || !$reservation_time || !$num_adults || !$num_children) {
-            ResponseHelper::sendError("Missing required fields", 400);
-            return;
+
+        $totalSeats = $numAdults + $numChildren;
+
+        // Check if session belongs to the restaurant
+        if (!$this->sessionModel->sessionBelongsToRestaurant($sessionId, $restaurantId)) {
+            ResponseHelper::sendError("Invalid session for selected restaurant.");
         }
-        
-        // Insert the reservation into the database
-        // Parameter order: restaurantId, clientName, date, time, numAdults, numChildren, specialRequest.
-        $result = $this->reservationModel->insertReservation(
-            $restaurant_id,
-            $client_name,
-            $reservation_date,
-            $reservation_time,
-            $num_adults,
-            $num_children,
-            $special_request
+
+        // Check availability
+        if (!$this->sessionModel->hasAvailableSeats($sessionId, $totalSeats)) {
+            ResponseHelper::sendError("Not enough seats available for this session.");
+        }
+
+        // Get session time and date
+        $sessionData = $this->sessionModel->getSessionById($sessionId);
+        if (!$sessionData) {
+            ResponseHelper::sendError("Session not found.");
+        }
+
+        // Create reservation
+        $ticketId = $this->reservationModel->createReservation(
+            $restaurantId,
+            $sessionId,
+            $sessionData['session_date'],
+            $sessionData['session_time'],
+            $numAdults,
+            $numChildren,
+            $clientName,
+            $specialRequest
         );
-        
-        if ($result) {
-            ResponseHelper::sendJson(["message" => "Reservation booked successfully"]);
-        } else {
-            ResponseHelper::sendError("Failed to book reservation", 500);
+
+        if (!$ticketId) {
+            ResponseHelper::sendError("Failed to create reservation.", 500);
         }
+
+        // Reduce seats
+        $this->sessionModel->reduceAvailableSeats($sessionId, $totalSeats);
+
+        // Add to personal program
+        $this->programModel->addToProgram(
+            $userId,
+            $eventId,
+            $eventDetailId,
+            $ticketId,
+            'yummy'
+        );
+
+        ResponseHelper::sendJson([
+            "message" => "Reservation successful.",
+            "ticket_id" => $ticketId
+        ]);
     }
 }
-?>

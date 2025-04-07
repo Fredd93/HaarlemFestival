@@ -1,28 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchAllRestaurants();
     renderYummyEventsTable();
+    bindReservationForm();
+    populateYummyDateDropdown(); 
 });
 
-// Global variable to store fetched events
 let allYummyEvents = [];
 
 /**
- * Fetch all Yummy events from your API.
+ * Fetch all Yummy events from your API and populate dropdown.
  */
 function fetchAllRestaurants() {
     fetch('/api/yummyEvents')
+    
         .then(response => response.json())
         .then(data => {
-            console.log("API Response:", data);
+            console.log("Sample event object:", data[0]);
             allYummyEvents = data;
-            populateRestaurantDropdown(allYummyEvents);
+            populateRestaurantDropdown(data);
         })
         .catch(err => console.error("Error fetching Yummy events:", err));
 }
 
-/**
- * Populate the restaurant dropdown with unique restaurant names.
- */
 function populateRestaurantDropdown(events) {
     const restaurantSelect = document.getElementById("restaurant");
     if (!restaurantSelect) return;
@@ -31,76 +30,97 @@ function populateRestaurantDropdown(events) {
         restaurantSelect.remove(1);
     }
 
-    const uniqueNames = [...new Set(events.map(e => e.name))];
-
-    uniqueNames.forEach(name => {
+    events.forEach(event => {
         const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
+        option.value = event.eventDetailId; 
+        option.textContent = event.name;
+        option.dataset.eventDetailId = event.eventDetailId; // used as event_detail_reference_id
         restaurantSelect.appendChild(option);
     });
 
-    restaurantSelect.addEventListener("change", onRestaurantChange);
+    restaurantSelect.addEventListener("change", fetchSessionsForSelectedRestaurant);
+    document.getElementById("date").addEventListener("change", fetchSessionsForSelectedRestaurant);
+}
+
+function fetchSessionsForSelectedRestaurant() {
+    const restaurantSelect = document.getElementById("restaurant");
+    const dateInput = document.getElementById("date");
+    const sessionSelect = document.getElementById("sessionTime");
+
+    const eventId = restaurantSelect.value;
+    const date = dateInput.value;
+
+    console.log("Fetching sessions for:", eventId, date); // ✅ Add this
+
+
+    if (!eventId || !date) return;
+
+    sessionSelect.innerHTML = `<option value="">-- Select a session --</option>`;
+
+    fetch(`/api/yummy/sessions?event_id=${eventId}&date=${date}`)
+        .then(response => response.json())
+        .then(sessions => {
+            console.log("Sessions received:", sessions); // ✅ Add this
+            sessions.forEach(session => {
+                const option = document.createElement("option");
+                option.value = session.session_id;
+                option.textContent = `${session.session_time} (${session.available_seats} seats)`;
+                sessionSelect.appendChild(option);
+            });
+        })
+        .catch(err => console.error("Error fetching sessions:", err));
 }
 
 /**
- * When a restaurant is selected, update session dropdown with available slots.
+ * Binds the form submission to fetch reservation booking.
  */
-function onRestaurantChange(e) {
-    const selectedRestaurant = e.target.value;
-    if (!selectedRestaurant) return;
+function bindReservationForm() {
+    const form = document.querySelector(".yummy-form-section form");
 
-    const sessionSelect = document.getElementById("sessionTime");
-    if (!sessionSelect) return;
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    // Clear existing session options
-    sessionSelect.innerHTML = `<option value="">-- Select a session --</option>`;
+        const restaurantSelect = document.getElementById("restaurant");
+        const selectedOption = restaurantSelect.selectedOptions[0];
 
-    const eventObj = allYummyEvents.find(evt => evt.name === selectedRestaurant);
-    if (!eventObj) {
-        console.log("No event found for selected restaurant:", selectedRestaurant);
-        return;
-    }
+        const payload = {
+            event_id: parseInt(restaurantSelect.value),
+            event_detail_reference_id: parseInt(selectedOption.dataset.eventDetailId),
+            restaurant_id: parseInt(restaurantSelect.value),
+            session_id: parseInt(document.getElementById("sessionTime").value),
+            num_adults: parseInt(document.getElementById("adults").value),
+            num_children: parseInt(document.getElementById("children").value),
+            client_name: document.getElementById("custName").value,
+            special_request: document.getElementById("specialRequests").value
+        };
 
-    const slots = generateDynamicSessionSlots(
-        eventObj.startTime,
-        eventObj.sessionDuration,
-        eventObj.sessions,
-        eventObj.seats
-    );
+        try {
+            const response = await fetch("/api/yummy/book", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
 
-    slots.forEach(slot => {
-        const option = document.createElement("option");
-        option.value = slot.time;
-        option.textContent = slot.time + (slot.disabled ? " (Fully Booked)" : "");
-        option.disabled = slot.disabled;
-        sessionSelect.appendChild(option);
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || "Reservation successful!");
+                form.reset();
+                document.getElementById("sessionTime").innerHTML = `<option value="">-- Select a session --</option>`;
+            } else {
+                alert(result.error || "Something went wrong.");
+            }
+        } catch (err) {
+            alert("Network error.");
+            console.error("Booking error:", err);
+        }
     });
 }
 
 /**
- * Generate session start times and disable them if no seats are left.
- */
-function generateDynamicSessionSlots(startTimeStr, sessionDuration, sessionsCount, remainingSeats) {
-    const slots = [];
-    const dt = new Date(`1970-01-01T${startTimeStr}`);
-    const seatsPerSession = Math.floor(remainingSeats / sessionsCount);
-
-    for (let i = 0; i < sessionsCount; i++) {
-        const timeLabel = formatYummyTime(dt);
-        const disabled = seatsPerSession <= 0;
-        slots.push({
-            time: timeLabel,
-            disabled: disabled
-        });
-        dt.setMinutes(dt.getMinutes() + Math.round(sessionDuration * 60));
-    }
-
-    return slots;
-}
-
-/**
- * Render the Yummy Events Table.
+ * Renders the Yummy Events Table.
  */
 function renderYummyEventsTable() {
     fetch('/api/yummyEvents')
@@ -128,7 +148,7 @@ function renderYummyEventsTable() {
 }
 
 /**
- * Generate session time labels for the table (not dropdown).
+ * Local-only time label generator for table (not for live seat status).
  */
 function generateSessionSlots(startTimeStr, sessionDuration, sessionsCount) {
     const slots = [];
@@ -140,11 +160,22 @@ function generateSessionSlots(startTimeStr, sessionDuration, sessionsCount) {
     return slots;
 }
 
-/**
- * Yummy-specific time formatter (HH:MM).
- */
 function formatYummyTime(dateObj) {
     const hh = String(dateObj.getHours()).padStart(2, '0');
     const mm = String(dateObj.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
+}
+function populateYummyDateDropdown() {
+    const dateSelect = document.getElementById("date");
+
+    // Static date range for the event (or fetch dynamically)
+    const start = new Date("2025-08-21");
+    const end = new Date("2025-08-25");
+
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const option = document.createElement("option");
+        option.value = d.toISOString().split("T")[0]; // YYYY-MM-DD
+        option.textContent = d.toDateString(); // e.g., "Thu Aug 21 2025"
+        dateSelect.appendChild(option);
+    }
 }

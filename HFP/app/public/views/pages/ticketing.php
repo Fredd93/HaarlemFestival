@@ -46,7 +46,9 @@
                     </div>
                     <div class="form-group">
                         <label for="date">Date *</label>
-                        <input type="date" id="date" name="date" required />
+                        <select id="date" name="date" required>
+                            <option value="">-- Select a date --</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="sessionTime">Session *</label>
@@ -76,6 +78,7 @@
                     <div class="form-group">
                         <label for="specialRequests">Special Requests</label>
                         <textarea id="specialRequests" name="specialRequests" rows="3"></textarea>
+                        <input type="hidden" id="sessionId" name="sessionId" />
                     </div>
                     <button type="submit" class="add-to-program-btn">Add to Program</button>
                 </form>
