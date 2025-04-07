@@ -1,5 +1,7 @@
 <?php
 require_once(__DIR__ . '/../../api/YummyEventApiController.php');
+require_once(__DIR__ . '/../../api/ReservationApiController.php');
+
 
 // Get All Yummy Events
 Route::add('/api/yummyEvents', function () {
@@ -23,4 +25,13 @@ Route::add('/api/yummyEvents/types', function () {
     $controller->getFoodTypes();
 }, ['GET']);
 
+$Controller = new YummyReservationController();
+
+Route::add('/api/yummy/sessions', function () use ($Controller) {
+    $Controller->getAvailableSessions();
+}, ['GET']);
+
+Route::add('/api/yummy/book', function () use ($Controller) {
+    $Controller->bookReservation();
+}, ['POST']);
 ?>
