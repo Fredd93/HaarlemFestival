@@ -31,6 +31,14 @@ require_once(__DIR__ . "/header.php");
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h3>Manage Tickets</h3>
+                    <a href="cms/tickets" class="btn btn-primary">Go to Tickets</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -1,6 +1,8 @@
 <?php
 require_once(__DIR__ . '/../models/YummyEventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class YummyEventApiController {
     private $yummyEventModel;
@@ -83,6 +85,8 @@ class YummyEventApiController {
     }
 
     public function updateYummyEvent($id) {
+                requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -117,6 +121,8 @@ class YummyEventApiController {
     }
 
     public function deleteYummyEvent($id) {
+        requireApiRole(['admin']);
+
         try {
             if ($this->yummyEventModel->deleteYummyEvent((int) $id)) {
                 ResponseHelper::sendJson(["message" => "Event deleted successfully"]);
@@ -127,5 +133,29 @@ class YummyEventApiController {
             ResponseHelper::sendError("Internal Server Error", 500);
         }
     }
+
+    public function updateSeats($id) {
+        requireApiRole(['admin']);
+
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+    
+            if (!isset($data['seats'])) {
+                ResponseHelper::sendError("Missing 'seats' field", 400);
+                return;
+            }
+    
+            $seats = (int) $data['seats'];
+    
+            if ($this->yummyEventModel->updateSeats((int) $id, $seats)) {
+                ResponseHelper::sendJson(["message" => "Seats updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update seats", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+    
 }
 ?>

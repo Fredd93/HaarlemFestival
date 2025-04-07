@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 require_once(__DIR__ . '/../models/JazzEventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class JazzEventApiController {
     private $jazzEventModel;
@@ -47,7 +49,29 @@ class JazzEventApiController {
             ResponseHelper::sendError("Failed to retrieve Jazz events by date", 500);
         }
     }
+    public function updateSeats($id) {
+        requireApiRole(['admin']);
 
-    // Removed: Get Jazz Events by Venue (Not needed anymore)
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+    
+            if (!isset($data['seats'])) {
+                ResponseHelper::sendError("Missing 'seats' field", 400);
+                return;
+            }
+    
+            $seats = (int) $data['seats'];
+    
+            if ($this->jazzEventModel->updateSeats((int) $id, $seats)) {
+                ResponseHelper::sendJson(["message" => "Seats updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update seats", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+    
+
 }
 ?>

@@ -38,51 +38,7 @@ class ContentController {
     /**
      * Handle the updating of content via a normal POST request.
      */
-    public function updateContent(array $post, array $files): void {
-        // Extract POST data
-        $id              = (int)($post['content_id'] ?? 0);
-        $page            = $post['content_page'] ?? '';
-        $title           = $post['content_title'] ?? '';
-        $contentType     = $post['content_type'] ?? '';
-        $descriptionTag  = $post['description_tag'] ?? 'p';
-        $description     = $post['content_description'] ?? '';
-        $currentImageUrl = $post['current_image_url'] ?? null;
-
-        // 1. Validate required fields
-        if (!$id || !$title || !$page) {
-            echo "<p class='alert alert-danger'>Invalid input data.</p>";
-            return;
-        }
-
-        // 2. Validate content_type for this page
-        $validTypes = $this->contentModel->getContentTypesByPage($page);
-        $validKeys  = array_map(fn($t) => $t['type_key'], $validTypes);
-
-        if (!in_array($contentType, $validKeys)) {
-            echo "<p class='alert alert-danger'>Invalid content type '{$contentType}' for page '{$page}'.</p>";
-            return;
-        }
-
-        // 3. Handle image upload (if a new file is uploaded)
-        $newImageUrl = $this->handleImageUpload($files, $page, $currentImageUrl);
-
-        // 4. Perform the update in the model
-        $success = $this->contentModel->updateContent(
-            $id,
-            $title,
-            $description,
-            $newImageUrl,
-            $descriptionTag
-        );
-
-        // 5. Redirect back to the CMS content list
-        if ($success) {
-            header("Location: /cms/content");
-            exit;
-        } else {
-            echo "<p class='alert alert-danger'>Failed to update content.</p>";
-        }
-    }
+   
 
     /**
      * Handle local image upload.

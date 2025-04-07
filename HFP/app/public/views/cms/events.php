@@ -37,6 +37,9 @@ $events = $eventModel->getAllEvents();
                         Edit
                     </button>
                     <button class="btn btn-danger btn-sm delete-btn" data-id="<?= $event->event_id ?>">Delete</button>
+                    <a href="/cms/tickets/<?= $event->event_name ?>" class="btn btn-secondary btn-sm mt-1">Manage Tickets</a>
+
+
                 </td>
             </tr>
             <?php endforeach; ?>

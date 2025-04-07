@@ -17,4 +17,9 @@ Route::add('/api/jazzEvents/date/([0-9]{4}-[0-9]{2}-[0-9]{2})', function ($date)
     $controller = new JazzEventApiController();
     $controller->getJazzEventsByDate($date);
 }, ['GET']);
+Route::add('/api/jazzEvents/seats/([0-9]+)', function ($id) {
+    $controller = new JazzEventApiController();
+    $controller->updateSeats((int) $id);
+}, ['PUT']);
+
 ?>

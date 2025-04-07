@@ -37,4 +37,10 @@ Route::add('/api/yummyEvents/delete/([0-9]+)', function ($id) use ($controller) 
     $controller->deleteYummyEvent(intval($id));
 }, ['DELETE']);
 
+Route::add('/api/yummyEvents/seats/([0-9]+)', function ($id) {
+    $controller = new YummyEventApiController();
+    $controller->updateSeats((int)$id);
+}, ['PUT']);
+
+
 ?>

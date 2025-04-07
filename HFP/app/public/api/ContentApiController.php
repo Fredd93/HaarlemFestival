@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/../models/ContentModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
 
 class ContentApiController {
     private $contentModel;
@@ -9,10 +10,9 @@ class ContentApiController {
         $this->contentModel = new ContentModel();
     }
 
-    /**
-     * Get all content for a specific page (optionally filtered by detail_id).
-     */
     public function getContentByPage($page) {
+        requireApiRole(['admin']);
+
         try {
             $detailId = isset($_GET['detail_id']) ? (int)$_GET['detail_id'] : null;
             $content = $this->contentModel->getContentByPage($page, $detailId);
@@ -22,10 +22,9 @@ class ContentApiController {
         }
     }
 
-    /**
-     * Get a specific content block by ID.
-     */
     public function getContentById($id) {
+        requireApiRole(['admin']);
+
         try {
             $content = $this->contentModel->getContentById($id);
             if ($content) {
@@ -38,10 +37,9 @@ class ContentApiController {
         }
     }
 
-    /**
-     * Create a new content block.
-     */
     public function createContent() {
+        requireApiRole(['admin']); 
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -73,10 +71,9 @@ class ContentApiController {
         }
     }
 
-    /**
-     * Update existing content
-     */
     public function updateContent($id) {
+        requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -106,10 +103,9 @@ class ContentApiController {
         }
     }
 
-    /**
-     * Delete content by ID.
-     */
     public function deleteContent($id) {
+        requireApiRole(['admin']); 
+
         try {
             $success = $this->contentModel->deleteContent($id);
 
@@ -123,10 +119,9 @@ class ContentApiController {
         }
     }
 
-    /**
-     * Get content types for a specific page
-     */
     public function getContentTypesByPage($page) {
+        requireApiRole(['admin']);
+
         try {
             $types = $this->contentModel->getContentTypesByPage($page);
             ResponseHelper::sendJson($types);
@@ -135,8 +130,9 @@ class ContentApiController {
         }
     }
 
-        // Get all detail pages (detail_id) for an event page like 'yummy'
     public function getDetailPages($page) {
+        requireApiRole(['admin']);
+
         try {
             $pages = $this->contentModel->getDetailPagesForEvent($page);
             ResponseHelper::sendJson($pages);
@@ -144,8 +140,7 @@ class ContentApiController {
             ResponseHelper::sendError("Failed to retrieve detail pages", 500);
         }
     }
-    
-    // Get content for a specific detail page
+
     public function getContentByPageAndDetail($page, $detailId) {
         try {
             $content = $this->contentModel->getContentByPageAndDetail($page, (int)$detailId);
@@ -154,5 +149,4 @@ class ContentApiController {
             ResponseHelper::sendError("Failed to retrieve detailed content", 500);
         }
     }
-    
 }
