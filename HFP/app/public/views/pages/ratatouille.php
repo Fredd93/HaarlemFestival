@@ -1,6 +1,6 @@
 <?php
 $activePage = 'yummy';
-$detailId = 2; // Ratatouille detail ID
+$detailId = 2;
 
 require_once(__DIR__ . "/../partials/navbar.php");
 
