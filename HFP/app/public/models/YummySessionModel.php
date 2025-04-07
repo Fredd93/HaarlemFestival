@@ -71,6 +71,39 @@ class YummySessionModel extends BaseModel
         $stmt->execute();
         return (bool)$stmt->fetchColumn();
     }
+    /**
+ * Get all sessions for a given restaurant/event.
+ */
+    public function getAllSessionsByEventId(int $eventId): array
+    {
+        $sql = "SELECT session_id, session_date, session_time, max_seats, available_seats
+                FROM Yummy_Session
+                WHERE event_id = :event_id
+                ORDER BY session_date, session_time";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":event_id", $eventId);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    /**
+     * Update max and available seats for a session.
+     */
+    public function updateSeats(int $sessionId, int $maxSeats, int $availableSeats): bool
+    {
+        $sql = "UPDATE Yummy_Session
+                SET max_seats = :max_seats,
+                    available_seats = :available_seats
+                WHERE session_id = :session_id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":max_seats", $maxSeats);
+        $stmt->bindParam(":available_seats", $availableSeats);
+        $stmt->bindParam(":session_id", $sessionId);
+    
+        return $stmt->execute();
+    }
+    
 
 }
 ?>
