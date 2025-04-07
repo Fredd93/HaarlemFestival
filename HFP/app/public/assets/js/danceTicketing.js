@@ -64,8 +64,8 @@ function setTable(day) {
                     <td>${event.duration} MINUTES</td>
                     <td>€${event.price}</td>
                     <td>${event.tickets_available}</td>
-                    <td><button class="add-to-program">Add To Program</button></td>
-                `;
+                    <td><button onclick="bookDanceTicket(${event.event_detail_id}, ${event.price})">Add To Program</button></td>
+                `;                
                 tbody.appendChild(row);
             });
         })
