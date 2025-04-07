@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 
 require_once(__DIR__ . '/../models/JazzEventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class JazzEventApiController {
     private $jazzEventModel;
@@ -48,6 +50,8 @@ class JazzEventApiController {
         }
     }
     public function updateSeats($id) {
+        requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
     

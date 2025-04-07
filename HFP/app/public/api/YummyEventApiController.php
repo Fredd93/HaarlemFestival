@@ -1,6 +1,8 @@
 <?php
 require_once(__DIR__ . '/../models/YummyEventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class YummyEventApiController {
     private $yummyEventModel;
@@ -83,6 +85,8 @@ class YummyEventApiController {
     }
 
     public function updateYummyEvent($id) {
+                requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -117,6 +121,8 @@ class YummyEventApiController {
     }
 
     public function deleteYummyEvent($id) {
+        requireApiRole(['admin']);
+
         try {
             if ($this->yummyEventModel->deleteYummyEvent((int) $id)) {
                 ResponseHelper::sendJson(["message" => "Event deleted successfully"]);
@@ -129,6 +135,8 @@ class YummyEventApiController {
     }
 
     public function updateSeats($id) {
+        requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
     

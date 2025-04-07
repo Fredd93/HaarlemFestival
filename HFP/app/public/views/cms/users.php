@@ -48,7 +48,7 @@ require_once(__DIR__ . "/header.php");
                         <label for="role" class="form-label">Role</label>
                         <select class="form-control" id="role">
                             <option value="admin">Admin</option>
-                            <option value="editor">Editor</option>
+                            <option value="employee">Employee</option>
                             <option value="user">User</option>
                         </select>
                     </div>

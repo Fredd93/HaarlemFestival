@@ -1,6 +1,8 @@
 <?php
 require_once(__DIR__ . '/../models/OrderModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class OrderApiController {
     private OrderModel $orderModel;
@@ -10,6 +12,8 @@ class OrderApiController {
     }
 
     public function getAllOrders() {
+        requireApiRole(['admin']);
+
         try {
             $orders = $this->orderModel->getAllOrders();
             ResponseHelper::sendJson($orders);
@@ -19,6 +23,8 @@ class OrderApiController {
     }
 
     public function getOrderById(int $id) {
+        requireApiRole(['admin']);
+
         try {
             $order = $this->orderModel->getOrderById($id);
             if ($order) {
@@ -32,6 +38,8 @@ class OrderApiController {
     }
 
     public function createOrder() {
+        requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
             if (!isset($data['user_id'], $data['total_price'], $data['payment_method'])) {
@@ -47,6 +55,8 @@ class OrderApiController {
     }
 
     public function deleteOrder(int $id) {
+        requireApiRole(['admin']);
+
         try {
             $success = $this->orderModel->deleteOrder($id);
             $success ? ResponseHelper::sendJson(["message" => "Order deleted"]) : ResponseHelper::sendError("Failed to delete order", 500);

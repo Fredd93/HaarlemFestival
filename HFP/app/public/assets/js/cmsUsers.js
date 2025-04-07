@@ -138,15 +138,25 @@ function changePassword(userId) {
 function deleteUser(id) {
     if (!confirm("Are you sure you want to delete this user?")) return;
 
-    fetch("/api/user/delete", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: id })
+    fetch(`/api/user/delete/${id}`, {
+        method: "DELETE"
     })
-    .then(response => response.json())
-    .then(() => loadUsers())
-    .catch(error => console.error("Error deleting user:", error));
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete user");
+        }
+        return response.json();
+    })
+    .then(() => {
+        alert("User deleted successfully.");
+        loadUsers(); // Reload the user list
+    })
+    .catch(error => {
+        console.error("Error deleting user:", error);
+        alert("An error occurred while deleting the user.");
+    });
 }
+
 
 /**
  * Simple function to escape HTML to prevent XSS attacks.

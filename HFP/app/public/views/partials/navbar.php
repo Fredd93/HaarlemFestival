@@ -56,7 +56,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <script>
 function logoutUser(event) {
     event.preventDefault();
-    fetch('/api/login/logout', { method: 'POST' })
+    fetch('/api/user/logout', { method: 'POST' })
         .then(response => {
             if (!response.ok) throw new Error("Logout failed");
             return response.text();

@@ -1,6 +1,7 @@
 <?php
 require_once(__DIR__ . '/../models/EventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); // 🔐 Include middleware
 
 class EventApiController {
     private $eventModel;
@@ -9,7 +10,7 @@ class EventApiController {
         $this->eventModel = new EventModel();
     }
 
-    // Get all events
+    // Public: Get all events
     public function getAllEvents() {
         try {
             $events = $this->eventModel->getAllEvents();
@@ -19,7 +20,7 @@ class EventApiController {
         }
     }
 
-    // Get a specific event by ID
+    // Public: Get specific event
     public function getEventById($id) {
         try {
             $event = $this->eventModel->getEventById($id);
@@ -33,39 +34,39 @@ class EventApiController {
         }
     }
 
-    // Create a new event
+    // 🔐 Admin: Create a new event
     public function createEvent() {
+        requireApiRole(['admin']); // 🔒
+
         try {
-            // Get JSON input
             $data = json_decode(file_get_contents("php://input"), true);
-    
-            // Validate
+
             if (!isset($data['name'], $data['description'], $data['image'])) {
                 ResponseHelper::sendError("Invalid input", 400);
                 return;
             }
-    
+
             $name = $data['name'];
             $description = $data['description'];
             $imagePath = $data['image'];
-    
-            // Save event to DB
+
             $success = $this->eventModel->createEvent($name, $description, $imagePath);
-    
+
             if ($success) {
                 ResponseHelper::sendJson(["message" => "Event created successfully"], 201);
             } else {
                 ResponseHelper::sendError("Failed to create event", 500);
             }
-    
+
         } catch (Exception $e) {
             ResponseHelper::sendError("Internal Server Error", 500);
         }
     }
-    
 
-    // Update an existing event
+    // 🔐 Admin: Update existing event
     public function updateEvent($id) {
+        requireApiRole(['admin']); // 🔒
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -91,8 +92,10 @@ class EventApiController {
         }
     }
 
-    // Delete an event
+    // 🔐 Admin: Delete event
     public function deleteEvent($id) {
+        requireApiRole(['admin']); // 🔒
+
         try {
             $success = $this->eventModel->deleteEvent($id);
 

@@ -2,6 +2,8 @@
 
 require_once(__DIR__ . '/../models/DanceModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
+
 
 class DanceAPIController{
     private $DanceModel;
@@ -38,6 +40,8 @@ class DanceAPIController{
         }
     }
     public function updateTicketsAvailable($id) {
+        requireApiRole(['admin']);
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
     

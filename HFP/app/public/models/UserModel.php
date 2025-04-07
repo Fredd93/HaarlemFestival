@@ -120,33 +120,30 @@ class UserModel extends BaseModel
         return $stmt->execute();
     }
 
-    public function loginUser($username, $email, $password) {
-        $stmt = self::$pdo->prepare('SELECT * FROM [User] WHERE username = :username AND email = :email');
-        $stmt->bindParam(":username", $username);
-        $stmt->bindParam(":email", $email);
-        $stmt->execute();
-        $user = $stmt->fetch();
+    public function loginUser(string $username, string $password): ?UserDTO
+    {
+        $userDTO = $this->getUserByUsername($username);
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['user_id']; // Set session
-            $_SESSION['user_name'] = $user['username'];
-            $_SESSION['user_role'] = $user['role'];
-            $_SESSION['user_email'] = $user['email'];
+        if (!$userDTO) {
+            ResponseHelper::sendError("Username not found", 404);
+            return null;
         }
-        else{
-            ResponseHelper::sendError("Combination of Username, Email and password incorrect", 400);
+
+        $hashedPassword = $this->getPasswordHashByUsername($username);
+
+        if (!$hashedPassword || !password_verify($password, $hashedPassword)) {
+            ResponseHelper::sendError("Invalid password", 401);
+            return null;
         }
+
+        $_SESSION['user_id'] = $userDTO->user_id;
+        $_SESSION['user_name'] = $userDTO->username;
+        $_SESSION['user_email'] = $userDTO->email;
+        $_SESSION['user_role'] = $userDTO->role;
+
+        return $userDTO;
     }
-    public function logoutUser() {
-        if (isset($_SESSION['user_id'])) {
-            unset($_SESSION['user_id']);
-            unset($_SESSION['user_email']);
-            unset($_SESSION['user_name']);
-            unset($_SESSION['user_role']);
-        }else{
-            ResponseHelper::sendError("User not logged in", 400);
-        }
-    }
+   
     public function registerUser($username, $email, $password) {
         $stmt = self::$pdo->prepare('SELECT username FROM [User] WHERE username = ?');
         $stmt->execute([$username]);
@@ -173,18 +170,7 @@ class UserModel extends BaseModel
         }
     }
 
-    public function getUser($username, $password) {
-        $stmt = self::$pdo->prepare('SELECT * FROM [User] WHERE username = ?');
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
-
-        if ($user && password_verify($password, $user['password'])) {
-            return getUserByUsername($username);
-        }
-        else{
-            return null;
-        }
-    }
+    
     public function getUserByUsername($username) {
         $stmt = self::$pdo->prepare('SELECT * FROM [User] WHERE username = ?');
         $stmt->execute([$username]);
@@ -197,5 +183,26 @@ class UserModel extends BaseModel
             return null;
         }
     }
+
+    public function getPasswordHashByUsername(string $username): ?string
+    {
+        $stmt = self::$pdo->prepare("SELECT password FROM [User] WHERE username = ?");
+        $stmt->execute([$username]);
+        $row = $stmt->fetch();
+    
+        return $row ? $row['password'] : null;
+    }
+    public function logoutUser(): void
+    {
+        if (isset($_SESSION['user_id'])) {
+            unset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['user_email'], $_SESSION['user_role']);
+            session_destroy();
+        } else {
+            ResponseHelper::sendError("User not logged in", 400);
+        }
+    }
+
+
+
 }
 ?>
