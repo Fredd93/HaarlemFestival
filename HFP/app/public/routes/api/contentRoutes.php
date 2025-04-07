@@ -47,3 +47,4 @@ Route::add('/api/content/page/([a-zA-Z0-9_-]+)/detail/([0-9]+)', function ($page
 }, ['GET']);
 
 
+
