@@ -60,6 +60,64 @@ class YummyEventModel extends BaseModel {
     
         return $allTypes; // Return array of unique food types
     }
+
+    public function createYummyEvent(string $name, int $sessions, float $session_duration, string $start_time, string $end_time, string $type, float $price, int $seats, ?string $img, ?string $description, int $stars = 0): ?YummyEventDTO {
+        $sql = "INSERT INTO Yummy_Events (name, sessions, session_duration, start_time, end_time, type, price, seats, img, description, stars) 
+                VALUES (:name, :sessions, :session_duration, :start_time, :end_time, :type, :price, :seats, :img, :description, :stars)";
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":name", $name);
+        $stmt->bindParam(":sessions", $sessions, PDO::PARAM_INT);
+        $stmt->bindParam(":session_duration", $session_duration);
+        $stmt->bindParam(":start_time", $start_time);
+        $stmt->bindParam(":end_time", $end_time);
+        $stmt->bindParam(":type", $type);
+        $stmt->bindParam(":price", $price);
+        $stmt->bindParam(":seats", $seats, PDO::PARAM_INT);
+        $stmt->bindParam(":img", $img);
+        $stmt->bindParam(":description", $description);
+        $stmt->bindParam(":stars", $stars, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            $id = self::$pdo->lastInsertId();
+            return $this->getById($id);
+        }
+        return null;
+    }
+    public function updateYummyEvent(int $id, string $name, int $sessions, float $session_duration, string $start_time, string $end_time, string $type, float $price, int $seats, ?string $img, ?string $description, int $stars): bool {
+        $sql = "UPDATE Yummy_Events SET name = :name, sessions = :sessions, session_duration = :session_duration, 
+                start_time = :start_time, end_time = :end_time, type = :type, price = :price, seats = :seats, 
+                img = :img, description = :description, stars = :stars WHERE event_detail_id = :id";
+
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":name", $name);
+        $stmt->bindParam(":sessions", $sessions, PDO::PARAM_INT);
+        $stmt->bindParam(":session_duration", $session_duration);
+        $stmt->bindParam(":start_time", $start_time);
+        $stmt->bindParam(":end_time", $end_time);
+        $stmt->bindParam(":type", $type);
+        $stmt->bindParam(":price", $price);
+        $stmt->bindParam(":seats", $seats, PDO::PARAM_INT);
+        $stmt->bindParam(":img", $img);
+        $stmt->bindParam(":description", $description);
+        $stmt->bindParam(":stars", $stars, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+    public function deleteYummyEvent(int $id): bool {
+        $sql = "DELETE FROM Yummy_Events WHERE event_detail_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function updateSeats(int $id, int $seats): bool {
+        $sql = "UPDATE Yummy_Events SET seats = :seats WHERE event_detail_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':seats', $seats, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
     
     private function mapToDTO(array $row): YummyEventDTO {
         return new YummyEventDTO(
@@ -75,9 +133,9 @@ class YummyEventModel extends BaseModel {
             (int) $row["stars"],
             $row["img"] ?? null,
             $row["description"] ?? null,
-            // Pass child_price if present, otherwise default to 0.0
-            isset($row["child_price"]) ? (float)$row["child_price"] : 0.0
+            isset($row["child_price"]) ? (float) $row["child_price"] : null 
         );
-    }    
+    }
+    
 }
 ?>

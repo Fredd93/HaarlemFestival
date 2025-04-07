@@ -14,5 +14,7 @@ class UserDTO {
         $this->role = $role;
         $this->registration_date = $registration_date;
     }
+
+    
 }
 ?>

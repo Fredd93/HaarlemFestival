@@ -11,20 +11,20 @@ class JazzEventDTO {
     public string $image;
     public string $event_date;
     public string $description;
-    public int $seats;  // new property for number of seats
+    public ?int $seats; // ✅ New field
 
     public function __construct(
-        int $event_detail_id, 
-        string $name, 
-        string $time, 
-        string $venue, 
-        int $artist_id, 
-        float $duration, 
-        float $price, 
-        string $image, 
-        string $event_date, 
+        int $event_detail_id,
+        string $name,
+        string $time,
+        string $venue,
+        int $artist_id,
+        float $duration,
+        float $price,
+        string $image,
+        string $event_date,
         string $description,
-        int $seats   // new constructor parameter
+        ?int $seats = null
     ) {
         $this->event_detail_id = $event_detail_id;
         $this->name = $name;
@@ -36,7 +36,7 @@ class JazzEventDTO {
         $this->image = $image;
         $this->event_date = $event_date;
         $this->description = $description;
-        $this->seats = $seats;  // assign seats
+        $this->seats = $seats;
     }
 }
 ?>

@@ -7,12 +7,11 @@ class JazzEventModel extends BaseModel {
 
     // Get all Jazz Events
     public function getAllJazzEvents() {
-        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description, seats FROM " . $this->table;
+        $sql = "SELECT * FROM " . $this->table;
         $stmt = self::$pdo->query($sql);
         $stmt->execute();
         $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Convert database results to DTO objects
         $eventDTOs = [];
         foreach ($events as $event) {
             $eventDTOs[] = new JazzEventDTO(
@@ -26,7 +25,7 @@ class JazzEventModel extends BaseModel {
                 $event['image'],
                 $event['event_date'],
                 $event['description'],
-                (int) $event['seats'] // Added seats
+                isset($event['seats']) ? (int)$event['seats'] : null // ✅
             );
         }
 
@@ -57,7 +56,7 @@ class JazzEventModel extends BaseModel {
             $event['image'],
             $event['event_date'],
             $event['description'],
-            (int) $event['seats'] // Added seats
+            isset($event['seats']) ? (int)$event['seats'] : null // ✅
         );
     }
 
@@ -83,11 +82,20 @@ class JazzEventModel extends BaseModel {
                 $event['image'],
                 $event['event_date'],
                 $event['description'],
-                (int) $event['seats'] // Added seats
+                isset($event['seats']) ? (int)$event['seats'] : null // ✅
             );
         }
 
         return $eventDTOs;
     }
+
+    public function updateSeats(int $id, int $seats): bool {
+        $sql = "UPDATE Jazz_Events SET seats = :seats WHERE event_detail_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':seats', $seats, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
 }
 ?>

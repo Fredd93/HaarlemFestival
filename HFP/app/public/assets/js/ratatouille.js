@@ -1,38 +1,49 @@
-// Image Slideshow for "A Glimpse of Ratatouille"
 let slideIndex = 1;
 
 function showSlides(n) {
-    let slides = document.querySelectorAll(".slide");
-    let dots = document.querySelectorAll(".dot");
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
 
-    if (n > slides.length) { slideIndex = 1; }
-    if (n < 1) { slideIndex = slides.length; }
+    const totalSlides = slides.length;
+    const totalDots = dots.length;
+
+    if (totalSlides === 0 || totalDots === 0) return;
+
+    if (n > totalSlides) slideIndex = 1;
+    if (n < 1) slideIndex = totalSlides;
 
     slides.forEach(slide => slide.style.display = "none");
     dots.forEach(dot => dot.classList.remove("active"));
 
-    slides[slideIndex - 1].style.display = "block";
-    dots[slideIndex - 1].classList.add("active");
+    if (slides[slideIndex - 1]) {
+        slides[slideIndex - 1].style.display = "block";
+    }
+
+    if (dots[slideIndex - 1]) {
+        dots[slideIndex - 1].classList.add("active");
+    }
 }
 
-// Move Slide
 function moveSlide(n) {
     showSlides(slideIndex += n);
 }
 
-// Jump to a specific slide
 function currentSlide(n) {
     showSlides(slideIndex = n);
 }
 
-// Auto Play
-setInterval(() => {
-    moveSlide(1);
-}, 5000);
-
-// Initialize the slider on page load
 document.addEventListener("DOMContentLoaded", () => {
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    if (slides.length === 0 || dots.length === 0) {
+        console.warn("No slides or dots found.");
+        return;
+    }
+
     showSlides(slideIndex);
+
+    setInterval(() => {
+        moveSlide(1);
+    }, 5000);
 });
-
-
