@@ -1,4 +1,4 @@
-// File: jazzTicketing.js
+// jazzTicketing.js
 
 document.addEventListener('DOMContentLoaded', () => {
     // On page load, build the dynamic date buttons
@@ -6,13 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * 1) Fetch all Jazz events from the API
- * 2) Extract unique dates
- * 3) Create date buttons in #jazz-day-buttons
- * 4) Also add a "Full Access Passes" button
+ * Fetch all Jazz events from the API,
+ * extract unique dates, and build date buttons in #jazz-day-buttons.
  */
 function fetchJazzDates() {
-    fetch('/api/jazzEvents') // Adjust if your endpoint differs
+    fetch('/api/jazzEvents') // Adjust endpoint if needed
         .then(response => response.json())
         .then(events => {
             console.log("Jazz events fetched:", events);
@@ -23,7 +21,7 @@ function fetchJazzDates() {
 }
 
 /**
- * Create a button for each unique date, plus a "Full Access Passes" button.
+ * Create a button for each unique date plus a "Full Access Passes" button.
  */
 function createJazzDateButtons(dates) {
     const container = document.getElementById("jazz-day-buttons");
@@ -32,21 +30,18 @@ function createJazzDateButtons(dates) {
         return;
     }
 
-    // Clear any old content
-    container.innerHTML = "";
+    container.innerHTML = ""; // Clear any old content
 
     // Build one button per unique date
     dates.forEach(dateStr => {
         const btn = document.createElement("button");
         btn.classList.add("jazz-day-btn");
-        btn.textContent = formatJazzDate(dateStr); // e.g. parse "2025-08-07" => "Thu, 07 Aug"
+        btn.textContent = formatJazzDate(dateStr); // e.g. "Thu, 07 Aug"
 
-        // When clicked, fetch events for that date
+        // When clicked, remove active class from all buttons and fetch events for this date
         btn.addEventListener("click", () => {
-            // Remove 'active' from other date buttons
             document.querySelectorAll(".jazz-day-btn").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
-
             fetchJazzEventsByDate(dateStr);
         });
 
@@ -71,19 +66,17 @@ function createJazzDateButtons(dates) {
 }
 
 /**
- * Format a date string like "2025-08-07" into a user-friendly label (e.g. "Thu, 07 Aug").
+ * Format a date string like "2025-08-07" into a friendly label (e.g. "Thu, 07 Aug").
  */
 function formatJazzDate(dateStr) {
-    // If your DB returns something like "2025-08-07"
     const [yyyy, mm, dd] = dateStr.split("-");
     const dateObj = new Date(`${yyyy}-${mm}-${dd}`);
-    // Example format: "Thu, 07 Aug"
     const options = { weekday: 'short', day: 'numeric', month: 'short' };
     return dateObj.toLocaleDateString('en-GB', options);
 }
 
 /**
- * Fetch & display Jazz events for a given date (unchanged from your existing logic).
+ * Fetch and display Jazz events for a given date.
  */
 function fetchJazzEventsByDate(date) {
     fetch(`/api/jazzEvents/date/${date}`)
@@ -94,6 +87,7 @@ function fetchJazzEventsByDate(date) {
 
 /**
  * Renders the fetched Jazz events into the table body (#jazzTableBody).
+ * Now includes a "Seats" column.
  */
 function renderJazzEvents(events) {
     const tableBody = document.querySelector('#jazzTableBody');
@@ -102,7 +96,7 @@ function renderJazzEvents(events) {
     if (!events || events.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="4">No Jazz events available for this date.</td>
+                <td colspan="5">No Jazz events available for this date.</td>
             </tr>
         `;
         return;
@@ -117,6 +111,7 @@ function renderJazzEvents(events) {
             <td>${event.name}</td>
             <td>${timeRange}</td>
             <td>${event.venue}</td>
+            <td>${event.seats}</td>
             <td>
                 <button onclick="addJazzToProgram(${event.event_detail_id})">
                     Add to Program
@@ -136,36 +131,11 @@ function renderJazzPassesStatic() {
 
     // Example pass data
     const passOptions = [
-        {
-            name: "Full Day Pass - Thursday",
-            time: "18:00",
-            duration: 4.0,
-            price: 35.00
-        },
-        {
-            name: "Full Day Pass - Friday",
-            time: "18:00",
-            duration: 4.0,
-            price: 35.00
-        },
-        {
-            name: "Full Day Pass - Saturday",
-            time: "18:00",
-            duration: 4.0,
-            price: 35.00
-        },
-        {
-            name: "Full Day Pass - Sunday",
-            time: "18:00",
-            duration: 4.0,
-            price: 35.00
-        },
-        {
-            name: "Full Festival Pass",
-            time: "18:00",
-            duration: 16.0,
-            price: 80.00
-        }
+        { name: "Full Day Pass - Thursday", time: "18:00", duration: 4.0, price: 35.00 },
+        { name: "Full Day Pass - Friday",     time: "18:00", duration: 4.0, price: 35.00 },
+        { name: "Full Day Pass - Saturday",   time: "18:00", duration: 4.0, price: 35.00 },
+        { name: "Full Day Pass - Sunday",     time: "18:00", duration: 4.0, price: 35.00 },
+        { name: "Full Festival Pass",         time: "18:00", duration: 16.0, price: 80.00 }
     ];
 
     passOptions.forEach(pass => {
@@ -174,6 +144,8 @@ function renderJazzPassesStatic() {
         row.innerHTML = `
             <td><strong>${pass.name}</strong></td>
             <td>${timeRange}</td>
+            <td>—</td>
+            <td>—</td>
             <td>€${pass.price}</td>
             <td>
                 <button onclick="addJazzToProgram('${pass.name}')">
@@ -187,7 +159,7 @@ function renderJazzPassesStatic() {
     // Optional note row
     const noteRow = document.createElement('tr');
     noteRow.innerHTML = `
-        <td colspan="4" class="access-pass-note">
+        <td colspan="6" class="access-pass-note">
             * Full Day Pass covers all artists on that specific day.
               Full Festival Pass covers all days (Thu-Sun).
         </td>
@@ -200,14 +172,13 @@ function renderJazzPassesStatic() {
  */
 function addJazzToProgram(eventId) {
     console.log("Adding event to program:", eventId);
-    // e.g., localStorage or a POST to your server
+    // Example: localStorage usage or an AJAX POST to the server.
 }
 
 /* ----------------------------------------------------
    TIME FORMAT HELPERS (unchanged)
-   ---------------------------------------------------- */
+---------------------------------------------------- */
 function parseTime(timeStr) {
-    // "21:00" or "21:00:00.0000000"
     const [hh, mm] = timeStr.split(':');
     return {
         hour: parseInt(hh, 10),
