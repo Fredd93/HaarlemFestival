@@ -36,7 +36,8 @@ Class DanceModel extends BaseModel
             $row["session_type"],
             (int)$row["duration"],
             (int)$row["price"],
-            $row["event_date"]
+            $row["event_date"],
+            (int) $row['tickets_available'] 
         );
     }
     
@@ -48,12 +49,13 @@ Class DanceModel extends BaseModel
                 D.session_type, 
                 D.duration, 
                 D.price, 
-                D.event_date, 
+                D.event_date,
+                D.tickets_available,
                 STRING_AGG(A.name, '/') AS artists
                 FROM Dance_Events D
                 JOIN Dance_Event_Artists E ON D.event_detail_id = E.event_detail_id
                 JOIN Artists A ON A.artist_id = E.artist_id
-                GROUP BY D.event_detail_id, D.time, D.venue, D.session_type, D.duration, D.price, D.event_date;";
+                GROUP BY D.event_detail_id, D.time, D.venue, D.session_type, D.duration, D.price, D.event_date, D.tickets_available;";
         
         $stmt = self::$pdo->prepare($sql);
         $stmt->execute();

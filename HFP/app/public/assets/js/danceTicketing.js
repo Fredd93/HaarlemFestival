@@ -1,5 +1,3 @@
-// File: danceEventsTable.js
-
 document.addEventListener("DOMContentLoaded", () => {
     fetchDanceDays();
 });
@@ -27,7 +25,7 @@ function fetchDanceDays() {
                 container.appendChild(btn);
             });
 
-            // Optionally auto-load the first date:
+            // Optionally, auto-load the first date:
             if (uniqueDates.length > 0) {
                 setTable(uniqueDates[0]);
             }
@@ -53,7 +51,7 @@ function setTable(day) {
             if (!tbody) return;
             tbody.innerHTML = "";
 
-            // Filter events by the selected day using event_date
+            // Filter events by the selected day (using event_date)
             const filteredEvents = events.filter(event => event.event_date === day);
 
             filteredEvents.forEach(event => {
@@ -65,6 +63,7 @@ function setTable(day) {
                     <td>${event.session_type}</td>
                     <td>${event.duration} MINUTES</td>
                     <td>€${event.price}</td>
+                    <td>${event.tickets_available}</td>
                     <td><button class="add-to-program">Add To Program</button></td>
                 `;
                 tbody.appendChild(row);

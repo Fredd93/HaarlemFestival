@@ -61,8 +61,6 @@ class YummyEventModel extends BaseModel {
         return $allTypes; // Return array of unique food types
     }
     
-    
-
     private function mapToDTO(array $row): YummyEventDTO {
         return new YummyEventDTO(
             $row["event_detail_id"],

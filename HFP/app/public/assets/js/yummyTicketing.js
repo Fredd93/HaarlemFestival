@@ -1,37 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
     fetchAllRestaurants();
+    renderYummyEventsTable();
 });
 
-// We'll store the Yummy events globally so we can find them on restaurant selection
+// Global variable to store fetched events
 let allYummyEvents = [];
 
 /**
- * Fetch all Yummy restaurants from the API
+ * Fetch all Yummy events from your API.
  */
 function fetchAllRestaurants() {
-    fetch('/api/yummyEvents') // Matches your YummyApiRoutes => getAllYummyEvents
+    fetch('/api/yummyEvents')
         .then(response => response.json())
         .then(data => {
-            allYummyEvents = data; // store globally
+            console.log("API Response:", data);
+            allYummyEvents = data;
             populateRestaurantDropdown(allYummyEvents);
-            console.log("Fetched Yummy Events:", allYummyEvents);
         })
         .catch(err => console.error("Error fetching Yummy events:", err));
 }
 
 /**
- * Fill the #restaurant dropdown with the names from the fetched data
+ * Populate the restaurant dropdown with unique restaurant names.
  */
 function populateRestaurantDropdown(events) {
     const restaurantSelect = document.getElementById("restaurant");
     if (!restaurantSelect) return;
 
-    // Clear existing options (except the default)
     while (restaurantSelect.options.length > 1) {
         restaurantSelect.remove(1);
     }
 
-    // Extract unique restaurant names
     const uniqueNames = [...new Set(events.map(e => e.name))];
 
     uniqueNames.forEach(name => {
@@ -41,77 +40,111 @@ function populateRestaurantDropdown(events) {
         restaurantSelect.appendChild(option);
     });
 
-    // Listen for changes
     restaurantSelect.addEventListener("change", onRestaurantChange);
 }
 
 /**
- * Called when user picks a restaurant from the dropdown.
- * We find ALL events matching that restaurant name, generate session times,
- * and fill #sessionTime dropdown with all possible session start times.
+ * When a restaurant is selected, update session dropdown with available slots.
  */
 function onRestaurantChange(e) {
-    const selectedName = e.target.value;
+    const selectedRestaurant = e.target.value;
+    if (!selectedRestaurant) return;
+
     const sessionSelect = document.getElementById("sessionTime");
     if (!sessionSelect) return;
 
-    // Clear old sessions
+    // Clear existing session options
     sessionSelect.innerHTML = `<option value="">-- Select a session --</option>`;
 
-    if (!selectedName) return; // user picked the default
-
-    // 1) Find all YummyEvent rows that match this restaurant name
-    //    In case you have multiple rows for the same restaurant
-    const matchedEvents = allYummyEvents.filter(ev => ev.name === selectedName);
-
-    if (matchedEvents.length === 0) {
-        console.warn("No events found for restaurant:", selectedName);
+    const eventObj = allYummyEvents.find(evt => evt.name === selectedRestaurant);
+    if (!eventObj) {
+        console.log("No event found for selected restaurant:", selectedRestaurant);
         return;
     }
 
-    // 2) Generate session slots for each matching event
-    let combinedSlots = [];
-    matchedEvents.forEach(eventData => {
-        const slots = generateSessionSlots(
-            eventData.startTime,
-            eventData.sessionDuration,
-            eventData.sessions
-        );
-        // Collect them in a single array
-        combinedSlots.push(...slots);
-    });
+    const slots = generateDynamicSessionSlots(
+        eventObj.startTime,
+        eventObj.sessionDuration,
+        eventObj.sessions,
+        eventObj.seats
+    );
 
-    // 3) Remove duplicates and sort them
-    //    (If multiple events overlap or produce the same times)
-    const uniqueSlots = [...new Set(combinedSlots)].sort();
-
-    // 4) Populate the session dropdown with the final list
-    uniqueSlots.forEach((time, index) => {
+    slots.forEach(slot => {
         const option = document.createElement("option");
-        option.value = time; // e.g. "18:00"
-        option.textContent = `Session ${index + 1} (${time})`;
+        option.value = slot.time;
+        option.textContent = slot.time + (slot.disabled ? " (Fully Booked)" : "");
+        option.disabled = slot.disabled;
         sessionSelect.appendChild(option);
     });
 }
 
 /**
- * Generate session start times based on startTime, sessionDuration (hours), and sessions count.
- * e.g. if startTime="18:00:00", sessionDuration=1.5, sessions=3 => ["18:00","19:30","21:00"]
+ * Generate session start times and disable them if no seats are left.
+ */
+function generateDynamicSessionSlots(startTimeStr, sessionDuration, sessionsCount, remainingSeats) {
+    const slots = [];
+    const dt = new Date(`1970-01-01T${startTimeStr}`);
+    const seatsPerSession = Math.floor(remainingSeats / sessionsCount);
+
+    for (let i = 0; i < sessionsCount; i++) {
+        const timeLabel = formatYummyTime(dt);
+        const disabled = seatsPerSession <= 0;
+        slots.push({
+            time: timeLabel,
+            disabled: disabled
+        });
+        dt.setMinutes(dt.getMinutes() + Math.round(sessionDuration * 60));
+    }
+
+    return slots;
+}
+
+/**
+ * Render the Yummy Events Table.
+ */
+function renderYummyEventsTable() {
+    fetch('/api/yummyEvents')
+        .then(response => response.json())
+        .then(events => {
+            const tbody = document.querySelector("#yummy-events-table tbody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            events.forEach(event => {
+                const slots = generateSessionSlots(event.startTime, event.sessionDuration, event.sessions);
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${event.name}</td>
+                    <td>${event.sessionDuration} hours</td>
+                    <td>${slots.join(", ")}</td>
+                    <td>${event.seats}</td>
+                    <td>€${event.price} (Adult) / €${event.childPrice} (Child)</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error("Error fetching yummy events:", error));
+}
+
+/**
+ * Generate session time labels for the table (not dropdown).
  */
 function generateSessionSlots(startTimeStr, sessionDuration, sessionsCount) {
     const slots = [];
     const dt = new Date(`1970-01-01T${startTimeStr}`);
-
     for (let i = 0; i < sessionsCount; i++) {
-        slots.push(formatTimeYummy(dt));
+        slots.push(formatYummyTime(dt));
         dt.setMinutes(dt.getMinutes() + Math.round(sessionDuration * 60));
     }
     return slots;
 }
 
-function formatTimeYummy(dateObj) {
+/**
+ * Yummy-specific time formatter (HH:MM).
+ */
+function formatYummyTime(dateObj) {
     const hh = String(dateObj.getHours()).padStart(2, '0');
     const mm = String(dateObj.getMinutes()).padStart(2, '0');
     return `${hh}:${mm}`;
 }
-

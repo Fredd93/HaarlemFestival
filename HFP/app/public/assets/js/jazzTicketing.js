@@ -111,6 +111,7 @@ function renderJazzEvents(events) {
             <td>${event.name}</td>
             <td>${timeRange}</td>
             <td>${event.venue}</td>
+            <td>€${event.price}</td>
             <td>${event.seats}</td>
             <td>
                 <button onclick="addJazzToProgram(${event.event_detail_id})">
@@ -145,8 +146,8 @@ function renderJazzPassesStatic() {
             <td><strong>${pass.name}</strong></td>
             <td>${timeRange}</td>
             <td>—</td>
-            <td>—</td>
             <td>€${pass.price}</td>
+            <td>—</td>
             <td>
                 <button onclick="addJazzToProgram('${pass.name}')">
                     Add to Program

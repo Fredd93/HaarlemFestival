@@ -14,6 +14,7 @@
                 <th>Name</th>
                 <th>Time</th>
                 <th>Venue</th>
+                <th>Price</th>
                 <th>Seats</th>
                 <th>Action</th>
             </tr>

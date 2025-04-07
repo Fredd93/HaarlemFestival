@@ -9,6 +9,7 @@
             <th>Session Type</th>
             <th>Duration</th>
             <th>Price</th>
+            <th>Tickets Available</th>
             <th>Action</th>
         </tr>
     </thead>
