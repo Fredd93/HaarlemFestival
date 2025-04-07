@@ -149,6 +149,34 @@ h2.teyler-text{
     border:1px solid var(--situationalCTA);
 }
 
+.teyler-detail-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.teyler-detail-times-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.teyler-detail-top{
+    background-color: color-mix(in srgb, var(--primaryCTA) 50%, transparent);
+    padding: 5%;
+    padding-top: 20px;
+    border-radius: 25px;
+    margin: 10px;
+}
+.teyler-detail-bottom{
+    background-color: var(--negativeCTA);
+    padding: 2%;
+    border-radius: 25px;
+}
+
 @media (max-width: 760px) {
     .teyler-mobile-only{
         display: inherit;
