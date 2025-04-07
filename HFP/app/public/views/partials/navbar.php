@@ -14,7 +14,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
 <nav class="navbar">
     <div class="logo">
-        <a href="/"><img src="../../assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
+        <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
     </div>
 
     <!-- Hamburger Menu Icon -->
@@ -34,16 +34,19 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <li><a href="/teylers" class="<?= ($activePage === 'teylers') ? 'active' : '' ?>">Teyler's</a></li>
             </ul>
         </li>
-        <li><a href="ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
-        <li><a href="program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+
+        <li><a href="/ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
+        <li><a href="/program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+
         <li>
-            <a href="<?= $isLoggedIn ? '#' : 'login' ?>" 
+            <a href="<?= $isLoggedIn ? '#' : '/login' ?>" 
                id="auth-button" 
                class="<?= ($activePage === 'login') ? 'active' : '' ?>"
                onclick="<?= $isLoggedIn ? 'logoutUser(event)' : '' ?>">
                <?= $isLoggedIn ? 'Logout' : 'Login' ?>
             </a>
         </li>
+
         <li>
             <div class="nav-right">
                 <?php include(__DIR__ . "/personalProgram.php"); ?>
@@ -76,12 +79,9 @@ document.getElementById("closeBtn").addEventListener("click", function () {
     document.getElementById("hamburger").style.display = "block";
 });
 
-
 document.getElementById("eventsDropdown").addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent page jump
+    e.preventDefault();
     const menu = document.getElementById("eventsDropdownMenu");
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 });
-
-
 </script>

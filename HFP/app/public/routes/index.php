@@ -1,5 +1,6 @@
 <?php
     require_once(__DIR__ . "/../controllers/ContentController.php");
+    require_once(__DIR__ . "/../middleware/apiAuthMiddleware.php");
 
 
     Route::add('/', function () {
@@ -54,6 +55,8 @@
         require(__DIR__ . "/../views/pages/jazz.php");
     });
     Route::add('/ticketing', function () {
+        requireApiLogin();
+        requireApiRole(['user']);
         require(__DIR__ . "/../views/pages/ticketing.php");
     });
 

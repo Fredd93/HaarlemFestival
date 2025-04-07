@@ -1,3 +1,8 @@
+<?php
+    $activePage = 'tickets';
+    require_once(__DIR__ . "/../partials/navbar.php");
+    ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +14,7 @@
 </head>
 <body>
 
-    <?php
-    $activePage = 'tickets';
-    require_once(__DIR__ . "/../partials/navbar.php");
-    ?>
+    
     
     <h1>Ticketing Page</h1>
 
