@@ -1,0 +1,167 @@
+:root {
+    --primaryCTA: #FFCC70BF;
+    --secondaryCTA: #8ECDDD;
+    --situationalCTA: #22668D;
+    --negativeCTA: #FFFADD;
+}
+.navbar {
+    background-color: #FFCC70BF;
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap');
+
+/* Reset Default Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.banner-image{
+    min-width: 100%;
+    max-width: 100%;
+}
+.teyler-title{
+    font-size: 450%;
+    font-family: 'Lato', sans-serif;
+    padding: 2%;
+    padding-left: 4%;
+}
+
+.teyler-text{
+    font-family: 'Lato', sans-serif;
+    padding-left: 4%;
+    padding-right: 4%;
+}
+
+
+.teyler-card-desktop{
+    min-width: 100%;
+    max-width: 100%;
+    background-color: color-mix(in srgb, var(--primaryCTA) 50%, transparent);
+    padding: 4%;
+    border-radius: 25px;
+}
+
+.teyler-card-mobile{
+    width: 20em;
+    height: 20em;
+    background-color: color-mix(in srgb, var(--primaryCTA) 50%, transparent);
+    padding: 4%;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+h2.teyler-text{
+    font-size: 2.5em;
+}
+.teyler-card-mobile h2{
+    font-size: 2.0em;
+}
+
+.teyler-card-desktop-division{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 100%;
+    max-width: 100%;
+}
+.teyler-card-desktop-image{
+    border-radius: 25px;
+    min-width: 300px;
+    min-height: 200px;
+    max-width: 300px;
+    max-height: 200px;
+    object-fit: cover;
+}
+.teyler-card-mobile-overlay{
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    background-color: color-mix(in srgb, var(--primaryCTA) 100%, transparent);
+}
+.teyler-card-mobile-image{
+    position: absolute;
+    max-height: 100%;
+    object-fit: cover;
+    align-self: center;
+}
+
+.teyler-card-container{
+    display: flex;
+    flex-direction: column;
+    padding: 8%;
+    gap: 2em;
+}
+@media (max-width: 760px) {
+    .teyler-card-container{
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+@media (min-width: 760px) {
+    .teyler-card-container{
+        align-items: left;
+    }
+}
+
+.teyler-card-desktop-button {
+    background-color: #22668D;
+    color: #FFFADD;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width: 50%;
+    height:15%;
+    position: absolute;
+    right:10px;
+    bottom: 0px;
+}
+.teyler-card-mobile-button {
+    background-color: #22668D;
+    color: #FFFADD;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width: 75%;
+    height:3em;
+}
+.teyler-card-desktop-button:hover,  .teyler-card-mobile-button:hover{
+    background: #FFFADD;
+    color:  #22668D;
+    border:1px solid var(--situationalCTA);
+}
+
+@media (max-width: 760px) {
+    .teyler-mobile-only{
+        display: inherit;
+    }
+    .teyler-desktop-only{
+        display: none;
+    }
+}
+@media (min-width: 760px) {
+    .teyler-desktop-only{
+        display: inherit;
+    }
+    .teyler-mobile-only{
+        display: none;
+    }
+    }
