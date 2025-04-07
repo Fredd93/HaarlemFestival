@@ -4,8 +4,16 @@
     <title>Haarlem Festival - Ticketing</title>
     <!-- Adjust the path so ticketingStyle.css is correctly loaded -->
     <link rel="stylesheet" href="../../assets/css/ticketingStyle.css" />
+    <link rel="stylesheet" href="../../assets/css/navbarStyle.css"/>
+    <link rel="stylesheet" href="../../assets/css/footer.css">
 </head>
 <body>
+
+    <?php
+    $activePage = 'tickets';
+    require_once(__DIR__ . "/../partials/navbar.php");
+    ?>
+    
     <h1>Ticketing Page</h1>
 
     <!-- Main Tabs (Dance, Yummy, Jazz, History) -->
@@ -106,6 +114,10 @@
         <h2>A Stroll through History</h2>
         <p>History events go here...</p>
     </div>
+    <?php
+            
+        require(__DIR__ . "/../partials/footer.php");
+    ?>
 
     <!-- =========================
          SCRIPTS

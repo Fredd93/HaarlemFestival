@@ -12,7 +12,15 @@ class DanceTicketModel extends BaseModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    public function getEventIdByDetailId(int $eventDetailId): ?int {
+        $sql = "SELECT event_id FROM Event_Detail_Reference WHERE event_detail_id = :detail_id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':detail_id', $eventDetailId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['event_id'] : null;
+    }
+    
     public function getByEventId(int $eventDetailId): array {
         $sql = "SELECT * FROM Dance_Ticket WHERE event_detail_id = :event_detail_id";
         $stmt = self::$pdo->prepare($sql);
@@ -40,7 +48,7 @@ class DanceTicketModel extends BaseModel {
     }
     
 
-    public function bookTicket(string $danceType, string $ticketType, int $eventDetailId, ?int $passId, float $price): bool {
+    public function bookTicket(string $danceType, string $ticketType, int $eventDetailId, ?int $passId, float $price): ?int {
         $sql = "INSERT INTO Dance_Ticket (dance_type, ticket_type, event_detail_id, pass_id, price)
                 VALUES (:danceType, :ticketType, :eventDetailId, :passId, :price)";
         $stmt = self::$pdo->prepare($sql);
@@ -49,7 +57,12 @@ class DanceTicketModel extends BaseModel {
         $stmt->bindParam(":eventDetailId", $eventDetailId, PDO::PARAM_INT);
         $stmt->bindParam(":passId", $passId, PDO::PARAM_INT);
         $stmt->bindParam(":price", $price);
-        return $stmt->execute();
+    
+        if ($stmt->execute()) {
+            return (int) self::$pdo->lastInsertId();
+        }
+        return null;
     }
+    
 }
 ?>

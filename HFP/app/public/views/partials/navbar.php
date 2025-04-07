@@ -33,9 +33,8 @@ $eventLabel = $eventActive ? $eventNames[$activePage] : 'Events';
                 <li><a href="teylers" class="<?= ($activePage === 'teylers') ? 'active' : '' ?>">Teyler's</a></li>
             </ul>
         </li>
-
         <li><a href="ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
-        <li><a href="program.php" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+        <li><a href="program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
         <li>
         <div class="nav-right">
             <?php include(__DIR__ . "/personalProgram.php"); ?> <!-- 🔹 Now inside Navbar -->

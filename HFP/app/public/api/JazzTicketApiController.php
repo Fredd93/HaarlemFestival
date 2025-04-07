@@ -1,12 +1,15 @@
 <?php
 require_once(__DIR__ . '/../models/JazzTicketModel.php');
+require_once(__DIR__ . '/../models/PersonalProgramModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
 
 class JazzTicketApiController {
     private $jazzTicketModel;
+    private $programModel;
 
     public function __construct() {
         $this->jazzTicketModel = new JazzTicketModel();
+        $this->programModel = new PersonalProgramModel();
     }
 
     // Get all Jazz Tickets
@@ -33,12 +36,11 @@ class JazzTicketApiController {
     public function bookJazzTicket() {
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-    
+
             if (!isset($data['jazz_type'], $data['ticket_type'], $data['event_detail_id'])) {
                 ResponseHelper::sendError("Missing required fields", 400);
                 return;
             }
-
 
             $price = match (strtolower($data['jazz_type'])) {
                 'main event'       => 15.00,
@@ -53,33 +55,47 @@ class JazzTicketApiController {
             }
 
             $eventDetailId = (int)$data['event_detail_id'];
-
             $availableSeats = $this->jazzTicketModel->getAvailableSeats($eventDetailId);
-    
+
             if ($availableSeats <= 0) {
                 ResponseHelper::sendError("No seats available", 409);
                 return;
             }
-    
-            $success = $this->jazzTicketModel->bookTicket(
+
+            $ticketId = $this->jazzTicketModel->bookTicket(
                 $data['jazz_type'],
                 $data['ticket_type'],
                 $eventDetailId,
                 isset($data['pass_id']) ? (int)$data['pass_id'] : null,
                 $price
             );
-    
-            if ($success) {
-                $this->jazzTicketModel->decreaseSeatCount($eventDetailId);
-                ResponseHelper::sendJson(['message' => 'Ticket booked successfully']);
-                return;
-            } else {
+
+            if (!$ticketId) {
                 ResponseHelper::sendError("Failed to book ticket", 500);
                 return;
             }
+
+            $this->jazzTicketModel->decreaseSeatCount($eventDetailId);
+
+            // ✅ Add to personal program
+            $eventId = $this->jazzTicketModel->getEventIdByDetailId($eventDetailId);
+            if ($eventId !== null) {
+                $userId = 1; // ⚠️ Replace with actual user ID from session in the future
+                $this->programModel->addToProgram(
+                    $userId,
+                    $eventId,
+                    $eventDetailId,
+                    $ticketId,
+                    'jazz'
+                );
+            }
+
+            ResponseHelper::sendJson([
+                "message" => "Ticket booked successfully",
+                "ticket_id" => $ticketId
+            ]);
         } catch (Exception $e) {
             ResponseHelper::sendError("Error while booking ticket: " . $e->getMessage(), 500);
         }
     }
 }
-?>

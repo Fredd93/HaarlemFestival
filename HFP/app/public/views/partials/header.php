@@ -14,5 +14,4 @@
         src="/assets/js/main.js"></script>
 </head>
 
-<body>
-    <?php require(__DIR__ . "/header_nav.php");
+<body>;

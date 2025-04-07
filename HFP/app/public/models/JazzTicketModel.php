@@ -22,6 +22,7 @@ class JazzTicketModel extends BaseModel {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 
     // Book a ticket
     public function bookTicket(string $jazzType, string $ticketType, int $eventDetailId, ?int $passId, float $price): bool {
@@ -35,7 +36,14 @@ class JazzTicketModel extends BaseModel {
         $stmt->bindParam(":price", $price);
         return $stmt->execute();
     }
-    
+    public function getEventIdByDetailId(int $eventDetailId): ?int {
+        $sql = "SELECT event_id FROM Event_Detail_Reference WHERE event_detail_id = :detail_id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':detail_id', $eventDetailId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int) $row['event_id'] : null;
+    }
 
     // Get available seats from Jazz_Events
     public function getAvailableSeats(int $eventDetailId): ?int {
