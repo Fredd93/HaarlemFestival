@@ -108,69 +108,72 @@ require_once(__DIR__ . "/../partials/navbar.php");
             <em>Reservations are mandatory. A €10 fee per person will be charged and deducted from your final bill.</em>
         </p>
     </section>
-    <section  id="form" class="reservation-section">
-        <div class="reservation-container">
-            <!-- Left Side: Form -->
-            <div class="reservation-form">
-                <h2>Reserve Your Table</h2>
-                <form>
-                    <label for="name">Name *</label>
-                    <input type="text" id="name" placeholder="Type here" required>
+    <section id="form" class="reservation-section">
+    <div class="reservation-container">
+        <!-- Left Side: Form -->
+        <div class="reservation-form">
+            <h2>Reserve Your Table</h2>
+            <form id="restaurant-reservation-form">
+                <!-- Hidden fields -->
+                <input type="hidden" id="restaurant_id" value="6"> 
+                <input type="hidden" id="event_detail_reference_id" value="1">
+                <input type="hidden" id="session_id">
 
-                    <div class="form-group">
-                        <div class="date-field">
-                            <label for="date">Date and Session *</label>
-                            <input type="date" id="date" required>
-                        </div>
-                        <div class="session-field">
-                            <label for="session">&nbsp;</label>
-                            <select id="session" required>
-                                <option value="">Session</option>
-                                <option value="17:00">17:00</option>
-                                <option value="19:30">19:30</option>
-                                <option value="21:30">21:30</option>
-                            </select>
-                        </div>
+                <label for="name">Name *</label>
+                <input type="text" id="name" placeholder="Type here" required>
+
+                <div class="form-group">
+                    <div class="date-field">
+                        <label for="date">Date *</label>
+                        <select id="date" required>
+                            <option value="">Select a date</option>
+                        </select>
                     </div>
-
-                    <div class="form-group">
-                        <div class="people-field">
-                            <label for="adults">Number of People *</label>
-                            <select id="adults" required>
-                                <option value="">Adults</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5+">5+</option>
-                            </select>
-                        </div>
-                        <div class="people-field">
-                            <label for="children">&nbsp;</label>
-                            <select id="children">
-                                <option value="">Children</option>
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4+">4+</option>
-                            </select>
-                        </div>
+                    <div class="session-field">
+                        <label for="session">Session *</label>
+                        <select id="session" required>
+                            <option value="">Select a session</option>
+                        </select>
                     </div>
+                </div>
 
-                    <label for="requests">Special Requests</label>
-                    <textarea id="requests" placeholder="Type here"></textarea>
+                <div class="form-group">
+                    <div class="people-field">
+                        <label for="adults">Number of People *</label>
+                        <select id="adults" required>
+                            <option value="1">1 Adult</option>
+                            <option value="2">2 Adults</option>
+                            <option value="3">3 Adults</option>
+                            <option value="4">4 Adults</option>
+                            <option value="5">5 Adults</option>
+                        </select>
+                    </div>
+                    <div class="people-field">
+                        <label for="children">Children</label>
+                        <select id="children">
+                            <option value="0">0 Children</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                </div>
 
-                    <button type="submit" class="reservation-btn">Add To Program</button>
-                </form>
-            </div>
+                <label for="requests">Special Requests</label>
+                <textarea id="requests" placeholder="Type here"></textarea>
 
-            <!-- Right Side: Image -->
-            <div class="reservation-image">
-                <img src="../../assets/images/yummy/roemerformimage.png" alt="Restaurant">
-            </div>
+                <button type="submit" class="reservation-btn">Add To Program</button>
+            </form>
         </div>
-    </section>
+
+        <!-- Right Side: Image -->
+        <div class="reservation-image">
+            <img src="../../assets/images/yummy/roemerformimage.png" alt="Restaurant">
+        </div>
+    </div>
+</section>
+
 
     <section class="contact-section">
         <div class="contact-container">
@@ -207,6 +210,8 @@ require_once(__DIR__ . "/../partials/navbar.php");
 
     <script src="../../assets/js/ratatouille.js"></script>
     <script src="../../assets/js/personalProgram.js"></script>
+    <script src="../../assets/js/restaurantBooking.js"></script>
+
 
 
 </body>
