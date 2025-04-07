@@ -12,8 +12,23 @@ class YummyEventDTO {
     public int $stars;
     public ?string $img;
     public ?string $description;
+    public ?float $childPrice; // ✅ New field
 
-    public function __construct($eventDetailId, $name, $sessions, $sessionDuration, $startTime, $endTime, $type, $price, $seats, $stars, $img, $description) {
+    public function __construct(
+        int $eventDetailId,
+        string $name,
+        int $sessions,
+        float $sessionDuration,
+        string $startTime,
+        string $endTime,
+        string $type,
+        float $price,
+        int $seats,
+        int $stars,
+        ?string $img,
+        ?string $description,
+        ?float $childPrice = null // ✅ New param
+    ) {
         $this->eventDetailId = $eventDetailId;
         $this->name = $name;
         $this->sessions = $sessions;
@@ -26,6 +41,7 @@ class YummyEventDTO {
         $this->stars = $stars;
         $this->img = $img;
         $this->description = $description;
+        $this->childPrice = $childPrice;
     }
 }
 ?>

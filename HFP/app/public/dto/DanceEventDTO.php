@@ -1,5 +1,5 @@
 <?php
-class DanceEventDTO{
+class DanceEventDTO {
     public string $artist;
     public int $event_detail_id;
     public string $time;
@@ -8,9 +8,19 @@ class DanceEventDTO{
     public int $duration;
     public int $price;
     public string $day;
+    public ?int $tickets_available; // ✅ New field
 
-    public function __construct(string $artist, int $event_detail_id, string $time, string $venue, string $session_type,
-    int $duration, int $price, string $day) {
+    public function __construct(
+        string $artist,
+        int $event_detail_id,
+        string $time,
+        string $venue,
+        string $session_type,
+        int $duration,
+        int $price,
+        string $day,
+        ?int $tickets_available = null // ✅ Optional to allow nulls
+    ) {
         $this->artist = $artist;
         $this->event_detail_id = $event_detail_id;
         $this->time = $time;
@@ -19,7 +29,7 @@ class DanceEventDTO{
         $this->duration = $duration;
         $this->price = $price;
         $this->day = $day;
-
+        $this->tickets_available = $tickets_available;
     }
 }
 ?>

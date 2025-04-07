@@ -127,5 +127,27 @@ class YummyEventApiController {
             ResponseHelper::sendError("Internal Server Error", 500);
         }
     }
+
+    public function updateSeats($id) {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+    
+            if (!isset($data['seats'])) {
+                ResponseHelper::sendError("Missing 'seats' field", 400);
+                return;
+            }
+    
+            $seats = (int) $data['seats'];
+    
+            if ($this->yummyEventModel->updateSeats((int) $id, $seats)) {
+                ResponseHelper::sendJson(["message" => "Seats updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update seats", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+    
 }
 ?>

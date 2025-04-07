@@ -29,5 +29,35 @@ class DanceAPIController{
             ResponseHelper::sendError('Artists not found', 404);
         }
     }
+    public function getAllDanceEventDetails() {
+        try {
+            $events = $this->DanceModel->getAllEventDetails();
+            ResponseHelper::sendJson($events);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve dance events", 500);
+        }
+    }
+    public function updateTicketsAvailable($id) {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+    
+            if (!isset($data['tickets_available'])) {
+                ResponseHelper::sendError("Missing 'tickets_available' field", 400);
+                return;
+            }
+    
+            $amount = (int)$data['tickets_available'];
+    
+            if ($this->DanceModel->updateTicketsAvailable((int)$id, $amount)) {
+                ResponseHelper::sendJson(["message" => "Tickets updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update tickets", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+    
+    
 }
 ?>

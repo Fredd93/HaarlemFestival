@@ -24,4 +24,14 @@ class EventDetailReferenceModel extends BaseModel {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result ?: null;
     }
+    public function getEventTypeByEventId(int $eventId): ?string
+    {
+        $query = "SELECT TOP 1 event_type FROM Event_Detail_Reference WHERE event_id = :event_id";
+        $stmt = self::$pdo->prepare($query);
+        $stmt->bindParam(":event_id", $eventId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['event_type'] ?? null;
+    }
 }

@@ -42,11 +42,25 @@ Route::add('/cms/content/update', function () {
     $controller->updateContent($_POST, $_FILES);
 }, ['POST']);
 
+
+Route::add('/cms/tickets/([a-zA-Z0-9_-]+)', function ($eventType) {
+    $eventType = strtolower($eventType); 
+    require(__DIR__ . "/../views/cms/tickets/ticketsDispatcher.php");
+});
+Route::add('/cms/orders', function () {
+    require(__DIR__ . "/../views/cms/orders.php");
+});
+
+
+
+
 // If an unauthorized user tries to access CMS
 Route::add('/cms/unauthorized', function () {
     http_response_code(403);
     echo "<p class='alert alert-danger'>Access Denied: You do not have permission to access this page.</p>";
     exit;
 });
+
+
 
 ?>

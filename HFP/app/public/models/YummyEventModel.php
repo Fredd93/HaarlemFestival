@@ -111,6 +111,14 @@ class YummyEventModel extends BaseModel {
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+    public function updateSeats(int $id, int $seats): bool {
+        $sql = "UPDATE Yummy_Events SET seats = :seats WHERE event_detail_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':seats', $seats, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
     
 
     // Map a database row to YummyEventDTO
@@ -127,8 +135,10 @@ class YummyEventModel extends BaseModel {
             (int) $row["seats"],
             (int) $row["stars"],
             $row["img"] ?? null,
-            $row["description"] ?? null
+            $row["description"] ?? null,
+            isset($row["child_price"]) ? (float) $row["child_price"] : null 
         );
     }
+    
 }
 ?>
