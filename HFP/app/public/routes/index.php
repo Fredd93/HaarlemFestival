@@ -59,6 +59,12 @@
     Route::add('/teylers', function() {
         require(__DIR__ . "/../views/pages/teylersMain.php");
     });
+    Route::add('/teylers/lorentz', function() {
+        require(__DIR__ . "/../views/pages/teylersLorentz.php");
+    });
+    Route::add('/teylers/secret', function() {
+        require(__DIR__ . "/../views/pages/teylersSecret.php");
+    });
     Route::add('/jazz', function () {
         require(__DIR__ . "/../views/pages/jazz.php");
     });
