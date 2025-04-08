@@ -12,6 +12,12 @@
     $activePage = 'dance';
     require_once(__DIR__ . "/../partials/navbar.php");
     ?>
+     <div class="video-container">
+        <video autoplay muted loop class="video-frame">
+            <source src="../../assets/images/dance/cover-video.mp4" type="video/mp4">
+        </video>
+        <img src="../../assets/images/dance/logo.png" alt="Dance Logo" class="logo-overlay">
+    </div>
     <div class="container">
         <header>
         <h1 id="artist-title">Dance Artist</h1>

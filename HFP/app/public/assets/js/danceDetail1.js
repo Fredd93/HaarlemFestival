@@ -47,19 +47,19 @@ document.addEventListener("DOMContentLoaded", () => {
       if (videos[0] && video1Container) {
         const video1 = document.createElement("video");
         video1.controls = true;
-        video1.src = `assets/videos/${videos[0].image_url}`;
+        video1.src = `../../assets/images/dance/${videos[0].image_url}`;
         video1Container.appendChild(video1);
       }
 
       if (videos[1] && video2Container) {
         const video2 = document.createElement("video");
         video2.controls = true;
-        video2.src = `assets/videos/${videos[1].image_url}`;
+        video2.src = `../../assets/images/dance/${videos[1].image_url}`;
         video2Container.appendChild(video2);
       }
 
       // Slideshow
-      const slideshowImages = (sections["slideshow-image"] || []).map(img => `assets/images/${img.image_url}`);
+      const slideshowImages = (sections["slideshow-image"] || []).map(img => `../../assets/images/dance/${img.image_url}`);
       let currentSlide = 0;
 
       if (slideshowImages.length > 0) {
