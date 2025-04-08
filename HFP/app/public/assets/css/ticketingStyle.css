@@ -404,3 +404,110 @@ body {
     background-color: #fafafa;
 }
 
+/* History tickets styling */
+
+.history * {
+    --primaryCTA: #FFCC70BF;
+    --secondaryCTA: #8ECDDD;
+    --situationalCTA: #22668D;
+    --negativeCTA: #FFFADD;
+    margin: 0px;
+    font-family: 'Lato', sans-serif;
+}
+@media (max-width: 1050px) {
+    .history-schedule-area {
+        flex-direction: column;
+    }
+    .schedule-item-collection {
+        width: 90vw;
+    }
+}
+@media (min-width: 1050px) {
+    .history-schedule-area {
+        flex-direction: row;
+    }
+    .schedule-item-collection {
+        width: calc(calc(90vw - 1em) / 2.05);
+    }
+}
+.history-schedule-area {
+    width: 90vw;
+    height: auto;
+    padding:0.5em;
+    margin:5vw;
+    margin-top: 0vw;
+    margin-bottom: 0vw;
+    background-color: var(--secondaryCTA);
+    border: solid 5px var(--situationalCTA);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    justify-content: space-around;
+}
+.schedule-item-collection {
+    display: flex;
+    height: 12em;
+    justify-content: space-around;
+    align-content: flex-end;
+    flex-wrap: wrap;
+}
+.history-schedule-area > * > h2 {
+    padding: 1em;
+    text-align: center;
+    color:var(--negativeCTA);
+    -webkit-text-stroke: 1px var(--situationalCTA);
+}
+.schedule-item .top {
+    background-color: var(--situationalCTA);
+    /*width and height use vw to have consistent ratio*/
+    width: 9em;
+    height: 4em;
+    line-height: 4em;
+    text-align:center;
+    border-top-left-radius:25px;
+    border-top-right-radius:25px;
+}
+.schedule-item .bottom {
+    background-color: var(--negativeCTA);
+    width:calc(9em + 1px);
+    height:8em;
+    border-bottom-left-radius:25px;
+    border-bottom-right-radius:25px;
+    position:relative;
+}
+.schedule-item .bottom p {
+    padding:3px;
+}
+.schedule-item .bottom img {
+    padding:0px 0px;
+    width: 20px;
+}
+.schedule-item .top h2 {
+    color: var(--negativeCTA);
+}
+/* luckily, but surprising that these classes weren't sued yet */
+.ticketButton {
+    left:12%;
+    background-color: #22668D;
+    color: #FFFADD;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    width:60%;
+    height:10%;
+    line-height:12px;
+    position:absolute;
+    bottom:10%
+}
+.ticketButton:hover {
+    background: #FFFADD;
+    color:  #22668D;
+    border:1px solid var(--situationalCTA);
+}
+
