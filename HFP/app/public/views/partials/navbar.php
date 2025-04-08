@@ -19,7 +19,6 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <nav class="navbar">
     <div class="logo">
         <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
-        <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
     </div>
 
     <!-- Hamburger Menu Icon -->

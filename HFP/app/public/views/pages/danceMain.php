@@ -1,7 +1,3 @@
-<?php
-$activePage = 'dance';
-require_once(__DIR__ . "/../partials/navbar.php");
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +7,10 @@ require_once(__DIR__ . "/../partials/navbar.php");
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php
+    $activePage = 'dance';
+    require_once(__DIR__ . "/../partials/navbar.php");
+    ?>
     <div class="video-container">
         <video autoplay muted loop class="video-frame">
             <source src="../../assets/images/dance/cover-video.mp4" type="video/mp4">
@@ -51,6 +51,7 @@ require_once(__DIR__ . "/../partials/navbar.php");
                     <th>SESSION TYPE</th>
                     <th>DURATION</th>
                     <th>PRICE</th>
+                    <th>Seats Available</th>
                     <th></th>
                 </tr>
             </thead>
@@ -64,8 +65,9 @@ require_once(__DIR__ . "/../partials/navbar.php");
     <?php require_once(__DIR__ . "/../partials/danceEventsTable.php"); ?>
 
     <script src="../../assets/js/personalProgram.js"></script>
+    <?php
+    require_once(__DIR__ . "/../partials/footer.php");
+    ?>
 </body>
 </html>
-<?php
-require_once(__DIR__ . "/../partials/footer.php");
-?>
+

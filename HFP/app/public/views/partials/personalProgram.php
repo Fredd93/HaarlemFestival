@@ -9,7 +9,7 @@
             <p>Loading your program...</p>
         </div>
 
-        <button class="purchase-btn">Purchase item(s)</button>
+        <button class="purchase-btn" id="purchase-btn" disabled onclick="goToPayment()">Purchase item(s)</button>
         <button class="paylater-btn">Pay later</button>
     </div>
 </div>

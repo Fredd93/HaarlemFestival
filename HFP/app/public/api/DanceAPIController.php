@@ -28,7 +28,17 @@ class DanceAPIController{
         if ($Events) {
             ResponseHelper::sendJson($Events);
         } else {
-            ResponseHelper::sendError('Artists not found', 404);
+            ResponseHelper::sendError('Passes not found', 404);
+        }
+    }
+
+    public function getAllPasses()
+    {
+        $Passes = $this->DanceModel->getAllPasses();
+        if ($Passes) {
+            ResponseHelper::sendJson($Passes);
+        } else {
+            ResponseHelper::sendError('Passes not found', 404);
         }
     }
     public function getAllDanceEventDetails() {

@@ -18,28 +18,40 @@ class OrderModel extends BaseModel {
         ), $orders);
     }
 
-    public function getOrderById(int $id): ?OrderDTO {
-        $stmt = self::$pdo->prepare("SELECT * FROM [$this->table] WHERE order_id = ?");
-        $stmt->execute([$id]);
+    
+    public function getOrderById(int $orderId): ?OrderDTO {
+        $sql = "SELECT * FROM [order] WHERE order_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":id", $orderId, PDO::PARAM_INT);
+        $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return $row ? new OrderDTO(
-            $row['order_id'],
-            $row['user_id'],
-            (float)$row['total_price'],
-            $row['payment_method'],
-            $row['created_at']
-        ) : null;
+        return $row ? $this->mapToDTO($row) : null;
     }
 
-    public function createOrder(int $user_id, float $total_price, string $payment_method): bool {
-        $stmt = self::$pdo->prepare("INSERT INTO [$this->table] (user_id, total_price, payment_method) VALUES (?, ?, ?)");
-        return $stmt->execute([$user_id, $total_price, $payment_method]);
+    public function createOrder(int $userId, int $totalPrice, string $paymentMethod): int {
+        $sql = "INSERT INTO [order] (user_id, total_price, payment_method, created_at)
+        VALUES (:user_id, :total_price, :payment_method, GETDATE())";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(":user_id", $userId, PDO::PARAM_INT);
+        $stmt->bindParam(":total_price", $totalPrice, PDO::PARAM_INT);
+        $stmt->bindParam(":payment_method", $paymentMethod, PDO::PARAM_STR);
+        $stmt->execute();
+        return (int) self::$pdo->lastInsertId();
     }
 
     public function deleteOrder(int $id): bool {
         $stmt = self::$pdo->prepare("DELETE FROM [$this->table] WHERE order_id = ?");
         return $stmt->execute([$id]);
+    }
+    private function mapToDTO(array $row): OrderDTO {
+        return new OrderDTO(
+            (int) $row['order_id'],
+            (int) $row['user_id'],
+            (int) $row['total_price'],
+            $row['payment_method'],
+            $row['created_at']
+        );
     }
 }
 ?>

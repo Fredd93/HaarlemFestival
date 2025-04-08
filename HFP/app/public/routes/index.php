@@ -62,6 +62,13 @@
     Route::add('/jazz', function () {
         require(__DIR__ . "/../views/pages/jazz.php");
     });
+    Route::add('/payment', function () {
+        require(__DIR__ . "/../views/pages/paymentPage.php");
+    });
+    Route::add('/paymentSuccess', function () {
+        require(__DIR__ . "/../views/pages/paymentSuccess.php");
+    });
+    
     Route::add('/ticketing', function () {
         requireApiLogin();
         requireApiRole(['user']);

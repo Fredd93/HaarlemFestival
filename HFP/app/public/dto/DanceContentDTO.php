@@ -17,4 +17,5 @@ class DanceContentDTO {
         $this->page = $page;
         $this->title = $title;
     }
+
 }

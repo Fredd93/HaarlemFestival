@@ -56,19 +56,24 @@ function loadPersonalProgramItems() {
         .then(items => {
             console.log("📥 Program items received for overlay:", items);
             const container = document.getElementById("program-items");
+            const purchaseBtn = document.getElementById("purchase-btn");
+
             container.innerHTML = '';
 
             if (items.length === 0) {
                 container.innerHTML = "<p>Your personal program is empty.</p>";
+                purchaseBtn.disabled = true; // 🚫 Disable when empty
                 return;
             }
+
+            // ✅ Enable button when there are items
+            purchaseBtn.disabled = false;
 
             items.forEach(item => {
                 let card;
                 if (item.Event_Type.toLowerCase() === "jazz") {
                     card = renderJazzProgramItem(item);
                 } else {
-                    // For other event types (dance, yummy), you might have separate rendering functions.
                     card = renderGenericProgramItem(item);
                 }
                 container.appendChild(card);
@@ -77,8 +82,10 @@ function loadPersonalProgramItems() {
         .catch(error => {
             console.error("🔥 Error loading program items:", error);
             document.getElementById("program-items").innerHTML = "<p>Failed to load your program.</p>";
+            document.getElementById("purchase-btn").disabled = true;
         });
 }
+
 
 function increaseQty(btn) {
     const input = btn.previousElementSibling;
@@ -202,3 +209,11 @@ function renderGenericProgramItem(item) {
     `;
     return card;
 }
+function goToPayment() {
+    console.log("💳 Proceeding to payment...");
+
+    // Optional: You could gather quantity inputs here if needed
+    // For now we just redirect to payment page
+    window.location.href = "/payment";
+}
+
