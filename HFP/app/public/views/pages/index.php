@@ -1,8 +1,5 @@
 <?php
-require_once(__DIR__ . "/../../controllers/ContentController.php");
 
-$contentController = new ContentController();
-$homepageContent = $contentController->getContentForPage("homepage");
 
 // Convert content into an associative array for easy access
 $contentMap = [];
@@ -110,6 +107,5 @@ foreach ($homepageContent as $content) {
 
 </body>
 <footer>
-    <?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
 </footer>
 </html>

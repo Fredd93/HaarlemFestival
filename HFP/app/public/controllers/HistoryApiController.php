@@ -39,7 +39,7 @@ class HistoryAPIController{
         }
     }
     public function createScheduleItem() {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (isset($data['language']) && isset($data['maxTickets']) && isset($data['timeStamp'])) {
@@ -51,7 +51,7 @@ class HistoryAPIController{
         }
     }
     public function deleteScheduleItem($id) {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $success = $this->historyModel->deleteScheduleItem($id);
         if ($success)
         {
@@ -62,7 +62,7 @@ class HistoryAPIController{
         }
     }
     public function updateScheduleItem($id) {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $data = json_decode(file_get_contents("php://input"), true);
         if (isset($data['language']) && isset($data['maxTickets']) && isset($data['timeStamp']) && isset($id)) {
             $scheduleItem = $this->historyModel->updateScheduleItem($id, $data);
@@ -81,7 +81,7 @@ class HistoryAPIController{
         }
     }
     public function createLocation() {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $data = json_decode(file_get_contents("php://input"), true);
 
         if (isset($data['image_name']) && isset($data['name']) && isset($data['description'])) {
@@ -93,7 +93,7 @@ class HistoryAPIController{
         }
     }
     public function deleteLocation($id) {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $success = $this->historyModel->deleteLocation($id);
         if ($success)
         {
@@ -104,7 +104,7 @@ class HistoryAPIController{
         }
     }
     public function updateLocation($id) {
-        //requireApiRole(['admin']);
+        requireApiRole(['admin']);
         $data = json_decode(file_get_contents("php://input"), true);
         if (isset($data['image_name']) && isset($data['name']) && isset($data['description']) && isset($id)) {
             $location = $this->historyModel->updateLocation($id, $data);

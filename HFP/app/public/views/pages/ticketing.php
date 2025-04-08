@@ -1,3 +1,8 @@
+<?php
+    $activePage = 'tickets';
+    require_once(__DIR__ . "/../partials/navbar.php");
+    ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,9 +115,25 @@
     <!-- =========================
          HISTORY CONTENT AREA
     ========================= -->
-    <div id="tab-history" class="tab-content">
+    <div id="tab-history" class="tab-content history">
         <h2>A Stroll through History</h2>
-        <p>History events go here...</p>
+        <!-- name is a little unclear, but the script wants this id 
+         and making an exception for the ticketing page while it isn't taken
+         doesn't make much sense-->
+        <div class="history-schedule-area" id="schedule-cards-container">
+        </div>
+
+        <!-- scripts added here because they're for this part -->
+        <script src="assets/js/historyScriptClasses.js"></script>
+        <script src="assets/js/history.js">
+            //Javascript file file all of the history main page
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                FetchSchedule();
+                //Load the schedule
+            });
+        </script>
     </div>
     <?php
             

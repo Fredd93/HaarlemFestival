@@ -71,7 +71,7 @@ class DanceTicketApiController {
             // Add to personal program
             $eventId = $this->danceTicketModel->getEventIdByDetailId($eventDetailId);
             if ($eventId !== null) {
-                $userId = $_SESSION['user_id']; // Assuming auth middleware set this
+                $userId = $_SESSION['user_id']; 
                 $this->programModel->addToProgram(
                     $userId,
                     $eventId,

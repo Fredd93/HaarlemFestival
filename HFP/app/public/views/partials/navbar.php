@@ -19,6 +19,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 <nav class="navbar">
     <div class="logo">
         <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
+        <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
     </div>
 
     <!-- Hamburger Menu Icon -->
@@ -41,6 +42,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
         <li><a href="/ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
         <li><a href="/program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+
         <li>
             <a href="<?= $isLoggedIn ? '#' : '/login' ?>" 
                id="auth-button" 
@@ -49,6 +51,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
                <?= $isLoggedIn ? 'Logout' : 'Login' ?>
             </a>
         </li>
+
         <li>
             <div class="nav-right">
                 <?php include(__DIR__ . "/personalProgram.php"); ?>
@@ -82,7 +85,7 @@ document.getElementById("closeBtn").addEventListener("click", function () {
 });
 
 document.getElementById("eventsDropdown").addEventListener("click", function (e) {
-    e.preventDefault(); // Stop anchor jump
+    e.preventDefault();
     const menu = document.getElementById("eventsDropdownMenu");
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 });
