@@ -27,8 +27,7 @@
         </div>
     </div>
     <h2>Schedule</h2>
-    <div class="schedule-area" id="schedule-cards-container">
-    </div>
+    <?php require_once(__DIR__ . "/../partials/historySchedule.php"); ?>
     <img class="tourMap" src="assets/images/history/tourMap.png" alt="Tour map" width="941" height="554">
     <h2>The locations that are visited</h2>
     <div class="locationContainer" id="locationContainer">
@@ -36,14 +35,8 @@
     <?php
         require(__DIR__ . "/../partials/footer.php");
     ?>
-    <script src="assets/js/historyScriptClasses.js"></script>
-    <script src="assets/js/history.js">
-        //Javascript file file all of the history main page
-    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            FetchSchedule();
-            //Load the schedule
             FetchLocations();
             //Load the location cards
         });

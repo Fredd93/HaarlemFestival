@@ -415,7 +415,7 @@ body {
     font-family: 'Lato', sans-serif;
 }
 @media (max-width: 1050px) {
-    .history-schedule-area {
+    .schedule-area {
         flex-direction: column;
     }
     .schedule-item-collection {
@@ -423,14 +423,14 @@ body {
     }
 }
 @media (min-width: 1050px) {
-    .history-schedule-area {
+    .schedule-area {
         flex-direction: row;
     }
     .schedule-item-collection {
         width: calc(calc(90vw - 1em) / 2.05);
     }
 }
-.history-schedule-area {
+.schedule-area {
     width: 90vw;
     height: auto;
     padding:0.5em;
@@ -451,7 +451,7 @@ body {
     align-content: flex-end;
     flex-wrap: wrap;
 }
-.history-schedule-area > * > h2 {
+.schedule-area > * > h2 {
     padding: 1em;
     text-align: center;
     color:var(--negativeCTA);
