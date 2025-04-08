@@ -81,12 +81,12 @@ function DisplaySchedule(schedule) {
         container.appendChild(dayContainer);
         cardContainer = document.getElementById(daySchedule.day);
         daySchedule.cards.forEach(scheduleItem => {
-            const card = CreateScheduleCard(scheduleItem);
+            const card = CreateScheduleCard(scheduleItem, daySchedule.day);
             cardContainer.appendChild(card);
         })
     })
 }
-function CreateScheduleCard(scheduleItem) {
+function CreateScheduleCard(scheduleItem, day) {
     time = scheduleItem.date.substring((scheduleItem.date.indexOf(":")-2), (scheduleItem.date.indexOf(":")+3));
     dutchTours = scheduleItem.dutchTours;
     englishTours = scheduleItem.englishTours;
@@ -99,7 +99,7 @@ function CreateScheduleCard(scheduleItem) {
             ${CheckTours(dutchTours, "dutch")}
             ${CheckTours(englishTours, "english")}
             ${CheckTours(chineseTours, "chinese")}
-            <div class="ticketButton">Buy tickets</div>
+            <div class="ticketButton" onclick="window.location.href='/history/tickets?day=${day}&time=${time}'">Buy tickets</div>
         </div>
     </div>`;
     return card;

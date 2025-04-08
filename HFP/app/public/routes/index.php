@@ -56,6 +56,9 @@
     Route::add('/history/Amsterdamse_Poort', function() {
         require(__DIR__ . "/../views/pages/Amsterdam_gate.php");
     });
+    Route::add('/history/tickets', function() {
+        require(__DIR__ . "/../views/pages/historyTicketForm.php");
+    });
     Route::add('/teylers', function() {
         require(__DIR__ . "/../views/pages/teylersMain.php");
     });
