@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/DanceContentModel.php';
-require_once __DIR__ . '/../utils/ResponseHelper.php';
+require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
 
 class DanceContentApiController {
 

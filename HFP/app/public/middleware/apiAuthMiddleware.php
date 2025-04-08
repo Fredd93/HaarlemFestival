@@ -22,6 +22,8 @@ function requireApiRole(array $allowedRoles): void {
     if (!in_array($_SESSION['user_role'], $allowedRoles)) {
         http_response_code(403);
         echo json_encode(["message" => "Forbidden"]);
+        header("Location: /login");
+
         exit;
     }
 }

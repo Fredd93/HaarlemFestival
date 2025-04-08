@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../core/BaseModel.php';
+require_once(__DIR__ . "/BaseModel.php");
 require_once __DIR__ . '/../dto/DanceContentDTO.php';
 
 class DanceContentModel extends BaseModel {
