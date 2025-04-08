@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__ . '/../../controllers/HistoryAPIController.php');
+require_once(__DIR__ . '/../../controllers/HistoryTicketController.php');
 $controller = new HistoryAPIController();
 
 //Schedule api routes
@@ -35,4 +36,9 @@ Route::add('/api/history/locations/([0-9]*)', function ($id) use ($controller) {
 Route::add('/api/history/locations/([0-9]*)', function ($id) use ($controller) {
     $controller->updateLocation($id);
 }, ['PUT']);
+
+Route::add('/api/history/book', function() {
+    $ticketController = new HistoryTicketController();
+    $ticketController->createTicket();
+}, ['POST']);
 ?>

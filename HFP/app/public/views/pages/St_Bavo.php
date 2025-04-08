@@ -80,7 +80,7 @@ foreach ($contentBlocks as $block) {
         </div>
     </section>
     <section id="ticketButton" class="flexbox flexCentered">
-        <div class="ticketButton flexCentered">Buy tickets</div>
+        <div class="ticketButton flexCentered" onclick="window.location.href='/history/tickets'">Buy tickets</div>
     </section>
 </div>
 <div class="none"><?php require(__DIR__ . "/../partials/footer.php"); ?></div>
