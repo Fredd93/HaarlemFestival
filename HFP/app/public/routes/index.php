@@ -67,5 +67,8 @@
         requireApiRole(['user']);
         require(__DIR__ . "/../views/pages/ticketing.php");
     });
+    Route::add('/jazz', function () {
+        require(__DIR__ . "/../views/pages/danceDetail1.php");
+    });
 
 ?>
