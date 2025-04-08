@@ -1,4 +1,5 @@
 <!-- File: /views/partials/danceEventsTable.php -->
+
 <div id="dance-day-buttons"></div>
 <table class="dance-table" id="event-table" border="1">
     <thead>

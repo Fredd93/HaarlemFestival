@@ -62,9 +62,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const specialRequest = document.getElementById('specialRequests').value;
             
             // Find the restaurant event from the global allYummyEvents array (populated by yummyTicketing.js)
-            const eventObj = allYummyEvents.find(evt => evt.name === restaurantName);
+            console.log("🍽️ Selected restaurant name:", restaurantName);
+            console.log("📋 All Yummy event names:", allYummyEvents.map(e => e.name));
+
+            const eventObj = allYummyEvents.find(
+                evt => evt.name.trim().toLowerCase() === restaurantName.trim().toLowerCase()
+            );
+
             if (!eventObj) {
-                console.error("Selected restaurant not found");
+                console.error("❌ Selected restaurant not found");
                 return;
             }
             const restaurantId = eventObj.eventDetailId;

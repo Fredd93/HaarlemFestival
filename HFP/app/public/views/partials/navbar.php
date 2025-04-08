@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/personalProgramStyle.css">
+</head>
+
 <?php
 $eventNames = [
     'yummy' => 'Yummy',
@@ -14,7 +18,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 
 <nav class="navbar">
     <div class="logo">
-        <a href="/"><img src="../../assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
+        <a href="/"><img src="/assets/images/global/Website_logo.jpeg" alt="Haarlem Festival"></a>
     </div>
 
     <!-- Hamburger Menu Icon -->
@@ -25,7 +29,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <li><a href="/" class="<?= ($activePage === 'index') ? 'active' : '' ?>">Home</a></li>
 
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle <?= $eventActive ? 'active' : '' ?>" id="eventsDropdown"><?= $eventLabel ?> ▾</a>
+            <a href="javascript:void(0)" class="dropdown-toggle <?= $eventActive ? 'active' : '' ?>" id="eventsDropdown"><?= $eventLabel ?> ▾</a>
             <ul class="dropdown-menu" id="eventsDropdownMenu">
                 <li><a href="/yummy" class="<?= ($activePage === 'yummy') ? 'active' : '' ?>">Yummy</a></li>
                 <li><a href="/jazz" class="<?= ($activePage === 'jazz') ? 'active' : '' ?>">Jazz</a></li>
@@ -34,10 +38,11 @@ $isLoggedIn = isset($_SESSION['user_id']);
                 <li><a href="/teylers" class="<?= ($activePage === 'teylers') ? 'active' : '' ?>">Teyler's</a></li>
             </ul>
         </li>
-        <li><a href="ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
-        <li><a href="program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
+
+        <li><a href="/ticketing" class="<?= ($activePage === 'tickets') ? 'active' : '' ?>">Tickets</a></li>
+        <li><a href="/program" class="<?= ($activePage === 'program') ? 'active' : '' ?>">My Program</a></li>
         <li>
-            <a href="<?= $isLoggedIn ? '#' : 'login' ?>" 
+            <a href="<?= $isLoggedIn ? '#' : '/login' ?>" 
                id="auth-button" 
                class="<?= ($activePage === 'login') ? 'active' : '' ?>"
                onclick="<?= $isLoggedIn ? 'logoutUser(event)' : '' ?>">
@@ -76,12 +81,11 @@ document.getElementById("closeBtn").addEventListener("click", function () {
     document.getElementById("hamburger").style.display = "block";
 });
 
-
 document.getElementById("eventsDropdown").addEventListener("click", function (e) {
-    e.preventDefault(); // Prevent page jump
+    e.preventDefault(); // Stop anchor jump
     const menu = document.getElementById("eventsDropdownMenu");
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 });
-
-
 </script>
+
+<script src="../../assets/js/personalProgram.js"></script>

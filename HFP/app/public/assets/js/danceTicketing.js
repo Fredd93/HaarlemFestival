@@ -14,14 +14,16 @@ function fetchDanceDays() {
 
             uniqueDates.forEach(dateStr => {
                 const btn = document.createElement("button");
-                btn.classList.add("tab-button", "dance-day-tab");
+                btn.classList.add("dance-day-btn"); // ✅ updated styling class
                 btn.dataset.day = dateStr;
                 btn.textContent = formatDayLabel(dateStr);
+            
                 btn.addEventListener("click", () => {
-                    document.querySelectorAll(".dance-day-tab").forEach(b => b.classList.remove("active"));
+                    document.querySelectorAll(".dance-day-btn").forEach(b => b.classList.remove("active")); // ✅ updated selector
                     btn.classList.add("active");
                     setTable(dateStr);
                 });
+            
                 container.appendChild(btn);
             });
 
@@ -65,7 +67,8 @@ function setTable(day) {
                     <td>€${event.price}</td>
                     <td>${event.tickets_available}</td>
                     <td><button onclick="bookDanceTicket(${event.event_detail_id}, ${event.price})">Add To Program</button></td>
-                `;                
+                `;
+                
                 tbody.appendChild(row);
             });
         })
