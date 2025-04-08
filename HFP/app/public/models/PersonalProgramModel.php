@@ -8,13 +8,15 @@ Class PersonalProgramModel extends BaseModel
         parent::__construct();
     }
 
-    public function getById($userId) : array{
-        $sql = "SELECT program_id, user_id, event_id, status FROM Personal_Program_Item";
+    public function getById($userId): array {
+        $sql = "SELECT program_id, user_id, event_id, status 
+                FROM Personal_Program_Item 
+                WHERE user_id = :id";
         $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $userId, PDO::PARAM_INT);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch all results as array
+    
         return array_map(fn($row) => $this->mapToDTO($row), $results);
     }
 

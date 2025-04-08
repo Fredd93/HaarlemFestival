@@ -11,7 +11,7 @@ class PersonalProgramAPIController {
 
     public function getById($userId)
     {
-        $Programs = $this->PersonalProgramModel->getAllById($userId);
+        $Programs = $this->PersonalProgramModel->getById($userId);
         if ($Programs) {
             ResponseHelper::sendJson($Programs);
         } else {

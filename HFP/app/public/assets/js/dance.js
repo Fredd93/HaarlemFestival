@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     fetchArtists();
+    setTable("FRIDAY");
 });
 
 function fetchArtists() {
@@ -29,7 +30,7 @@ function displayArtists(artists) {
 
         card.innerHTML = `
             <div class="artist-image">
-                <img src="/assets/images/dance/${artist.name}.png">
+                <img src="/assets/images/dance/${artist.image_url}">
             </div>
             <div class="artist-content">
                 <h2>${artist.name}</h2>
@@ -55,37 +56,49 @@ function setTable(day) {
             tbody.innerHTML = ""; // Clear previous data
 
             if (day.toUpperCase() === "ALL ACCESS PASSES") {
-                const accessPasses = [
-                    { name: "ALL ACCESS PASS - FRIDAY 25 JULY", price: 125 },
-                    { name: "ALL ACCESS PASS - SATURDAY 26 JULY", price: 150 },
-                    { name: "ALL ACCESS PASS - SUNDAY 27 JULY", price: 150 },
-                    { name: "ALL ACCESS PASS - FRIDAY 25 JULY, SATURDAY 26 JULY, SUNDAY 27 JULY", price: 250 },
-                ];
-
-                accessPasses.forEach(pass => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td colspan="5" class="access-pass-title"><strong>${pass.name}</strong></td>
-                        <td>€${pass.price}</td>
-                        <td><button class="add-to-program">Add To Program</button></td>
-                    `;
-                    tbody.appendChild(row);
-                });
-
-                // Add a small note under the table
-                const noteRow = document.createElement("tr");
-                noteRow.innerHTML = `
-                    <td colspan="7" class="access-pass-note">
-                        * The capacity of the club sessions is very limited. Availability for all-access pass holders cannot be guaranteed due to safety regulations.
-                    </td>
-                `;
-                tbody.appendChild(noteRow);
-
-                return; // Stop further execution
+                fetch('/api/artists/passes')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch passes');
+                        }
+                        return response.json();
+                    })
+                    .then(passes => {
+                        passes.forEach(pass => {
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                                <td colspan="5" class="access-pass-title"><strong>${pass.pass_name}</strong></td>
+                                <td>€${pass.price}</td>
+                                <td><button class="add-to-program">Add To Program</button></td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+            
+                        const noteRow = document.createElement("tr");
+                        noteRow.innerHTML = `
+                            <td colspan="8" class="access-pass-note">
+                                * The capacity of the club sessions is very limited. Availability for all-access pass holders cannot be guaranteed due to safety regulations.
+                            </td>
+                        `;
+                        tbody.appendChild(noteRow);
+                    })
+                    .catch(error => {
+                        console.error("Error fetching passes:", error);
+                    });
+                return;
             }
+            
 
-            // Filter events by selected day
-            const filteredEvents = events.filter(event => event.day.toUpperCase() === day.toUpperCase());
+            // Map day to date
+            const dayToDateMap = {
+                "FRIDAY": "2025-07-25",
+                "SATURDAY": "2025-07-26",
+                "SUNDAY": "2025-07-27"
+            };
+            const selectedDate = dayToDateMap[day.toUpperCase()];
+
+            // Filter events by date
+            const filteredEvents = events.filter(event => event.event_date === selectedDate);
 
             // Populate table with filtered events
             filteredEvents.forEach(event => {
@@ -98,6 +111,7 @@ function setTable(day) {
                     <td>${event.session_type}</td>
                     <td>${event.duration} MINUTES</td>
                     <td>€${event.price}</td>
+                    <td>${event.tickets_available}</td>
                     <td><button class="add-to-program">Add To Program</button></td>
                 `;
                 tbody.appendChild(row);
@@ -117,9 +131,4 @@ document.querySelectorAll(".tab-button").forEach(button => {
         const selectedDay = this.dataset.day;
         setTable(selectedDay);
     });
-});
-
-// Load the table for the default day (Friday) on page load
-document.addEventListener("DOMContentLoaded", function () {
-    setTable("FRIDAY");
 });

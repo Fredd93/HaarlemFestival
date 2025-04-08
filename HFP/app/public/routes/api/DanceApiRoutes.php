@@ -9,4 +9,7 @@ Route::add('/api/artists/all', function () use ($Controller) {
 Route::add('/api/artists/events', function () use ($Controller) {
     $Controller->getAllEvents();
 }, ['GET']);
+Route::add('/api/artists/passes', function () use ($Controller) {
+    $Controller->getAllPasses();
+}, ['GET']);
 ?>
