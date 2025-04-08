@@ -50,12 +50,11 @@ function loadPersonalProgramItems() {
     console.log("🔄 Loading program items...");
     fetch('/api/personalProgram', {
         method: 'GET',
-        credentials: 'include' // 🔐 Ensure session is sent
+        credentials: 'include'
     })
         .then(response => response.json())
         .then(items => {
             console.log("📥 Program items received for overlay:", items);
-
             const container = document.getElementById("program-items");
             container.innerHTML = '';
 
@@ -65,32 +64,13 @@ function loadPersonalProgramItems() {
             }
 
             items.forEach(item => {
-                const card = document.createElement("div");
-                card.className = "program-card";
-
-                card.innerHTML = `
-                    <div class="program-card-header">
-                        <img src="/assets/images/default-event.jpg" alt="Event Image" />
-                        <div class="event-title">${item.Location}</div>
-                    </div>
-                    <div class="program-card-body">
-                        <p><strong>Day:</strong> ${item.Day ?? "N/A"}</p>
-                        <p><strong>Location:</strong> ${item.Location}</p>
-                        <p><strong>Time:</strong> ${item.Start_Time?.substring(0,5) ?? "N/A"}</p>
-
-                        <div class="quantity-container">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" min="1" value="1" class="qty-input" />
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-
-                        <div class="card-footer">
-                            <span class="price">€${parseFloat(item.Price).toFixed(2)}</span>
-                            <button class="delete-btn" onclick="removeProgramItem(${item.Program_Id})">🗑️</button>
-                        </div>
-                    </div>
-                `;
-
+                let card;
+                if (item.Event_Type.toLowerCase() === "jazz") {
+                    card = renderJazzProgramItem(item);
+                } else {
+                    // For other event types (dance, yummy), you might have separate rendering functions.
+                    card = renderGenericProgramItem(item);
+                }
                 container.appendChild(card);
             });
         })
@@ -112,7 +92,7 @@ function decreaseQty(btn) {
     }
 }
 
-// TODO: Call API to delete item from backend
+// Call API to delete an item from the backend
 function removeProgramItem(programId) {
     if (!confirm("Remove this item from your program?")) return;
 
@@ -131,7 +111,6 @@ function removeProgramItem(programId) {
         console.error("Error deleting item:", err);
     });
 }
-
 
 // Fallback to Local Storage if Backend is Unavailable
 function checkLocalStorage(countElement) {
@@ -161,3 +140,65 @@ window.addEventListener("click", function (e) {
         closePersonalProgram();
     }
 });
+
+/**
+ * Renders a personal program card for a jazz event.
+ * Uses jazz-specific fields (e.g. Event_Image and Event_Name) provided by the backend.
+ */
+function renderJazzProgramItem(item) {
+    const card = document.createElement("div");
+    card.className = "program-card";
+    // If the backend provided the image filename in Event_Image, use it; otherwise, fallback to a default image.
+    const imgSrc = item.Event_Image ? `assets/images/jazz/${item.Event_Image}` : 'assets/images/default-event.jpg';
+    card.innerHTML = `
+        <div class="program-card-header">
+            <img src="${imgSrc}" alt="${item.Event_Name || 'Jazz Event'}" />
+            <div class="event-title">${item.Event_Name || "Jazz Event"}</div>
+        </div>
+        <div class="program-card-body">
+            <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
+            <p><strong>Location:</strong> ${item.Location || "N/A"}</p>
+            <p><strong>Time:</strong> ${item.Start_Time ? item.Start_Time.substring(0, 5) : "N/A"}</p>
+            <div class="quantity-container">
+                <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                <input type="number" min="1" value="1" class="qty-input" />
+                <button class="qty-btn" onclick="increaseQty(this)">+</button>
+            </div>
+            <div class="card-footer">
+                <span class="price">€${parseFloat(item.Price).toFixed(2)}</span>
+                <button class="delete-btn" onclick="removeProgramItem(${item.Program_Id})">🗑️</button>
+            </div>
+        </div>
+    `;
+    return card;
+}
+
+/**
+ * Renders a generic personal program card for non-jazz events.
+ * You can expand this function as needed for different event types.
+ */
+function renderGenericProgramItem(item) {
+    const card = document.createElement("div");
+    card.className = "program-card";
+    card.innerHTML = `
+        <div class="program-card-header">
+            <img src="assets/images/default-event.jpg" alt="Event Image" />
+            <div class="event-title">${item.Location || "Event"}</div>
+        </div>
+        <div class="program-card-body">
+            <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
+            <p><strong>Location:</strong> ${item.Location || "N/A"}</p>
+            <p><strong>Time:</strong> ${item.Start_Time ? item.Start_Time.substring(0,5) : "N/A"}</p>
+            <div class="quantity-container">
+                <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                <input type="number" min="1" value="1" class="qty-input" />
+                <button class="qty-btn" onclick="increaseQty(this)">+</button>
+            </div>
+            <div class="card-footer">
+                <span class="price">€${parseFloat(item.Price).toFixed(2)}</span>
+                <button class="delete-btn" onclick="removeProgramItem(${item.Program_Id})">🗑️</button>
+            </div>
+        </div>
+    `;
+    return card;
+}
