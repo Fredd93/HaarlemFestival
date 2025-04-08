@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="../../assets/css/paymentPage.css">
 </head>
 <body>
-  <?php require_once(__DIR__ . "/../partials/navbar.php"); ?>
+
+  <?php   $activePage = 'tickets'; require_once(__DIR__ . "/../partials/navbar.php"); ?>
 
   <div class="progress-bar-wrapper">
     <script src="../../assets/js/progress-bar.js"></script>
@@ -139,7 +140,7 @@
 
 
           if (saveRes.ok) {
-            window.location.href = "../../pages/paymentSuccess.php";
+            window.location.href = "/paymentSuccess";
           } else {
             alert("Order failed: " + saveResult.error);
             console.error(saveResult);

@@ -34,5 +34,5 @@
     Route::add('/paymentSuccess', function () {
         require(__DIR__ . "/../views/pages/paymentSuccess.php");
     });
-
+    
 ?>

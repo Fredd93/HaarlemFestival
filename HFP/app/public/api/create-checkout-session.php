@@ -1,6 +1,8 @@
 <?php
-require_once __DIR__ . '/../../vendor/autoload.php';
+
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 
 
 \Stripe\Stripe::setApiKey('sk_test_51R7EjiPumD0Cps480SxpOTZKg2VpDB7ZnupZ6KvUiqLidkw4dBbJLu7xM7psm6Wm8WHxZK152QRC9auMr8ewttyA00HtpYbrYn');

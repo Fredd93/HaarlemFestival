@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<?php
+    <?php
     $activePage = 'dance';
     require_once(__DIR__ . "/../partials/navbar.php");
     ?>
