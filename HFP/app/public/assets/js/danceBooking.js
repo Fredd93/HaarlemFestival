@@ -1,14 +1,13 @@
 function bookDanceTicket(eventDetailId, price) {
-    let danceType = "free";
-
     if (price === 25) danceType = "main event";
     else if (price === 15) danceType = "secondary event";
 
     const payload = {
-        dance_type: danceType,
         ticket_type: "standard",
-        event_detail_id: eventDetailId
+        event_detail_id: eventDetailId,
+        price: price
     };
+    
 
     fetch("/api/danceTickets/book", {
         method: "POST",
@@ -21,6 +20,11 @@ function bookDanceTicket(eventDetailId, price) {
     .then(result => {
         if (result.message) {
             alert(`✅ ${result.message}`);
+            updatePersonalProgramCount();
+            if (document.getElementById("personal-program-overlay").classList.contains("show")) {
+            loadPersonalProgramItems();
+            }
+
         } else {
             alert(`❌ ${result.error}`);
         }

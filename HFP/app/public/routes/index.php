@@ -56,6 +56,9 @@
     Route::add('/history/Amsterdamse_Poort', function() {
         require(__DIR__ . "/../views/pages/Amsterdam_gate.php");
     });
+    Route::add('/history/tickets', function() {
+        require(__DIR__ . "/../views/pages/historyTicketForm.php");
+    });
     Route::add('/teylers', function() {
         require(__DIR__ . "/../views/pages/teylersMain.php");
     });
@@ -68,10 +71,20 @@
     Route::add('/jazz', function () {
         require(__DIR__ . "/../views/pages/jazz.php");
     });
+    Route::add('/payment', function () {
+        require(__DIR__ . "/../views/pages/paymentPage.php");
+    });
+    Route::add('/paymentSuccess', function () {
+        require(__DIR__ . "/../views/pages/paymentSuccess.php");
+    });
+    
     Route::add('/ticketing', function () {
         requireApiLogin();
         requireApiRole(['user']);
         require(__DIR__ . "/../views/pages/ticketing.php");
+    });
+    Route::add('/danceDetail1', function () {
+        require(__DIR__ . "/../views/pages/danceDetail1.php");
     });
 
 ?>

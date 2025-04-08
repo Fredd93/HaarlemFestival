@@ -1,0 +1,145 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f0f2d;
+    color: #ffffff;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 1rem;
+  }
+  
+  header h1 {
+    text-align: center;
+    font-size: 3rem;
+    margin-top: 1rem;
+    color: #ffcc00;
+  }
+  
+  .section {
+    margin: 2rem 0;
+  }
+  
+  .section h2 {
+    font-size: 2rem;
+    color: #ffc107;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section p {
+    line-height: 1.6;
+  }
+  
+  .slideshow img, .videos video {
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem auto;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  
+  .media-sections {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 2rem;
+  }
+
+  .highlight-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .career-text {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .slideshow {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+  }
+  
+  .slide-container {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .slide-container img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  
+  .slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: white;
+    background: rgba(0,0,0,0.3);
+    border: none;
+    cursor: pointer;
+    padding: 0 12px;
+    z-index: 1;
+  }
+  
+  .slide-btn.left {
+    left: 0;
+  }
+  
+  .slide-btn.right {
+    right: 0;
+  }
+  
+  .video-text-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: flex-start;
+    margin: 2rem 0;
+  }
+  
+  .left-video .video-box {
+    order: 0;
+  }
+  .right-video .video-box {
+    order: 1;
+  }
+  
+  .video-box video {
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+
+  .dot-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .dot {
+    height: 12px;
+    width: 12px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .dot.active {
+    background-color: #ffffff;
+  }
+  
+  

@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="/assets/css/personalProgramStyle.css">
+</head>
+
 <?php
 $eventNames = [
     'yummy' => 'Yummy',
@@ -25,7 +29,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
         <li><a href="/" class="<?= ($activePage === 'index') ? 'active' : '' ?>">Home</a></li>
 
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle <?= $eventActive ? 'active' : '' ?>" id="eventsDropdown"><?= $eventLabel ?> ▾</a>
+            <a href="javascript:void(0)" class="dropdown-toggle <?= $eventActive ? 'active' : '' ?>" id="eventsDropdown"><?= $eventLabel ?> ▾</a>
             <ul class="dropdown-menu" id="eventsDropdownMenu">
                 <li><a href="/yummy" class="<?= ($activePage === 'yummy') ? 'active' : '' ?>">Yummy</a></li>
                 <li><a href="/jazz" class="<?= ($activePage === 'jazz') ? 'active' : '' ?>">Jazz</a></li>
@@ -85,3 +89,5 @@ document.getElementById("eventsDropdown").addEventListener("click", function (e)
     menu.style.display = menu.style.display === "flex" ? "none" : "flex";
 });
 </script>
+
+<script src="../../assets/js/personalProgram.js"></script>

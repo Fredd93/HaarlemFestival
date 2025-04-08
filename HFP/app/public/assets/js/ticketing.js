@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Get all tab links and content sections
-    const tabs = document.querySelectorAll('ul li a');
+    const tabs = document.querySelectorAll('.main-tabs a');
     const contents = document.querySelectorAll('.tab-content');
 
     // Function to hide all tab content and remove the active class from all tabs
