@@ -43,7 +43,11 @@ class YummyReservationController
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $userId = $_SESSION['user_id'] ?? null;
+        if (!isset($_SESSION['user_id'])) {
+            ResponseHelper::sendError("Unauthorized", 401);
+            return;
+        }
+        $userId = $_SESSION['user_id'];        
         $eventId = $data['event_id'] ?? null;
         $eventDetailId = $data['event_detail_reference_id'] ?? null;
         $sessionId = $data['session_id'] ?? null;

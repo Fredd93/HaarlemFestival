@@ -28,11 +28,10 @@ document.addEventListener("DOMContentLoaded", function () {
         prevBtn.addEventListener("click", () => {
             carousel.scrollBy({ left: -300, behavior: "smooth" });
         });
-    
-        // Optional: drag-to-scroll code
+
         let isDragging = false;
         let startX, scrollLeft;
-    
+
         carousel.addEventListener("mousedown", (e) => {
             isDragging = true;
             startX = e.pageX - carousel.offsetLeft;
@@ -70,11 +69,11 @@ document.addEventListener("DOMContentLoaded", function () {
             dayHeader.classList.add("day-header");
             container.appendChild(dayHeader);
 
-            // A wrapper to hold everything for this day
+            // A wrapper to hold everything for this date
             const dayWrapper = document.createElement("div");
             dayWrapper.classList.add("day-wrapper");
 
-            // .carousel-wrapper will hold the carousel + arrow buttons
+            // Carousel wrapper to hold the carousel and arrow buttons
             const carouselWrapper = document.createElement("div");
             carouselWrapper.classList.add("carousel-wrapper");
 
@@ -88,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 carousel.appendChild(eventCard);
             });
 
-            // Create navigation buttons
+            // Navigation buttons
             const prevBtn = document.createElement("button");
             prevBtn.classList.add("prev-event");
             prevBtn.textContent = "❮";
@@ -97,31 +96,30 @@ document.addEventListener("DOMContentLoaded", function () {
             nextBtn.classList.add("next-event");
             nextBtn.textContent = "❯";
 
-            // Append carousel + arrows to the wrapper
+            // Assemble carousel with buttons
             carouselWrapper.appendChild(prevBtn);
             carouselWrapper.appendChild(carousel);
             carouselWrapper.appendChild(nextBtn);
 
-            // Add the wrapper to the dayWrapper
+            // Append the carousel wrapper to the day's wrapper, then to the container
             dayWrapper.appendChild(carouselWrapper);
-
-            // Finally, add dayWrapper to the container
             container.appendChild(dayWrapper);
 
-            // Setup arrow + drag behavior
+            // Setup arrow and drag behavior
             setupCarousel(carousel, prevBtn, nextBtn);
         }
     }
 
-    // Create a single event card
+    // Create a single event card using a direct path for the image URL
     function createEventCard(event) {
         const card = document.createElement("div");
         card.classList.add("event-card");
 
         // Image
         const img = document.createElement("img");
-        const eventDay = new Date(event.event_date).toLocaleString('en-us', { weekday: 'long' }).toLowerCase();
-        img.src = `/assets/images/jazz/${eventDay}Events/${event.image}`;
+        const imageUrl = `assets/images/jazz/${event.artist_image_url}`;
+        console.log("Constructed image URL:", imageUrl);
+        img.src = imageUrl;
         img.alt = event.name;
 
         // Title
@@ -142,22 +140,28 @@ document.addEventListener("DOMContentLoaded", function () {
             ? "Free for all visitors. No reservation needed."
             : `Ticket price €${event.price}`;
 
-        // Buttons
+        // Buttons container
         const buttonContainer = document.createElement("div");
         buttonContainer.classList.add("button-container");
 
+        // Artist Details button (if needed)
         const detailsBtn = document.createElement("button");
         detailsBtn.classList.add("details-btn");
         detailsBtn.textContent = "Artist details";
 
+        // Save to Program button
         const saveBtn = document.createElement("button");
         saveBtn.classList.add("save-btn");
-        saveBtn.textContent = "Save to program";
+        saveBtn.textContent = "Save to Program";
+        saveBtn.addEventListener("click", () => {
+            // Pass the full event object. It should include reference_id if available.
+            addJazzToProgramFromCard(event);
+        });
 
         buttonContainer.appendChild(detailsBtn);
         buttonContainer.appendChild(saveBtn);
 
-        // Assemble card
+        // Assemble the card
         card.appendChild(img);
         card.appendChild(title);
         card.appendChild(timeVenue);
@@ -168,7 +172,56 @@ document.addEventListener("DOMContentLoaded", function () {
         return card;
     }
 
-    // Group events by date, avoiding duplicates
+    /**
+     * Adds a Jazz event to the personal program from the card.
+     * It uses the correct unique identifier (reference_id if available) to ensure
+     * the proper row in Event_Detail_Reference is used.
+     */
+    function addJazzToProgramFromCard(eventData) {
+        // Use reference_id from the API if provided; otherwise, fallback to event_detail_id.
+        const referenceId = eventData.reference_id || eventData.event_detail_id;
+
+        // Determine the jazz type based on the price.
+        let jazzType = "free";
+        if (parseFloat(eventData.price) === 15.0) {
+            jazzType = "main event";
+        } else if (parseFloat(eventData.price) === 10.0) {
+            jazzType = "secondary event";
+        }
+
+        // Build the payload using the correct reference id.
+        const payload = {
+            jazz_type: jazzType,
+            ticket_type: "standard",
+            event_detail_id: referenceId
+        };
+
+        console.log("Booking payload from main page:", payload);
+
+        fetch('/api/jazzTickets/book', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log("Jazz booking result from card:", result);
+            if (result.message) {
+                alert(`✅ ${result.message}`);
+                updatePersonalProgramCount();
+                if (document.getElementById("personal-program-overlay").classList.contains("show")) {
+                    loadPersonalProgramItems();
+                }
+            } else {
+                alert(`❌ ${result.error}`);
+            }
+        })
+        .catch(err => {
+            console.error("Booking error in card:", err);
+            alert("❌ Failed to add event to your personal program.");
+        });
+    }
+
     function groupEventsByDate(events) {
         const uniqueEvents = {};
         events.forEach(event => {
@@ -176,7 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!uniqueEvents[eventDate]) {
                 uniqueEvents[eventDate] = [];
             }
-            // Avoid adding duplicates
+            // Avoid duplicates
             if (!uniqueEvents[eventDate].some(e => e.name === event.name)) {
                 uniqueEvents[eventDate].push(event);
             }
@@ -190,11 +243,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return new Date(dateString).toLocaleDateString("en-US", options);
     }
 
-    // Format time range from startTime + duration
+    // Format time range from startTime and duration
     function formatTime(startTimeString, duration) {
         const startTime = new Date(`1970-01-01T${startTimeString}Z`);
         const endTime = new Date(startTime.getTime() + duration * 60 * 1000);
-
         const startFormatted = startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const endFormatted = endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         return `${startFormatted} - ${endFormatted}`;

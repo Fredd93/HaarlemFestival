@@ -77,6 +77,11 @@ function bindRestaurantReservationForm(form) {
                 alert(result.message || "Reservation successful!");
                 form.reset();
                 sessionSelect.innerHTML = `<option value="">Select a session</option>`;
+                updatePersonalProgramCount();
+                if (document.getElementById("personal-program-overlay").classList.contains("show")) {
+                    loadPersonalProgramItems();
+                }
+
             } else {
                 alert(result.error || "Something went wrong.");
             }

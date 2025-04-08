@@ -203,9 +203,14 @@ function addJazzToProgram(eventId) {
     })
     .then(response => response.json())
     .then(result => {
+        console.log("Jazz booking result:", result);
         if (result.message) {
             alert(`✅ ${result.message}`);
-            // Optionally refresh table or disable button
+
+                updatePersonalProgramCount();
+                if (document.getElementById("personal-program-overlay").classList.contains("show")) {
+                    loadPersonalProgramItems();
+                }
         } else {
             alert(`❌ ${result.error}`);
         }

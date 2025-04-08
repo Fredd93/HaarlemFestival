@@ -80,7 +80,11 @@ class JazzTicketApiController {
             // ✅ Add to personal program
             $eventId = $this->jazzTicketModel->getEventIdByDetailId($eventDetailId);
             if ($eventId !== null) {
-                $userId = $_SESSION['user_id'];
+                if (!isset($_SESSION['user_id'])) {
+                    ResponseHelper::sendError("Unauthorized", 401);
+                    return;
+                }
+                $userId = $_SESSION['user_id'];                
                 $this->programModel->addToProgram(
                     $userId,
                     $eventId,

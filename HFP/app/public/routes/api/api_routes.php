@@ -14,4 +14,7 @@ require_once(__DIR__."/YummySessionRoutes.php");
 require_once(__DIR__."/HistoryApiRoutes.php");
 require_once(__DIR__."/eventDetailReferenceApiRoutes.php");
 require_once(__DIR__."/orderApiRoutes.php");
+require_once(__DIR__."/PersonalProgramApiRoutes.php");
+require_once(__DIR__."/DanceContentApiRoutes.php");
 
+?>

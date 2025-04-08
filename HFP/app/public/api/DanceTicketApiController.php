@@ -1,16 +1,19 @@
 <?php
 require_once(__DIR__ . '/../models/DanceTicketModel.php');
-require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
 require_once(__DIR__ . '/../models/PersonalProgramModel.php');
+require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+
 class DanceTicketApiController {
     private $danceTicketModel;
     private $programModel;
 
     public function __construct() {
+        /** @var DanceTicketModel $danceTicketModel */
+        /** @var PersonalProgramModel $programModel */
         $this->danceTicketModel = new DanceTicketModel();
         $this->programModel = new PersonalProgramModel();
     }
-    
+
     // Get all Dance Tickets
     public function getAllDanceTickets() {
         try {
@@ -36,24 +39,14 @@ class DanceTicketApiController {
         try {
             $data = json_decode(file_get_contents("php://input"), true);
     
-            if (!isset($data['dance_type'], $data['ticket_type'], $data['event_detail_id'])) {
+            if (!isset($data['ticket_type'], $data['event_detail_id'], $data['price'])) {
                 ResponseHelper::sendError("Missing required fields", 400);
                 return;
             }
     
-            $price = match (strtolower($data['dance_type'])) {
-                'main event'       => 25.00,
-                'secondary event'  => 15.00,
-                'free'             => 0.00,
-                default            => -1
-            };
-    
-            if ($price < 0) {
-                ResponseHelper::sendError("Invalid dance_type", 400);
-                return;
-            }
-    
             $eventDetailId = (int)$data['event_detail_id'];
+            $price = (float)$data['price'];
+    
             $availableSeats = $this->danceTicketModel->getAvailableSeats($eventDetailId);
     
             if ($availableSeats <= 0) {
@@ -62,7 +55,6 @@ class DanceTicketApiController {
             }
     
             $ticketId = $this->danceTicketModel->bookTicket(
-                $data['dance_type'],
                 $data['ticket_type'],
                 $eventDetailId,
                 $data['pass_id'] ?? null,
@@ -97,6 +89,7 @@ class DanceTicketApiController {
         } catch (Exception $e) {
             ResponseHelper::sendError("Error while booking dance ticket: " . $e->getMessage(), 500);
         }
-    } 
+    }
+    
 }
 ?>

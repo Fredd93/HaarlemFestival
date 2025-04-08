@@ -48,21 +48,22 @@ class DanceTicketModel extends BaseModel {
     }
     
 
-    public function bookTicket(string $danceType, string $ticketType, int $eventDetailId, ?int $passId, float $price): ?int {
-        $sql = "INSERT INTO Dance_Ticket (dance_type, ticket_type, event_detail_id, pass_id, price)
-                VALUES (:danceType, :ticketType, :eventDetailId, :passId, :price)";
+    public function bookTicket(string $ticketType, int $eventDetailId, ?int $passId, float $price): ?int {
+        $sql = "INSERT INTO Dance_Ticket (ticket_type, event_detail_id, pass_id, price)
+                VALUES (:ticket_type, :event_detail_id, :pass_id, :price)";
+    
         $stmt = self::$pdo->prepare($sql);
-        $stmt->bindParam(":danceType", $danceType);
-        $stmt->bindParam(":ticketType", $ticketType);
-        $stmt->bindParam(":eventDetailId", $eventDetailId, PDO::PARAM_INT);
-        $stmt->bindParam(":passId", $passId, PDO::PARAM_INT);
+        $stmt->bindParam(":ticket_type", $ticketType);
+        $stmt->bindParam(":event_detail_id", $eventDetailId);
+        $stmt->bindParam(":pass_id", $passId);
         $stmt->bindParam(":price", $price);
     
         if ($stmt->execute()) {
-            return (int) self::$pdo->lastInsertId();
+            return (int)self::$pdo->lastInsertId();
         }
         return null;
     }
+    
     
 }
 ?>

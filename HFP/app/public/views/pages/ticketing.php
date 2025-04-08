@@ -10,11 +10,14 @@
     <!-- Adjust the path so ticketingStyle.css is correctly loaded -->
     <link rel="stylesheet" href="../../assets/css/ticketingStyle.css" />
     <link rel="stylesheet" href="../../assets/css/navbarStyle.css"/>
+    <link rel="stylesheet" href="../../danceMainStyles.css">
     <link rel="stylesheet" href="../../assets/css/footer.css">
 </head>
 <body>
-
-    
+    <?php
+    $activePage = 'tickets';
+    require_once(__DIR__ . "/../partials/navbar.php");
+    ?>
     
     <h1>Ticketing Page</h1>
 
@@ -151,5 +154,6 @@
     <!-- Main ticketing JS for tab switching -->
     <script src="../../assets/js/ticketing.js"></script>
     <script src="../../assets/js/danceBooking.js"></script>
+    <script src="../../assets/js/personalProgram.js"></script>
 </body>
 </html>
