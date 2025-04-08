@@ -60,7 +60,7 @@ class UserModel extends BaseModel
     public function create(string $username, string $email, string $password, string $role): ?UserDTO
     {
         $sql = "INSERT INTO [User] (username, email, password, role, registration_date) 
-                VALUES (:username, :email, :password, :role, NOW())";
+                VALUES (:username, :email, :password, :role, CURRENT_TIMESTAMP)";
 
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -82,7 +82,7 @@ class UserModel extends BaseModel
      */
     public function update(int $id, string $username, string $email, string $role): bool
     {
-        $sql = "UPDATE [User] SET username = :username, email = :email, role = :role WHERE user_id = :id";
+        $sql = "UPDATE [User] SET username = :username, email = :email, [role] = :role WHERE user_id = :id";
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(":username", $username);
         $stmt->bindParam(":email", $email);
@@ -119,5 +119,90 @@ class UserModel extends BaseModel
 
         return $stmt->execute();
     }
+
+    public function loginUser(string $username, string $password): ?UserDTO
+    {
+        $userDTO = $this->getUserByUsername($username);
+
+        if (!$userDTO) {
+            ResponseHelper::sendError("Username not found", 404);
+            return null;
+        }
+
+        $hashedPassword = $this->getPasswordHashByUsername($username);
+
+        if (!$hashedPassword || !password_verify($password, $hashedPassword)) {
+            ResponseHelper::sendError("Invalid password", 401);
+            return null;
+        }
+
+        $_SESSION['user_id'] = $userDTO->user_id;
+        $_SESSION['user_name'] = $userDTO->username;
+        $_SESSION['user_email'] = $userDTO->email;
+        $_SESSION['user_role'] = $userDTO->role;
+
+        return $userDTO;
+    }
+   
+    public function registerUser($username, $email, $password) {
+        $stmt = self::$pdo->prepare('SELECT username FROM [User] WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
+        if($user){
+            //There is already a user with that username
+            ResponseHelper::sendError("Username already taken", 400);
+        }
+        elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            //Email invalid
+            ResponseHelper::sendError("Email invalid", 400);
+        }
+        else{
+            $user = null;
+            $stmt = self::$pdo->prepare('SELECT email FROM [User] WHERE email = ?');
+            $stmt->execute([$email]);
+            $user = $stmt->fetch();
+            if($user){
+                //There is already a user with that email
+                ResponseHelper::sendError("Email already taken", 400);
+            }else{
+                $this->create($username, $email, $password, "user");
+            }
+        }
+    }
+
+    
+    public function getUserByUsername($username) {
+        $stmt = self::$pdo->prepare('SELECT * FROM [User] WHERE username = ?');
+        $stmt->execute([$username]);
+        $user = $stmt->fetch();
+
+        if ($user) {
+            return new UserDTO($user['user_id'], $user['username'], $user['email'], $user['role'], $user['registration_date']);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public function getPasswordHashByUsername(string $username): ?string
+    {
+        $stmt = self::$pdo->prepare("SELECT password FROM [User] WHERE username = ?");
+        $stmt->execute([$username]);
+        $row = $stmt->fetch();
+    
+        return $row ? $row['password'] : null;
+    }
+    public function logoutUser(): void
+    {
+        if (isset($_SESSION['user_id'])) {
+            unset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['user_email'], $_SESSION['user_role']);
+            session_destroy();
+        } else {
+            ResponseHelper::sendError("User not logged in", 400);
+        }
+    }
+
+
+
 }
 ?>

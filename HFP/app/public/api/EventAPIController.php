@@ -1,27 +1,112 @@
 <?php
 require_once(__DIR__ . '/../models/EventModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); // 🔐 Include middleware
 
-class EventApiCOntroller{
+class EventApiController {
     private $eventModel;
-    public function __construct()
-    {
-        $this->eventModel=new EventModel();
 
+    public function __construct() {
+        $this->eventModel = new EventModel();
     }
-    public function getAllEvents(){
-        try{
+
+    // Public: Get all events
+    public function getAllEvents() {
+        try {
             $events = $this->eventModel->getAllEvents();
-            if($events){
-                ResponseHelper::sendJson($events);
+            ResponseHelper::sendJson($events);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve events", 500);
+        }
+    }
+
+    // Public: Get specific event
+    public function getEventById($id) {
+        try {
+            $event = $this->eventModel->getEventById($id);
+            if ($event) {
+                ResponseHelper::sendJson($event);
+            } else {
+                ResponseHelper::sendError("Event not found", 404);
             }
-            else{
-                ResponseHelper::sendError("Events not found", 404);
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Failed to retrieve event", 500);
+        }
+    }
+
+    // 🔐 Admin: Create a new event
+    public function createEvent() {
+        requireApiRole(['admin']); // 🔒
+
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['name'], $data['description'], $data['image'])) {
+                ResponseHelper::sendError("Invalid input", 400);
+                return;
             }
-        }catch(Exception $e){
-            ResponseHelper::sendError("Could not retrieve events", 500);
+
+            $name = $data['name'];
+            $description = $data['description'];
+            $imagePath = $data['image'];
+
+            $success = $this->eventModel->createEvent($name, $description, $imagePath);
+
+            if ($success) {
+                ResponseHelper::sendJson(["message" => "Event created successfully"], 201);
+            } else {
+                ResponseHelper::sendError("Failed to create event", 500);
+            }
+
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+
+    // 🔐 Admin: Update existing event
+    public function updateEvent($id) {
+        requireApiRole(['admin']); // 🔒
+
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['name'], $data['description'], $data['image'])) {
+                ResponseHelper::sendError("Invalid input", 400);
+                return;
+            }
+
+            $success = $this->eventModel->updateEvent(
+                $id,
+                $data['name'],
+                $data['description'],
+                $data['image']
+            );
+
+            if ($success) {
+                ResponseHelper::sendJson(["message" => "Event updated successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to update event", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
+        }
+    }
+
+    // 🔐 Admin: Delete event
+    public function deleteEvent($id) {
+        requireApiRole(['admin']); // 🔒
+
+        try {
+            $success = $this->eventModel->deleteEvent($id);
+
+            if ($success) {
+                ResponseHelper::sendJson(["message" => "Event deleted successfully"]);
+            } else {
+                ResponseHelper::sendError("Failed to delete event", 500);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Internal Server Error", 500);
         }
     }
 }
-
 ?>

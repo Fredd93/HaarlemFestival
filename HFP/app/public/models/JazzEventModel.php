@@ -7,34 +7,38 @@ class JazzEventModel extends BaseModel {
 
     // Get all Jazz Events
     public function getAllJazzEvents() {
-        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description FROM " . $this->table;
-        $stmt = self::$pdo->query($sql);
+        $sql = "
+            SELECT 
+                edr.id AS reference_id,
+                j.event_detail_id,
+                j.name AS name,
+                j.time,
+                j.venue,
+                j.artist_id,
+                j.duration,
+                j.price,
+                j.image,
+                j.event_date,
+                j.description,
+                j.seats,
+                a.image_url AS artist_image_url
+            FROM Jazz_Events j
+            JOIN Event_Detail_Reference edr 
+                ON edr.event_detail_id = j.event_detail_id
+            LEFT JOIN Artists a 
+                ON a.artist_id = j.artist_id
+            WHERE edr.event_type = 'jazz'
+            ORDER BY j.event_date, j.time
+        ";
+
+        $stmt = self::$pdo->prepare($sql);
         $stmt->execute();
-        $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Convert database results to DTO objects
-        $eventDTOs = [];
-        foreach ($events as $event) {
-            $eventDTOs[] = new JazzEventDTO(
-                $event['event_detail_id'],
-                $event['name'],
-                $event['time'],
-                $event['venue'],
-                $event['artist_id'],
-                (float) $event['duration'],
-                (float) $event['price'],
-                $event['image'],
-                $event['event_date'],
-                $event['description'] // Added description field here
-            );
-        }
-
-        return $eventDTOs;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
+    
     // Get Jazz Event by ID
     public function getJazzEventById(int $id) {
-        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description 
+        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description, seats 
                 FROM " . $this->table . " 
                 WHERE event_detail_id = ?";
         $stmt = self::$pdo->prepare($sql);
@@ -55,13 +59,14 @@ class JazzEventModel extends BaseModel {
             (float) $event['price'],
             $event['image'],
             $event['event_date'],
-            $event['description'] // Added description field here
+            $event['description'],
+            isset($event['seats']) ? (int)$event['seats'] : null // ✅
         );
     }
 
     // Get Jazz Events by Date
     public function getJazzEventsByDate(string $date) {
-        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description 
+        $sql = "SELECT event_detail_id, name, time, venue, artist_id, duration, price, image, event_date, description, seats 
                 FROM " . $this->table . " 
                 WHERE event_date = ?";
         $stmt = self::$pdo->prepare($sql);
@@ -80,13 +85,21 @@ class JazzEventModel extends BaseModel {
                 (float) $event['price'],
                 $event['image'],
                 $event['event_date'],
-                $event['description'] // Added description field here
+                $event['description'],
+                isset($event['seats']) ? (int)$event['seats'] : null // ✅
             );
         }
 
         return $eventDTOs;
     }
 
-    // Removed: Get Jazz Events by Venue (Not needed anymore)
+    public function updateSeats(int $id, int $seats): bool {
+        $sql = "UPDATE Jazz_Events SET seats = :seats WHERE event_detail_id = :id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':seats', $seats, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    
 }
 ?>

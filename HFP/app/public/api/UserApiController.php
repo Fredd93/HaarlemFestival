@@ -1,7 +1,7 @@
 <?php
 require_once(__DIR__ . '/../models/UserModel.php');
 require_once(__DIR__ . '/../api/utils/ResponseHelper.php');
-
+require_once(__DIR__ . '/../middleware/apiAuthMiddleware.php'); 
 
 class UserApiController {
     private $userModel;
@@ -10,41 +10,35 @@ class UserApiController {
         $this->userModel = new UserModel();
     }
 
-    /**
-     * Get the authenticated user's information.
-     */
     public function getUserById() {
-        $_SESSION['user_id'] = 1;
-        if (isset($_SESSION['user_id'])) {
-            try {
-                $user = $this->userModel->get($_SESSION['user_id']);
-                if ($user) {
-                    ResponseHelper::sendJson($user);
-                } else {
-                    ResponseHelper::sendError('User not found', 404);
-                }
-            } catch (Exception $e) {
-                ResponseHelper::sendError('Failed to fetch user', 500);
+        requireApiLogin(); // 🔐
+
+        try {
+            $user = $this->userModel->get($_SESSION['user_id']);
+            if ($user) {
+                ResponseHelper::sendJson($user);
+            } else {
+                ResponseHelper::sendError('User not found', 404);
             }
-        } else {
-            ResponseHelper::sendError('Unauthorized', 401);
+        } catch (Exception $e) {
+            ResponseHelper::sendError('Failed to fetch user', 500);
         }
     }
 
-    public function getAllUsers()
-    {
-        $user = $this->userModel->getAll();
-        if ($user) {
-            ResponseHelper::sendJson($user);
+    public function getAllUsers() {
+        requireApiRole(['admin']); // 🔐
+
+        $users = $this->userModel->getAll();
+        if ($users) {
+            ResponseHelper::sendJson($users);
         } else {
             ResponseHelper::sendError('Users not found', 404);
         }
     }
 
-    /**
-     * Create a new user.
-     */
     public function createUser() {
+        requireApiRole(['admin']); // 🔐
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
 
@@ -70,80 +64,68 @@ class UserApiController {
         }
     }
 
-    /**
-     * Update user details (excluding password).
-     */
     public function updateUser() {
-        if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendJson(['error' => 'Unauthorized'], 401);
-            return;
-        }
-    
+        requireApiRole(['admin']); // 🔐
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-    
-            if (!isset($data['username']) && !isset($data['email'])) {
-                ResponseHelper::sendJson(['error' => 'Invalid input'], 400);
+
+            $user_id = isset($data['user_id']) ? (int) $data['user_id'] : null;
+            if (!$user_id) {
+                ResponseHelper::sendError("User ID is required for updating", 400);
                 return;
             }
-    
-            $userId = $_SESSION['user_id'];
-            $userModel = new UserModel();
-            $success = $userModel->update($userId, $data['username'] ?? "", $data['email'] ?? "", "user");
-    
+
+            $username = $data['username'] ?? null;
+            $email = $data['email'] ?? null;
+            $role = $data['role'] ?? null;
+
+            if (!$username || !$email || !$role) {
+                ResponseHelper::sendError("Missing required fields", 400);
+                return;
+            }
+
+            $success = $this->userModel->update($user_id, $username, $email, $role);
+
             if ($success) {
-                ResponseHelper::sendJson(['message' => 'User updated successfully']);
+                ResponseHelper::sendJson(["message" => "User updated successfully"]);
             } else {
-                ResponseHelper::sendJson(['error' => 'Failed to update user'], 500);
+                ResponseHelper::sendError("Failed to update user", 500);
             }
         } catch (Exception $e) {
-            ResponseHelper::sendJson(['error' => 'Internal Server Error'], 500);
+            ResponseHelper::sendError("Internal Server Error: " . $e->getMessage(), 500);
         }
     }
-    
-    /**
-     * Update user password.
-     */
+
     public function updatePassword() {
-        if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendJson(['error' => 'Unauthorized'], 401);
-            return;
-        }
-    
+        requireApiLogin(); // 🔐
+
         try {
             $data = json_decode(file_get_contents("php://input"), true);
-    
+
             if (!isset($data['password']) || empty($data['password'])) {
-                ResponseHelper::sendJson(['error' => 'Password cannot be empty'], 400);
+                ResponseHelper::sendError('Password cannot be empty', 400);
                 return;
             }
-    
+
             $userId = $_SESSION['user_id'];
-            $userModel = new UserModel();
-            $success = $userModel->updatePassword($userId, $data['password']);
-    
+            $success = $this->userModel->updatePassword($userId, $data['password']);
+
             if ($success) {
                 ResponseHelper::sendJson(['message' => 'Password updated successfully']);
             } else {
-                ResponseHelper::sendJson(['error' => 'Failed to update password'], 500);
+                ResponseHelper::sendError('Failed to update password', 500);
             }
         } catch (Exception $e) {
-            ResponseHelper::sendJson(['error' => 'Internal Server Error'], 500);
+            ResponseHelper::sendError('Internal Server Error', 500);
         }
     }
-    
 
-    /**
-     * Delete user account.
-     */
-    public function deleteUser() {
-        if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendError('Unauthorized', 401);
-            return;
-        }
+    public function deleteUser(int $userId) {
+        requireApiRole(['admin']); // 🔐
 
         try {
-            $success = $this->userModel->delete($_SESSION['user_id']);
+            $success = $this->userModel->delete($userId);
 
             if ($success) {
                 ResponseHelper::sendJson(['message' => 'User deleted successfully']);
@@ -152,6 +134,67 @@ class UserApiController {
             }
         } catch (Exception $e) {
             ResponseHelper::sendError('Internal Server Error', 500);
+        }
+    }
+
+    public function login() {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['username'], $data['password'])) {
+                ResponseHelper::sendError("Missing credentials", 400);
+                return;
+            }
+
+            $username = trim($data['username']);
+            $password = trim($data['password']);
+
+            $user = $this->userModel->loginUser($username, $password);
+
+            if ($user) {
+                ResponseHelper::sendJson($user);
+            } else {
+                ResponseHelper::sendError("Invalid username or password", 401);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError('Login failed', 500);
+        }
+    }
+
+    public function register() {
+        try {
+            $data = json_decode(file_get_contents("php://input"), true);
+
+            if (!isset($data['username'], $data['password'], $data['email'])) {
+                ResponseHelper::sendError("Missing credentials", 400);
+                return;
+            }
+
+            $username = trim($data['username']);
+            $password = trim($data['password']);
+            $email = trim($data['email']);
+
+            $user = $this->userModel->create($username, $email, $password, 'user');
+
+            if ($user) {
+                ResponseHelper::sendJson($user, 201);
+            } else {
+                ResponseHelper::sendError("User registration failed", 500);
+            }
+        } catch (Exception $e) {
+            error_log("Registration exception: " . $e->getMessage());
+            ResponseHelper::sendError('Registration failed', 500);
+        }
+    }
+
+    public function logout() {
+        requireApiLogin(); // 🔐
+
+        try {
+            $this->userModel->logoutUser();
+            ResponseHelper::sendJson(['message' => 'Logged out successfully']);
+        } catch (Exception $e) {
+            ResponseHelper::sendError('Logout failed', 500);
         }
     }
 }

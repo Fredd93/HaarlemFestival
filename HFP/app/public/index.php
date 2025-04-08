@@ -21,7 +21,9 @@ require_once(__DIR__ . "/lib/Route.php");
  * Require routes
  */
 require_once(__DIR__ . "/routes/index.php");
+require_once(__DIR__ . "/routes/login.php");
 require_once(__DIR__ . "/routes/user.php");
+require_once(__DIR__ . "/routes/cmsRoute.php");
 require_once(__DIR__ . "/routes/api/api_routes.php");
 
 // run router

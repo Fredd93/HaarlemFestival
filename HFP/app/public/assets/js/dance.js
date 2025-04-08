@@ -1,8 +1,18 @@
+// File: /assets/js/dance.js
+
+/**
+ * This file ONLY handles the "artist" part now.
+ * The table logic (setTable, etc.) has been moved to a partial (danceEventsTable.php).
+ */
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchArtists();
     setTable("FRIDAY");
 });
 
+/**
+ * Fetch all Dance artists
+ */
 function fetchArtists() {
     fetch('/api/artists/all')
         .then(response => {
@@ -11,17 +21,23 @@ function fetchArtists() {
             }
             return response.json();
         })
-        .then(Artists => {
-            console.log("Artists fetched:", Artists);
-            displayArtists(Artists);
+        .then(artists => {
+            console.log("Artists fetched:", artists);
+            displayArtists(artists);
         })
         .catch(error => {
             console.error("Error fetching artists:", error);
         });
 }
 
+/**
+ * Display the fetched artists in #artist-cards-container
+ */
 function displayArtists(artists) {
     const container = document.getElementById("artist-cards-container");
+    // If container doesn't exist (e.g., ticketing page might omit artists), just skip
+    if (!container) return;
+
     container.innerHTML = ""; // Clear previous content
 
     artists.forEach(artist => {

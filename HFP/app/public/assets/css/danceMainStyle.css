@@ -518,6 +518,30 @@ html {
     background: #14a396;
 }
 
+.dance-day-btn {
+    background-color: #4B0082; /* dark purple */
+    color: white;
+    padding: 10px 16px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dance-day-btn:hover {
+    background-color: #6A0DAD; /* lighter purple on hover */
+}
+
+.dance-day-btn.active {
+    background-color: #310064; /* active tab styling */
+    color: #fff;
+}
+
+
+
 
 
 

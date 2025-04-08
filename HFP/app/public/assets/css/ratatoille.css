@@ -216,11 +216,11 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.0);
     color: white;
     font-size: 24px;
     padding: 12px;
-    border-radius: 50%;
+    border-radius: 100%;
     cursor: pointer;
     border: none;
     transition: background 0.3s ease-in-out;
@@ -493,5 +493,120 @@ textarea {
     .contact-info {
         flex-direction: column;
         text-align: center;
+    }
+}
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;
+        padding: 60px 20px;
+        background-position: center;
+    }
+
+    .hero-content {
+        padding-left: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 60px;
+    }
+
+    .hero-subtitle {
+        font-size: 18px;
+    }
+
+    .hero-btn {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+
+    .about-container {
+        flex-direction: column;
+    }
+
+    .about-text {
+        margin: 30px;
+        text-align: center;
+    }
+
+    .about-text h2 {
+        font-size: 36px;
+    }
+
+    .about-text p {
+        font-size: 16px;
+    }
+
+    .about-image img {
+        height: auto;
+    }
+
+    .slider-container {
+        width: 90%;
+    }
+
+    .caption {
+        font-size: 14px;
+        padding: 20px;
+    }
+
+    .prev, .next {
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .dining-sessions {
+        padding: 20px;
+    }
+
+    .dining-sessions h2 {
+        font-size: 28px;
+    }
+
+    .reservation-container {
+        flex-direction: column;
+    }
+
+    .reservation-form {
+        margin: 20px;
+        max-width: 100%;
+    }
+
+    .reservation-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .reservation-image img {
+        height: auto;
+        object-fit: contain;
+    }
+
+    .form-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .reservation-btn {
+        width: 100%;
+    }
+
+    .contact-container h2 {
+        font-size: 28px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .contact-item {
+        font-size: 16px;
+    }
+
+    .contact-item i {
+        font-size: 24px;
+        margin-bottom: 10px;
     }
 }

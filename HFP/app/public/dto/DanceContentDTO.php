@@ -18,3 +18,4 @@ class DanceContentDTO {
         $this->title = $title;
     }
 }
+}

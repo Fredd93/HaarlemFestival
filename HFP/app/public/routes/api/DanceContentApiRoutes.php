@@ -8,5 +8,5 @@ Route::add('/api/dancecontent/all', function () use ($controller) {
 }, ['GET']);
 
 Route::add('/api/dancecontent/page', function () use ($controller) {
-    $controller->getContentByPage($_GET); // This will use ?page=danceAfrojack
+    $controller->getContentByPage($_GET);
 }, ['GET']);

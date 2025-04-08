@@ -1,3 +1,13 @@
+<?php
+
+
+// Convert content into an associative array for easy access
+$contentMap = [];
+foreach ($homepageContent as $content) {
+    $contentMap[$content->content_type] = $content;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,48 +21,48 @@
     <link rel="stylesheet" href="../../assets/css/homepageStyle.css">
     <link rel="stylesheet" href="../../assets/css/footer.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title><?= $contentMap["hero"]->title ?? "" ?></title>
 </head>
 <body>
+
     <?php
-    $activePage = 'index';
-    require(__DIR__ . "/../partials/navbar.php");
+        $activePage = 'home';
+        require_once(__DIR__ . "/../partials/navbar.php");
     ?>
+
+    <!-- HERO SECTION (Dynamic) -->
     <div class="hero-section">
         <section class="hero-banner">
             <div class="hero-content">
-                <h1>Haarlem Festival</h1>
-                <p>Experience Haarlem Like Never Before</p>
+                <h1><?= $contentMap["hero"]->title ?? "" ?></h1>
+                <p><?= html_entity_decode($contentMap["hero"]->description ?? "") ?></p>
                 <a href="tickets.php" class="hero-btn">Book now</a>
             </div>
         </section>
     </div>
+
+    <!-- FESTIVAL INFO SECTION (Dynamic) -->
     <div class="festival-info-section">
-    <div class="text-content">
-        <h2>What is the Haarlem Festival?</h2>
-        <p>
-            The Haarlem Festival is a unique celebration of culture, food, and history, 
-            showcasing Haarlem as a vibrant cultural hub. Spanning four unforgettable days, 
-            the festival offers diverse events designed to delight visitors of all ages and backgrounds.
-        </p>
-    </div>
-    <div class="slideshow-wrapper">
-        <div class="slideshow-container">
-            <div class="slideshow fade">
-                <img src="../../assets/images/homepage/banner image 1.png" alt="Festival Crowd">
-            </div>
-            <div class="slideshow fade">
-                <img src="../../assets/images/homepage/banner image2.jpeg" alt="Live Performance">
-            </div>
-            <div class="slideshow fade">
-                <img src="../../assets/images/homepage/banner imag 3.jpeg" alt="Food Stalls">
+        <div class="text-content">
+            <h2><?= $contentMap["festival-info"]->title ?? "" ?></h2>
+            <p><?= html_entity_decode($contentMap["festival-info"]->description ?? "") ?></p>
+        </div>
+
+        <!-- SLIDESHOW IMAGES (Dynamic) -->
+        <div class="slideshow-wrapper">
+            <div class="slideshow-container">
+                <?php 
+                if (isset($contentMap["slideshow-image"])): 
+                    $images = explode(",", $contentMap["slideshow-image"]->image_url);
+                    foreach ($images as $imgUrl):
+                ?>
+                    <div class="slideshow fade">
+                        <img src="<?= trim($imgUrl) ?>" alt="Festival Image">
+                    </div>
+                <?php endforeach; endif; ?>
             </div>
         </div>
     </div>
-</div>
-    <div class="events-section">
-    <h2>Explore Our Events</h2>
-    
     <div class="event-carousel">
         <button class="prev-event">&#10094;</button>
         <div class="event-container" id="event-container">
@@ -61,61 +71,41 @@
         <button class="next-event">&#10095;</button>
         </div>
     </div>
+
+    <!-- FESTIVAL HIGHLIGHT SECTION (Dynamic) -->
     <div class="festival-highlight">
-    <div class="highlight-image">
-        <img src="../../assets/images/homepage/2ndBannerimage.png" alt="Haarlem Festival">
-    </div>
-    <div class="highlight-text">
-        <h2>Why You’ll Love the Haarlem Festival?</h2>
-        <p><strong>Cultural Diversity:</strong> Representing Haarlem’s rich history and global appeal.</p>
-        <p><strong>Exclusive Dining Experiences:</strong> Yummy! features top restaurants with special menus.</p>
-        <p><strong>World-Class Performances:</strong> Jazz and Dance events feature top talent.</p>
-    </div>
-</div>
-<div class="map-section">
-    <h2>Find Us Around Haarlem</h2>
-    <div class="map-container">
-        <div id="festival-map"></div>
-        <div class="map-legend">
-            <h3>Legend</h3>
-            <ul>
-                <li data-category="jazz">🎷 Jazz</li>
-                <li data-category="yummy">🍽 Yummy</li>
-                <li data-category="teylers">🏛 Teylers Museum</li>
-                <li data-category="history">🏰 A Stroll Through History</li>
-                <li data-category="dance">💃 Dance</li>
-            </ul>
-            <h4>Filter by</h4>
-            <div class="filter-buttons">
-                <button data-filter="jazz">🎷</button>
-                <button data-filter="yummy">🍽</button>
-                <button data-filter="teylers">🏛</button>
-                <button data-filter="history">🏰</button>
-                <button data-filter="dance">💃</button>
-            </div>
+        <div class="highlight-image">
+            <img id="highlight-image" src="<?= $contentMap["festival-highlight"]->image_url ?? '' ?>" alt="Festival Highlight">
+        </div>
+        <div class="highlight-text">
+            <h2><?= $contentMap["festival-highlight"]->title ?? "" ?></h2>
+            <p><?= html_entity_decode($contentMap["festival-highlight"]->description ?? "") ?></p>
         </div>
     </div>
-</div>
 
-<div class="footer-section">
-    <h2>Don’t miss out on The Haarlem Festival!</h2>
-    <div class="footer-buttons">
-        <a href="tickets.php" class="footer-btn">Get Tickets Now</a>
-        <a href="schedule.php" class="footer-btn">View Full Schedule</a>
+    <!-- MAP SECTION (Static for now, can be dynamic if needed) -->
+    <div class="map-section">
+        <h2>Find Us Around Haarlem</h2>
+        <div class="map-container">
+            <div id="festival-map"></div>
+        </div>
     </div>
-</div>
-    <script src="assets/js/homePage.js"></script>
-    <script src="assets/js/maps.js"></script>
-    <script src="../../assets/js/personalProgram.js"></script>
 
-    <?php
-        require(__DIR__ . "/../partials/footer.php");
-    ?>
+    <!-- FOOTER SECTION (Static for now) -->
+    <div class="footer-section">
+        <h2>Don’t miss out on The Haarlem Festival!</h2>
+        <div class="footer-buttons">
+            <a href="tickets.php" class="footer-btn">Get Tickets Now</a>
+            <a href="schedule.php" class="footer-btn">View Full Schedule</a>
+        </div>
+    </div>
+
+    <script src="../../assets/js/homePage.js"></script>
+    <script src="../../assets/js/maps.js"></script>
+
+    <?php require(__DIR__ . "/../partials/footer.php"); ?>
+
 </body>
 <footer>
-<?php include(__DIR__ . "/../partials/personalProgram.php"); ?>
-
 </footer>
 </html>
-
-

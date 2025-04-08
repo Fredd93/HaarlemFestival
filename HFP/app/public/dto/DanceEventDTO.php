@@ -1,5 +1,5 @@
 <?php
-class DanceEventDTO{
+class DanceEventDTO {
     public string $artist;
     public int $event_detail_id;
     public string $time;
