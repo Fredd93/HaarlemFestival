@@ -2,7 +2,6 @@
 $activePage = 'history';
 $detailId = 2; // Amsterdam gate id
 
-require_once(__DIR__ . "/../partials/navbar.php");
 require_once(__DIR__ . "/../../controllers/ContentController.php");
 
 //Fetch content for this page and detail
@@ -26,9 +25,12 @@ foreach ($contentBlocks as $block) {
     <link rel="stylesheet" href="../../assets/css/footer.css">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Amsterdam gate</title>
 </head>
 <body>
-
+    <?php
+    require_once(__DIR__ . "/../partials/navbar.php"); 
+    ?>
 <!-- could be done with css probably-->
 <br>
 <div class="pageTop flexbox">

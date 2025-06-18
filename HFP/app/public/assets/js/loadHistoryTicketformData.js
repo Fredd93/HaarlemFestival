@@ -1,11 +1,11 @@
 let fullSchedule = null;
-//Hardcoded the default values here as default choices
+//Initialise variables for later use
 let chosenDay = "Thursday";
 let chosenTime = "10:00";
 let chosenLanguage = "Dutch";
 
 
-function FetchSchedule() {
+async function FetchSchedule(day, time){
     fetch('/api/history/schedule')
         .then(response => {
             if (!response.ok) {
@@ -15,14 +15,16 @@ function FetchSchedule() {
         })
         .then(schedule => {
             console.log("Schedule fetched:", schedule);
-            FillForm(schedule);
+            FillForm(schedule, day, time);
         })
         .catch(error => {
             console.error("Error fetching schedule:", error);
         });
 }
-function FillForm(schedule) {
+function FillForm(schedule, day, time) {
 
+    chosenDay = day;
+    chosenTime = time;
     combinedSchedule = [];
 
     schedule.forEach(scheduleItem => {
@@ -142,6 +144,7 @@ function FillDayField() {
         dayOption = document.createElement("option");
         dayOption.innerHTML = daySchedule.day;
         dayField.appendChild(dayOption);
+        dayField.value = chosenDay;
         /*cardContainer = document.getElementById(daySchedule.day);
         daySchedule.cards.forEach(scheduleItem => {
             const card = CreateScheduleCard(scheduleItem, daySchedule.day);
@@ -158,6 +161,7 @@ function FillTimeField(day) {
         timeOption = document.createElement("option");
         timeOption.innerHTML = time;
         timeField.appendChild(timeOption);
+        timeField.value = chosenTime;
     })
 }
 function FillLanguageField(scheduleItem) {

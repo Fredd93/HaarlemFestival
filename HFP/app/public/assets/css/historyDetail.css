@@ -49,3 +49,9 @@ section>*>p {
 .navbar {
     background-color: #FFCC70BF;
 }
+body {
+    margin: 0px;
+}
+.pageTop, .pageBottom {
+    margin: 8px;
+}

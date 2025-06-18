@@ -10,13 +10,20 @@
     <link rel="stylesheet" href="../../assets/css/footer.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>History tickets</title>
 </head>
 <body>
     <?php
     $activePage = 'history';
     require_once(__DIR__ . "/../partials/navbar.php");
-    $day = $_GET['day'];
-    $time = $_GET['time'];
+    $day ="Thursday";
+    $time = "10:00";
+    if(key_exists('day', $_GET)) {
+        $day = $_GET['day'];
+    }
+    if (key_exists('time', $_GET)) {
+        $time = $_GET['time'];
+    }
     ?>
     <div class="flexbox">
         <form id="form" class="historyForm" action="/submit" method="POST">
@@ -53,14 +60,12 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            FetchSchedule();
+            FetchSchedule('<?php echo $day?>', '<?php echo ((string) $time)?>');
+
             //Load the schedule
 
-            /*
-            Would have used the parameters to set the time and day ahead of time, but the values wouldn't get set
-            if (<?php echo (isset($day) && isset($time))?>) {
-                AddLinkValues('<?php echo $day ?>', '<?php echo $time ?>');
-            }*/
+            
+            //Would have used the parameters to set the time and day ahead of time, but the values wouldn't get set
         });
     </script>
 </body>
