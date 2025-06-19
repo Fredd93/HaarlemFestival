@@ -47,5 +47,17 @@ class PersonalProgramApiController
             ResponseHelper::sendError("Error deleting item: " . $e->getMessage(), 500);
         }
     }
-    
+    public function scanQrCode($programID){
+        try {
+            $success = $this->model->scanQrCode((int)$programID);
+            if ($success) {
+                ResponseHelper::sendJson(["message" => "Personal program was scanned"]);
+            } else {
+                ResponseHelper::sendError("Personal program already scanned or does not exist", 400);
+            }
+        } catch (Exception $e) {
+            ResponseHelper::sendError("Error scanning personal program: " . $e->getMessage(), 500);
+        }
+        
+    }
 }

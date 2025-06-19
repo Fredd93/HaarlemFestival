@@ -93,6 +93,41 @@ class PersonalProgramModel extends BaseModel
         $stmt->bindParam(":program_id", $programId, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function scanQrCode(int $programId) {
+
+         $existsSql = "SELECT 1 FROM Personal_Program WHERE Program_ID = :program_id";
+    $existsStmt = self::$pdo->prepare($existsSql);
+    $existsStmt->bindParam(":program_id", $programId, PDO::PARAM_INT);
+    $existsStmt->execute();
+    if (!$existsStmt->fetch()) {
+        // The ID does not exist — bail out
+        return false;
+    }
+    // Step 1: Check if the programId is already scanned
+    $checkSql = "SELECT TOP 1 1 FROM QR_Scan_PersonalProgram WHERE Personal_Program_ID = :program_id";
+    $checkStmt = self::$pdo->prepare($checkSql);
+    $checkStmt->bindParam(":program_id", $programId, PDO::PARAM_INT);
+    $checkStmt->execute();
+
+    if ($checkStmt->fetch()) {
+        // Already scanned
+        return false;
+    }
+
+    // Step 2: Insert new row into QR_Scan
+    $insertSql = "INSERT INTO QR_Scan_PersonalProgram (Personal_Program_ID, scan_datetime, scanned_by)
+                  VALUES (:program_id, :scan_datetime, :scanned_by)";
+    $insertStmt = self::$pdo->prepare($insertSql);
+    $insertStmt->bindParam(":program_id", $programId, PDO::PARAM_INT);
+    
+    $date = date('Y-m-d H:i:s');
+    $insertStmt->bindParam(":scan_datetime", $date);
+    $insertStmt->bindParam(":scanned_by", $_SESSION['user_id']);
+
+    return $insertStmt->execute();
+    }
+
     
 }
 ?>
