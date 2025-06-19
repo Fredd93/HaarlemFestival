@@ -38,21 +38,30 @@ class OrderApiController {
     }
 
     public function createOrder() {
-        requireApiRole(['admin']);
+    try {
+        $data = json_decode(file_get_contents("php://input"), true);
+        if (!isset($data['user_id'], $data['total_price'], $data['payment_method'])) {
+            ResponseHelper::sendError("Missing required fields", 400);
+            return;
+        }
 
-        try {
-            $data = json_decode(file_get_contents("php://input"), true);
-            if (!isset($data['user_id'], $data['total_price'], $data['payment_method'])) {
-                ResponseHelper::sendError("Missing required fields", 400);
-                return;
-            }
+        $orderId = $this->orderModel->createOrder(
+            (int)$data['user_id'],
+            (float)$data['total_price'],
+            $data['payment_method']
+        );
 
-            $success = $this->orderModel->createOrder((int)$data['user_id'], (float)$data['total_price'], $data['payment_method']);
-            $success ? ResponseHelper::sendJson(["message" => "Order created"], 201) : ResponseHelper::sendError("Failed to create order", 500);
-        } catch (Exception $e) {
+        if ($orderId > 0) {
+            ResponseHelper::sendJson(["message" => "Order created", "order_id" => $orderId], 201);
+        } else {
             ResponseHelper::sendError("Failed to create order", 500);
         }
+
+    } catch (Exception $e) {
+        ResponseHelper::sendError("Failed to create order", 500);
     }
+    }
+
 
     public function deleteOrder(int $id) {
         requireApiRole(['admin']);

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../assets/css/navbarStyle.css">
     <link rel="stylesheet" href="../../assets/css/jazzStyle.css">
     <link rel="stylesheet" href="../../assets/css/footer.css">
+    <script src="https://js.stripe.com/v3/"></script>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">

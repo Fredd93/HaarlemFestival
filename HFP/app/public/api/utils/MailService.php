@@ -63,7 +63,12 @@ class MailService {
             $mail->Body = $message;
             $mail->AddEmbeddedImage($qrImagePath, 'qr_code');
 
-            $mail->send();
+            try {
+                $mail->send();
+            } catch (Exception $e) {
+                error_log("❌ Mail sending failed: " . $mail->ErrorInfo);
+            }
+
 
             // Cleanup
             unlink($qrImagePath);

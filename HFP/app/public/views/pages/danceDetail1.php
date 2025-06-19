@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../assets/css/danceDetail.css">
     <link rel="stylesheet" href="../../assets/css/danceMainStyle.css">
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
     <body>
     <?php
