@@ -12,19 +12,32 @@
 </head>
 <body>
 <?php
-    $activePage = 'teyler';
+    $activePage = 'teylers';
+    $detailId = 43;
     require_once(__DIR__ . "/../partials/navbar.php");
+    //Fetch content for this page and detail
+    $contentController = new ContentController();
+    $contentBlocks = $contentController->getContentForPage($activePage, $detailId);
+
+    $contentMap = [];
+    foreach ($contentBlocks as $block) {
+        $contentMap[$block->content_type][] = $block;
+    }
+
     ?>
     <div class="banner-image">
-        <img class="banner-image" src="../../assets/images/teyler/lorentz-top.jpeg" alt="Front view of the Teylers museum seen from the water.">
-    </div>
-    <h1 class="teyler-title">The Lorentz Formula</h1>
-    <p class = "teyler-text">In this fun show for those 10 and up you will be shown a small glimpse into the life of Lorentz.</p>
+    <?php if (!empty($contentMap["hero"][0]->image_url)): ?>
+        <img src="<?= $contentMap["hero"][0]->image_url ?>" alt="teylers museum interior" class="banner-img">
+    <?php endif; ?>
+</div>
+    <h1 class="teyler-title"><?php echo($contentMap["hero"][0]->title)?></h1>
+    <p class="teyler-text">
+        <?php echo strip_tags($contentMap["hero"][0]->description, '<strong><em><br><a>'); ?>
+    </p>
     <div class="teyler-detail-container">
         <div class="teyler-detail-top">
-            <h2>A fun experience for all</h2>
-            <p>In six tasks children will learn various facts about the world around them</p>
-            <p>For The Lorentz Formula register at the museum, you can sign up to participate. There is room for 20 people at a time. The performance is suitable for anyone ages 10 and up.</p>
+            <h2><?php echo($contentMap["card"][0]->title)?></h2>
+            <p><?php echo($contentMap["card"][0]->description)?>.</p>
         </div>
         <div class="teyler-detail-times-container">
             <?php

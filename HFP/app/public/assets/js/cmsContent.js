@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addContentBtn = document.getElementById("addContentBtn");
 
     // Pages that have detail pages
-    const eventPages = ["yummy", "jazz", "dance", "history"];
+    const eventPages = ["yummy", "jazz", "dance", "history", "teylers"];
 
     // Load the initial page content
     loadInitialPage(pageSelector.value);
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
     
         const page = pageSelector.value;
-        const requiresDetail = ["yummy", "jazz", "dance", "history"].includes(page);
+        const requiresDetail = ["yummy", "jazz", "dance", "history", "teylers"].includes(page);
         const detailRow = document.querySelector("tr[data-selected='true']");
         const detailId = detailRow ? detailRow.getAttribute("data-detail-id") : null;
     

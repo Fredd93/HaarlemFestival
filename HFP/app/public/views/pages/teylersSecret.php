@@ -12,19 +12,32 @@
 </head>
 <body>
 <?php
-    $activePage = 'teyler';
+    $activePage = 'teylers';
+    $detailId = 42;
     require_once(__DIR__ . "/../partials/navbar.php");
+    //Fetch content for this page and detail
+    $contentController = new ContentController();
+    $contentBlocks = $contentController->getContentForPage($activePage, $detailId);
+
+    $contentMap = [];
+    foreach ($contentBlocks as $block) {
+        $contentMap[$block->content_type][] = $block;
+    }
+
     ?>
     <div class="banner-image">
-        <img class="banner-image" src="../../assets/images/teyler/lorentz-top.jpeg" alt="Front view of the Teylers museum seen from the water.">
-    </div>
-    <h1 class="teyler-title">The Secret of Professor Teyler</h1>
-    <p class = "teyler-text">Through this interactive experience, children aged 4 to 8 will explore the wonders of science with six exciting, hands-on activities designed to spark curiosity, creativity, and a love for learning.</p>
+    <?php if (!empty($contentMap["hero"][0]->image_url)): ?>
+        <img src="<?= $contentMap["hero"][0]->image_url ?>" alt="teylers museum interior" class="banner-img">
+    <?php endif; ?>
+</div>
+    <h1 class="teyler-title"><?php echo($contentMap["hero"][0]->title)?></h1>
+    <p class="teyler-text">
+        <?php echo strip_tags($contentMap["hero"][0]->description, '<strong><em><br><a>'); ?>
+    </p>
     <div class="teyler-detail-container">
         <div class="teyler-detail-top">
-            <h2>Science for the youngest</h2>
-            <p>In six tasks children will learn various facts about the world around them</p>
-            <p>Participants of The Secret of Professor Teyler need to download the app, buy tickets at the Teylers Museum, no additional cost for participation in Magic@Teylers.</p>
+            <h2><?php echo($contentMap["card"][0]->title)?></h2>
+            <p><?php echo($contentMap["card"][0]->description)?>.</p>
         </div>
         <div class="teyler-detail-times-container">
             <div class = "teyler-detail-bottom">Friday 10:00-17:00</div>
