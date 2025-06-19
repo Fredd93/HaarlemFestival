@@ -54,7 +54,7 @@ if ($event->type === 'checkout.session.completed') {
     }
 
         try {
-            $orderRes = json_decode(file_get_contents("/api/orders/create", false, stream_context_create([
+            $orderRes = json_decode(file_get_contents("https://guild-howard-declined-fiber.trycloudflare.com/api/orders/create", false, stream_context_create([
                 'http' => [
                     'method'  => 'POST',
                     'header'  => "Content-Type: application/json\r\n",
@@ -67,10 +67,13 @@ if ($event->type === 'checkout.session.completed') {
             ])), true);
 
             error_log("✅ Order response: " . json_encode($orderRes));
+            if ($orderRes === null) {
+                error_log("Order API call failed: " . print_r(error_get_last(), true));
+            }
             $orderId = $orderRes['order_id'];
 
             $dueDate = date('Y-m-d', strtotime('+7 days'));
-            $invoiceRes = json_decode(file_get_contents("/api/invoices", false, stream_context_create([
+            $invoiceRes = json_decode(file_get_contents("https://guild-howard-declined-fiber.trycloudflare.com/api/invoices", false, stream_context_create([
                 'http' => [
                     'method'  => 'POST',
                     'header'  => "Content-Type: application/json\r\n",
