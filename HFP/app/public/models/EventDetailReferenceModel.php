@@ -8,9 +8,11 @@ class EventDetailReferenceModel extends BaseModel {
 
     // Fetch all entries for a given event type (e.g., 'yummy', 'jazz', 'dance')
     public function getByEventType(string $eventType): array {
-        $sql = "SELECT * FROM Event_Detail_Reference WHERE event_type = :event_type";
+        $sql = "SELECT * FROM Event_Detail_Reference WHERE event_type = :event_type AND [name] != :name";
         $stmt = self::$pdo->prepare($sql);
         $stmt->bindParam(":event_type", $eventType, PDO::PARAM_STR);
+        $stmt->bindValue(":name", "HistoryTour"); //Exception required because 
+        // events for pages that aren't history are the same as detailpages, unlike history where those are seperate
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

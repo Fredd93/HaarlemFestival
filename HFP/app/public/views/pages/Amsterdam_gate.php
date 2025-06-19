@@ -36,17 +36,17 @@ foreach ($contentBlocks as $block) {
 <br>
 <div class="pageTop flexbox">
     <section id="pageText">
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="hero-overlay">
-            <div class="hero-content">
-                <section>
-                    <h1 class="hero-title"><?= htmlspecialchars($contentMap["hero"][0]->title ?? "A stroll through history") ?></h1>
-                    <h2 class="hero-subtitle"><?= htmlspecialchars(strip_tags($contentMap["hero"][0]->description ?? "test")) ?></h2>
-                </section>
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <section>
+                        <h1 class="hero-title"><?= htmlspecialchars($contentMap["hero"][0]->title ?? "A stroll through history") ?></h1>
+                        <h2 class="hero-subtitle"><?= htmlspecialchars(strip_tags($contentMap["hero"][0]->description ?? "test")) ?></h2>
+                    </section>
+                </div>
             </div>
         </div>
-    </div>
         <div class="about-container">
             <?= html_entity_decode($contentMap["about"][0]->description ?? "") ?>
         </div>

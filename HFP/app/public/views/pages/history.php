@@ -15,8 +15,18 @@
 </head>
 <body>
     <?php
-    $activePage = 'history';
-    require_once(__DIR__ . "/../partials/navbar.php");
+        $activePage = 'history';
+        require_once(__DIR__ . "/../partials/navbar.php");
+        require_once(__DIR__ . "/../../controllers/ContentController.php");
+
+        //Fetch content for this page and detail
+        $contentController = new ContentController();
+        $contentBlocks = $contentController->getContentForPage($activePage, null);
+
+        $contentMap = [];
+        foreach ($contentBlocks as $block) {
+            $contentMap[$block->content_type][] = $block;
+        }
     ?>
     <!-- About History Section -->
     <div  class="about-history-section">
