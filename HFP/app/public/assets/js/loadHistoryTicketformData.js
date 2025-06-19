@@ -181,15 +181,12 @@ async function createHistoryTicket() {
     }
     const chosenCount = document.getElementById("count").value;
     const price = parseFloat(document.getElementById("historyTicketPrice").textContent.replace("€", ""));
-    console.log(price);
-    console.log(document.getElementById("historyTicketPrice").textContent.replace("€", ""));
-    console.log(document.getElementById("historyTicketPrice"));
     //Didn't know a better way to do this at first
     const weekday = {"Sunday":10,"Monday":4,"Tuesday":5,"Wednesday":6,"Thursday":7,"Friday":8,"Saturday":9};
-    let time = "2025-8-" + weekday[chosenDay] + " " + chosenTime;
+    let date = "2025-8-" + weekday[chosenDay] + " " + chosenTime;
     const payload = {
         location: "St.Bavo church",
-        time: time,
+        date: date,
         language: chosenLanguage,
         ticket_type: chosenType,
         ticket_count: chosenCount,
@@ -213,6 +210,7 @@ async function createHistoryTicket() {
             infoLabel.textContent = "Booking successful";
             infoLabel.classList.remove("negative");
             infoLabel.classList.add("positive");
+            document.getElementById("personal-program-count").textContent = parseInt(document.getElementById("personal-program-count").textContent) + 1
         }
         // Optionally refresh table or disable button
     })
@@ -251,10 +249,6 @@ function updateFields() {
     updateTicketLanguage();
     updateTicketPrice();
     updateTicketTime();
-    console.log("updating ALL fields");
-    console.log(chosenDay);
-    console.log(chosenTime);
-    console.log(chosenLanguage);
 }
 
 function setupDatetimeChange() {
@@ -298,6 +292,7 @@ function setupTicketSubmit() {
 
 // Call all setup functions
 function setupEventListeners() {
+    console.log("setting up");
     setupDatetimeChange();
     setupLanguageChange();
     setupPriceChange();

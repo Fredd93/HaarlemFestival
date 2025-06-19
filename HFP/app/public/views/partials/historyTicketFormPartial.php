@@ -34,9 +34,9 @@ if (key_exists('time', $_GET)) {
         <button id="historySubmit" type="submit" class="submitButton" disabled>Submit</button>
         <p id="InfoLabel" class="InfoLabel"></p>
     </form>
-    <div id="priceTag">
+    <div class="program-card">
         <div class="program-card-header">
-            <img src="assets/images/default-event.jpg" alt="Event Image" />
+            <img src="assets/images/history/bavoKerkImage.png" alt="Event Image" />
             <div class="event-title">A stroll through history</div>
         </div>
         <div class="program-card-body">

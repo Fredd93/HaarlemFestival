@@ -31,5 +31,15 @@ class BaseModel
                 die("❌ Database Connection Failed: " . $e->getMessage());
             }
         }
+        
+    }
+    public function getEventIdByDetailId(int $eventDetailId): ?int {
+        //Was in multiple other models, so was moved here
+        $sql = "SELECT event_id FROM Event_Detail_Reference WHERE event_detail_id = :detail_id";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->bindParam(':detail_id', $eventDetailId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ? (int)$row['event_id'] : null;
     }
 }

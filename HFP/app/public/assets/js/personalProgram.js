@@ -92,7 +92,9 @@ function loadPersonalProgramItems() {
 
 function increaseQty(btn) {
     const input = btn.previousElementSibling;
-    input.value = parseInt(input.value) + 1;
+    if (input.max !== input.value) {
+        input.value = parseInt(input.value) + 1;
+    }
 }
 
 function decreaseQty(btn) {
@@ -187,8 +189,8 @@ function renderHistoryProgramItem(item) {
     card.className = "program-card";
     card.innerHTML = `
         <div class="program-card-header">
-            <img src="assets/images/default-event.jpg" alt="Event Image" />
-            <div class="event-title">${item.Location || "Event"}</div>
+            <img src="assets/images/history/bavoKerkImage.png" alt="${item.Event_Name || 'A stroll through history'}" />
+            <div class="event-title">A stroll through history</div>
         </div>
         <div class="program-card-body">
             <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
@@ -197,7 +199,7 @@ function renderHistoryProgramItem(item) {
             <p id="historyTicketLanguage"><strong>Language:</strong> ${item.Event_Language}</p>
             <div class="quantity-container">
                 <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                <input type="number" min="1" value="1" class="qty-input" />
+                <input type="number" min="1" value="${item.Ticket_Count}" max="12" class="qty-input" />
                 <button class="qty-btn" onclick="increaseQty(this)">+</button>
             </div>
             <div class="card-footer">

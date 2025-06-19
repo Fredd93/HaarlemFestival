@@ -33,12 +33,23 @@ Class HistoryTicketModel extends BaseModel
 
         return $stmt->fetchColumn() ?? 0;
     }
+    public function getFirstDetailId($date, $language) {
+        $stmt = self::$pdo->prepare("SELECT TOP 1 event_detail_id
+        FROM History_Events
+        WHERE language = :language AND date = :date");
+
+        $stmt->bindParam(":language", $language, PDO::PARAM_STR);
+        $stmt->bindParam(":date", $date);
+        $stmt->execute();
+
+        return $stmt->fetchColumn() ?? 0;
+    }
     public function createTicket($data) {
         //$id = (int)$this->getLastId()["ticket_id"];
         //$id = $id + 1;
 
         $format = "Y-n-j H:i"; // The format for year-month-day hour:minute
-        $date = DateTime::createFromFormat($format, $data['time'])->format('Y-m-d H:i:s');
+        $date = DateTime::createFromFormat($format, $data['date'])->format('Y-m-d H:i:s');
         $maxTickets = $this->getTicketCapacityForSlot($date, $data['language']);
         $bookedTickets = $this->getBookingsForSlot($date, $data['language']);
         $wantedTickets = intval($data['ticket_count']);

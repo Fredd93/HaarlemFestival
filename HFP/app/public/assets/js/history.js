@@ -146,9 +146,6 @@ function openTicketing(day, time) {
     schedule.classList.add("hidden");
     setDay(day);
     setTime(time);
-    FillForm();
-    console.log(day);
-    console.log(time);
 }
 function CheckPlural(tourCount) {
     if (tourCount > 1) {

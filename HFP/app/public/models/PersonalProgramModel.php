@@ -53,7 +53,8 @@ class PersonalProgramModel extends BaseModel
                 CASE WHEN edr.event_type = 'jazz' THEN j.image ELSE NULL END AS Event_Image,
                 CASE WHEN edr.event_type = 'jazz' THEN j.name ELSE NULL END AS Event_Name,
 				-- Extra field for History events:
-				CASE WHEN edr.event_type = 'history' THEN h.language ELSE NULL END AS Event_Language
+				CASE WHEN edr.event_type = 'history' THEN h.language ELSE NULL END AS Event_Language,
+                CASE WHEN edr.event_type = 'history' THEN ht.count ELSE NULL END AS Ticket_Count
             FROM dbo.Personal_Program p
             INNER JOIN dbo.Event_Detail_Reference edr 
                 ON edr.id = p.Event_Detail_Reference_Id

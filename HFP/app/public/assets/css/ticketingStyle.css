@@ -550,3 +550,6 @@ body {
 form > * {
     background-color: white;
 }
+.program-count {
+    right: 34.1px !important; /*Fixes offcenter count*/
+}
