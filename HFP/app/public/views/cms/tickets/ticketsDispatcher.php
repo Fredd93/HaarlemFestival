@@ -11,8 +11,8 @@ if (!preg_match('/^[a-z0-9_-]+$/', $eventType)) {
     http_response_code(400);
     exit;
 }
-
 $pagePath = __DIR__ . "/$eventType.php";
+
 
 // Check if file exists
 if (file_exists($pagePath)) {

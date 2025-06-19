@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
             data.forEach(event => {
                 const card = document.createElement("div");
                 card.className = "col-md-4";
-
                 card.innerHTML = `
                     <div class="card shadow-sm">
                     <img src="${'/' + event.image.replace(/^\/+/, '')}" class="card-img-top" alt="${event.event_name}">

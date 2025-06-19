@@ -69,7 +69,7 @@ class HistoryAPIController{
             ResponseHelper::sendJson($scheduleItem);
         }
         else {
-            ResponseHelper::sendError('Missing information for item updates', 404);
+            ResponseHelper::sendError('Missing information for item updates', 400);
         }
     }
     public function getScheduleItemById($id) {

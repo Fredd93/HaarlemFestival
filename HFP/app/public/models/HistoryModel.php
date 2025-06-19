@@ -42,7 +42,8 @@ Class HistoryModel extends BaseModel
         return new HistoryScheduleDTO(
             (int) $row["event_detail_id"],
             $row["language"],
-            DateTime::createFromFormat('Y-m-d H:i:s.v', $row["date"])->format('Y-m-d H:i')
+            DateTime::createFromFormat('Y-m-d H:i:s.v', $row["date"])->format('Y-m-d H:i'),
+            $row["maxTickets"]
         );
     }
     
