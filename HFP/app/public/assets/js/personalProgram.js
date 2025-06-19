@@ -211,17 +211,14 @@ function renderHistoryProgramItem(item) {
     return card;
 }
 
-/**
- * Renders a generic personal program card for non-jazz events.
- * You can expand this function as needed for different event types.
- */
+
 function renderGenericProgramItem(item) {
     const card = document.createElement("div");
     card.className = "program-card";
     card.innerHTML = `
         <div class="program-card-header">
             <img src="assets/images/default-event.jpg" alt="Event Image" />
-            <div class="event-title">${item.Location || "Event"}</div>
+            <div class="event-title">${item.Event_Name || "Event"}</div>
         </div>
         <div class="program-card-body">
             <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
@@ -241,10 +238,40 @@ function renderGenericProgramItem(item) {
     return card;
 }
 function goToPayment() {
-    console.log("💳 Proceeding to payment...");
+            document.getElementById("purchase-btn").addEventListener("click", async function () {
+        try {
+            const response = await fetch('/api/personalProgram', {
+                method: 'GET',
+                credentials: 'include'
+            });
 
-    // Optional: You could gather quantity inputs here if needed
-    // For now we just redirect to payment page
-    window.location.href = "/payment";
+            if (!response.ok) throw new Error("Failed to fetch program items");
+            const items = await response.json();
+
+
+            const sessionResponse = await fetch('/api/create-checkout-session.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items })
+            });
+
+            const contentType = sessionResponse.headers.get("content-type") || "";
+            if (!contentType.includes("application/json")) {
+                throw new Error("Invalid response from server (not JSON)");
+            }
+
+
+            const sessionData = await sessionResponse.json();
+
+            if (!sessionResponse.ok) throw new Error(sessionData.message || "Failed to create Stripe session");
+
+            const stripe = Stripe("pk_test_51RP6DB2NUICtS7JXogct449MpayKlKOCM1FnNQ8IIBe7ZLZNXqclG2nkGh3OOj54id5xiziOLCEgWHA9dTH0HuRy00i9r8HfXd");
+            stripe.redirectToCheckout({ sessionId: sessionData.sessionId });
+
+        } catch (error) {
+            console.error("❌ Error during payment process:", error);
+            alert("Could not start payment: " + error.message);
+        }
+    });
 }
 

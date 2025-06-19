@@ -17,6 +17,7 @@ foreach ($contentBlocks as $block) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://js.stripe.com/v3/"></script>
     <meta charset="UTF-8">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

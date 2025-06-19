@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="../../assets/css/navbarStyle.css"/>
     <link rel="stylesheet" href="../../danceMainStyles.css">
     <link rel="stylesheet" href="../../assets/css/footer.css">
+    <script src="https://js.stripe.com/v3/"></script>
+
 </head>
 <body>
     <?php

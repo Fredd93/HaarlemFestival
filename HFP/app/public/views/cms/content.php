@@ -13,6 +13,7 @@
                 <option value="jazz">Jazz</option>
                 <option value="dance">Dance</option>
                 <option value="history">History</option>
+                <option value="teylers">Teylers</option>
             </select>
         </div>
     </div>

@@ -1,9 +1,4 @@
-// File: /assets/js/dance.js
 
-/**
- * This file ONLY handles the "artist" part now.
- * The table logic (setTable, etc.) has been moved to a partial (danceEventsTable.php).
- */
 
 document.addEventListener("DOMContentLoaded", function () {
     fetchArtists();
@@ -35,7 +30,6 @@ function fetchArtists() {
  */
 function displayArtists(artists) {
     const container = document.getElementById("artist-cards-container");
-    // If container doesn't exist (e.g., ticketing page might omit artists), just skip
     if (!container) return;
 
     container.innerHTML = ""; // Clear previous content
@@ -83,7 +77,7 @@ function setTable(day) {
                         passes.forEach(pass => {
                             const row = document.createElement("tr");
                             row.innerHTML = `
-                                <td colspan="5" class="access-pass-title"><strong>${pass.pass_name}</strong></td>
+                                <td colspan="6" class="access-pass-title"><strong>${pass.pass_name}</strong></td>
                                 <td>€${pass.price}</td>
                                 <td><button class="add-to-program">Add To Program</button></td>
                             `;
