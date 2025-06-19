@@ -196,18 +196,3 @@ body {
     max-width: calc(95% - 15em - 7%);
     text-wrap: wrap;
 }
-
-.historyForm * {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    width: 30vw;
-}
-.flexbox {
-    display:flex;
-    justify-content: space-around;
-}
-.flexCentered {
-    align-items:center;
-}

@@ -1,6 +1,6 @@
 <?php
 $activePage = 'history';
-$detailId = 1; // St_Bavo detail id
+$detailId = 40; // St_Bavo detail id
 
 require_once(__DIR__ . "/../../controllers/ContentController.php");
 

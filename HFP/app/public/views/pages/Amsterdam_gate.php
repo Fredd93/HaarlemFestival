@@ -1,6 +1,6 @@
 <?php
 $activePage = 'history';
-$detailId = 2; // Amsterdam gate id
+$detailId = 41; // Amsterdam gate id
 
 require_once(__DIR__ . "/../../controllers/ContentController.php");
 

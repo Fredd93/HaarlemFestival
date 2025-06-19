@@ -55,3 +55,6 @@ body {
 .pageTop, .pageBottom {
     margin: 8px;
 }
+.program-count {
+    right: 34.1px; /* Manual fix for number being offcentered on detailpages*/
+}

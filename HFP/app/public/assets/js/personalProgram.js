@@ -73,7 +73,10 @@ function loadPersonalProgramItems() {
                 let card;
                 if (item.Event_Type.toLowerCase() === "jazz") {
                     card = renderJazzProgramItem(item);
-                } else {
+                } else if (item.Event_Type.toLowerCase() === "history") {
+                    card = renderHistoryProgramItem(item);
+                }
+                else {
                     card = renderGenericProgramItem(item);
                 }
                 container.appendChild(card);
@@ -166,6 +169,32 @@ function renderJazzProgramItem(item) {
             <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
             <p><strong>Location:</strong> ${item.Location || "N/A"}</p>
             <p><strong>Time:</strong> ${item.Start_Time ? item.Start_Time.substring(0, 5) : "N/A"}</p>
+            <div class="quantity-container">
+                <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                <input type="number" min="1" value="1" class="qty-input" />
+                <button class="qty-btn" onclick="increaseQty(this)">+</button>
+            </div>
+            <div class="card-footer">
+                <span class="price">€${parseFloat(item.Price).toFixed(2)}</span>
+                <button class="delete-btn" onclick="removeProgramItem(${item.Program_Id})">🗑️</button>
+            </div>
+        </div>
+    `;
+    return card;
+}
+function renderHistoryProgramItem(item) {
+    const card = document.createElement("div");
+    card.className = "program-card";
+    card.innerHTML = `
+        <div class="program-card-header">
+            <img src="assets/images/default-event.jpg" alt="Event Image" />
+            <div class="event-title">${item.Location || "Event"}</div>
+        </div>
+        <div class="program-card-body">
+            <p><strong>Day:</strong> ${item.Day || "N/A"}</p>
+            <p><strong>Location:</strong> ${item.Location || "N/A"}</p>
+            <p><strong>Time:</strong> ${item.Start_Time ? item.Start_Time.substring(0,5) : "N/A"}</p>
+            <p id="historyTicketLanguage"><strong>Language:</strong> ${item.Event_Language}</p>
             <div class="quantity-container">
                 <button class="qty-btn" onclick="decreaseQty(this)">−</button>
                 <input type="number" min="1" value="1" class="qty-input" />

@@ -120,7 +120,11 @@
         <!-- name is a little unclear, but the script wants this id 
          and making an exception for the ticketing page while it isn't taken
          doesn't make much sense-->
-         <?php require_once(__DIR__ . "/../partials/historySchedule.php"); ?>
+         <?php 
+            $isMainTicketingPage = true;
+            require_once(__DIR__ . "/../partials/historySchedule.php");
+            require_once(__DIR__ . "/../partials/historyTicketFormPartial.php"); 
+         ?>
     </div>
     <?php
             

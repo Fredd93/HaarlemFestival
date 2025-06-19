@@ -414,6 +414,9 @@ body {
     margin: 0px;
     font-family: 'Lato', sans-serif;
 }
+.hidden {
+    display:none !important;
+}
 @media (max-width: 1050px) {
     .schedule-area {
         flex-direction: column;
@@ -485,7 +488,7 @@ body {
 .schedule-item .top h2 {
     color: var(--negativeCTA);
 }
-/* luckily, but surprising that these classes weren't sued yet */
+/* luckily, but surprising that these classes weren't used yet */
 .ticketButton {
     left:12%;
     background-color: #22668D;
@@ -510,4 +513,40 @@ body {
     color:  #22668D;
     border:1px solid var(--situationalCTA);
 }
+.historyForm * {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    width: 30vw;
+}
+.ticket-flexbox {
+    display:flex;
+    justify-content: space-around;
+    background-color: var(--primaryCTA);
+    margin:5%;
+    padding:20px 0px;
+}
+.InfoLabel {
+    border: 0px;
+    background-color: #00000000;
+}
+.negative {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 4px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+}
 
+.positive {
+    color: #155724;
+    background-color: #d4edda;
+    border: 2px solid lightgreen;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+form > * {
+    background-color: white;
+}

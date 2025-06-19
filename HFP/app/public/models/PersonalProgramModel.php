@@ -45,13 +45,15 @@ class PersonalProgramModel extends BaseModel
                 p.Ticket_Or_Reservation_Id,
                 p.Event_Id,
                 edr.event_detail_id,
-                COALESCE(j.event_date, d.event_date, ys.session_date) AS Day,
-                COALESCE(j.venue, d.venue, y.name) AS Location,
-                COALESCE(j.time, d.time, ys.session_time) AS Start_Time,
-                COALESCE(jt.price, dt.price, y.price) AS Price,
+                COALESCE(j.event_date, d.event_date, ys.session_date, CAST(h.date AS DATE)) AS Day,
+                COALESCE(j.venue, d.venue, y.name, ht.location) AS Location,
+                COALESCE(j.time, d.time, ys.session_time, CAST(h.date AS TIME)) AS Start_Time,
+                COALESCE(jt.price, dt.price, y.price, ht.price) AS Price,
                 -- Extra fields for jazz events:
                 CASE WHEN edr.event_type = 'jazz' THEN j.image ELSE NULL END AS Event_Image,
-                CASE WHEN edr.event_type = 'jazz' THEN j.name ELSE NULL END AS Event_Name
+                CASE WHEN edr.event_type = 'jazz' THEN j.name ELSE NULL END AS Event_Name,
+				-- Extra field for History events:
+				CASE WHEN edr.event_type = 'history' THEN h.language ELSE NULL END AS Event_Language
             FROM dbo.Personal_Program p
             INNER JOIN dbo.Event_Detail_Reference edr 
                 ON edr.id = p.Event_Detail_Reference_Id
@@ -76,6 +78,11 @@ class PersonalProgramModel extends BaseModel
     
             LEFT JOIN dbo.Dance_Ticket dt 
                 ON p.Event_Type = 'dance' AND dt.ticket_id = p.Ticket_Or_Reservation_Id
+
+			LEFT JOIN dbo.History_Events h
+				on p.Event_Type  = 'history' AND edr.event_detail_id = h.event_detail_id
+			LEFT JOIN dbo.History_Ticket ht
+				on p.Event_Type = 'history' AND ht.ticket_id = p.Ticket_Or_Reservation_Id
     
             WHERE p.User_Id = :user_id
             ORDER BY Day, Start_Time;

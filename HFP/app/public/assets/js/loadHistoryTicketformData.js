@@ -3,9 +3,17 @@ let fullSchedule = null;
 let chosenDay = "Thursday";
 let chosenTime = "10:00";
 let chosenLanguage = "Dutch";
+let initialized = false;
 
-
-async function FetchSchedule(day, time){
+function setDay(day) {
+    chosenDay = day;
+    updateTicketDay();
+}
+function setTime(time) {
+    chosenTime = time;
+    updateTicketTime();
+}
+async function FetchTicketingSchedule(){
     fetch('/api/history/schedule')
         .then(response => {
             if (!response.ok) {
@@ -13,18 +21,16 @@ async function FetchSchedule(day, time){
             }
             return response.json();
         })
-        .then(schedule => {
-            console.log("Schedule fetched:", schedule);
-            FillForm(schedule, day, time);
+        .then(fetchedSchedule => {
+            console.log("Schedule fetched:", fetchedSchedule);
+            CreateFullSchedule(fetchedSchedule);
+            FillForm();
         })
         .catch(error => {
             console.error("Error fetching schedule:", error);
         });
 }
-function FillForm(schedule, day, time) {
-
-    chosenDay = day;
-    chosenTime = time;
+function CombineSchedule(schedule) {
     combinedSchedule = [];
 
     schedule.forEach(scheduleItem => {
@@ -60,6 +66,10 @@ function FillForm(schedule, day, time) {
             combinedSchedule.push(newCard);
         }
     });
+    return combinedSchedule;
+}
+function CreateFullSchedule(schedule) {
+    combinedSchedule = CombineSchedule(schedule);
     fullSchedule = [];
     const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     combinedSchedule.forEach(scheduleItem => {
@@ -82,41 +92,23 @@ function FillForm(schedule, day, time) {
             fullSchedule.push(scheduleDay);
         }
     });
-    console.log(fullSchedule);
+    return fullSchedule;
+}
+function FillForm() {
     FillDayField();
+
     //The first option gets selected as the default
     FillTimeField(fullSchedule[0].cards);
+
     //The first option gets selected as the default
     FillLanguageField(fullSchedule[0].cards[0]);
-    const dayField = document.getElementById("day");
-    const timeField = document.getElementById("time");
-    const languageField = document.getElementById("language");
-    const form = document.getElementById("form");
 
-    dayField.addEventListener("change", function() {
-        chosenDay = dayField.value;
-        FillTimeField(fullSchedule[dayField.selectedIndex].cards);
-    });
-    timeField.addEventListener("change", function() {
-        chosenTime = timeField.value;
-        FillLanguageField(fullSchedule[dayField.selectedIndex].cards[timeField.selectedIndex]);
-    });
-    languageField.addEventListener("change", function() {
-        chosenLanguage = languageField.value;
-    });
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        createHistoryTicket();
-    });
-    const familyTicket = document.getElementById("familyTicket");
-    const ticketCount = document.getElementById("count");
-    familyTicket.addEventListener("change", function() {
-        updatePrice();
-    });
-    ticketCount.addEventListener("change", function() {
-        updatePrice();
-    });
+    // Initialize event listeners
+    setupEventListeners();
 
+    //Disabled until values are filled in to prevent submitting "nothing"
+    document.getElementById("historySubmit").disabled = false;
+    initialized = true;
 
 }
 function CreateScheduleCard(scheduleItem, day) {
@@ -144,12 +136,7 @@ function FillDayField() {
         dayOption = document.createElement("option");
         dayOption.innerHTML = daySchedule.day;
         dayField.appendChild(dayOption);
-        dayField.value = chosenDay;
-        /*cardContainer = document.getElementById(daySchedule.day);
-        daySchedule.cards.forEach(scheduleItem => {
-            const card = CreateScheduleCard(scheduleItem, daySchedule.day);
-            cardContainer.appendChild(card);
-        })*/
+        if(!initialized) dayField.value = chosenDay;
     })
     //Thursday is the first option and gets chosen as default
 }
@@ -161,7 +148,8 @@ function FillTimeField(day) {
         timeOption = document.createElement("option");
         timeOption.innerHTML = time;
         timeField.appendChild(timeOption);
-        timeField.value = chosenTime;
+        if(!initialized) timeField.value = chosenTime;
+        else chosenTime = "10:00";
     })
 }
 function FillLanguageField(scheduleItem) {
@@ -177,29 +165,25 @@ function FillLanguageField(scheduleItem) {
             languageOption = document.createElement("option");
             languageOption.innerHTML = parsedLanguage;
             languageField.appendChild(languageOption);
+            if(!initialized) languageField.value = chosenLanguage;
+            else chosenLanguage = "Dutch";
+
         }
     })
 }
-function AddLinkValues(day, time) {
-    // Change the value of the select element
-    const dayField = document.getElementById("day");
-    dayField.selectedIndex = 2;
-    //the index doesn't wanna change
-
-    // Manually trigger the 'change' event
-    const event = new Event('change');
-    dayField.dispatchEvent(event);
-
-    //Do time after day as updating day will reset time
-    const timeField = document.getElementById("time");
-    timeField.value = day;
-
-    // Manually trigger the 'change' event
-    timeField.dispatchEvent(event);
-}
 async function createHistoryTicket() {
-    const chosenType = document.getElementById("familyTicket").value;
+    let chosenType = null;
+    if (document.getElementById("familyTicket").checked) {
+        chosenType = "Family Ticket";
+    }
+    else {
+        chosenType = "Single Ticket";
+    }
     const chosenCount = document.getElementById("count").value;
+    const price = parseFloat(document.getElementById("historyTicketPrice").textContent.replace("€", ""));
+    console.log(price);
+    console.log(document.getElementById("historyTicketPrice").textContent.replace("€", ""));
+    console.log(document.getElementById("historyTicketPrice"));
     //Didn't know a better way to do this at first
     const weekday = {"Sunday":10,"Monday":4,"Tuesday":5,"Wednesday":6,"Thursday":7,"Friday":8,"Saturday":9};
     let time = "2025-8-" + weekday[chosenDay] + " " + chosenTime;
@@ -209,6 +193,7 @@ async function createHistoryTicket() {
         language: chosenLanguage,
         ticket_type: chosenType,
         ticket_count: chosenCount,
+        price: price,
     };
     fetch('/api/history/book', {
         method: "POST",
@@ -217,20 +202,27 @@ async function createHistoryTicket() {
     })
     .then(response => response.json())
     .then(result => {
-        if (result.message) {
-            alert(`✅ ${result.message}`);
-            // Optionally refresh table or disable button
-        } else {
-            alert(`❌ ${result.error}`);
+        if(result.error) {
+            infoLabel = document.getElementById("InfoLabel");
+            infoLabel.textContent = result.error;
+            infoLabel.classList.add("negative");
+            infoLabel.classList.remove("positive");
         }
+        else {
+            infoLabel = document.getElementById("InfoLabel");
+            infoLabel.textContent = "Booking successful";
+            infoLabel.classList.remove("negative");
+            infoLabel.classList.add("positive");
+        }
+        // Optionally refresh table or disable button
     })
     .catch(err => {
         console.error("Booking error:", err);
         alert("❌ Failed to book ticket.");
     });
 }
-function updatePrice() {
-    const priceLabel = document.getElementById("priceTag");
+function updateTicketPrice() {
+    const priceLabel = document.getElementById("historyTicketPrice");
     const familyTicket = document.getElementById("familyTicket");
     const ticketCount = document.getElementById("count");
     let price = 0;
@@ -240,6 +232,76 @@ function updatePrice() {
     else {
         price = ticketCount.value * 17.5;
     }
-    priceLabel.innerHTML = "Price: " + price;
+    priceLabel.innerHTML = "€" + price.toFixed(2);
 }
+function updateTicketDay() {
+    const dayLabel = document.getElementById("historyTicketDay");
+    dayLabel.innerHTML = `<strong>Day:</strong> ${chosenDay}`
+}
+function updateTicketLanguage() {
+    const languageLabel = document.getElementById("historyTicketLanguage");
+    languageLabel.innerHTML = `<strong>Language:</strong> ${chosenLanguage}`
+}
+function updateTicketTime() {
+    const timeLabel = document.getElementById("historyTicketTime");
+    timeLabel.innerHTML = `<strong>Time:</strong> ${chosenTime}`
+}
+function updateFields() {
+    updateTicketDay();
+    updateTicketLanguage();
+    updateTicketPrice();
+    updateTicketTime();
+    console.log("updating ALL fields");
+    console.log(chosenDay);
+    console.log(chosenTime);
+    console.log(chosenLanguage);
+}
+
+function setupDatetimeChange() {
+    const timeField = document.getElementById("time");
+    const dayField = document.getElementById("day");
+    dayField.addEventListener("change", function () {
+        chosenDay = dayField.value;
+        FillTimeField(fullSchedule[dayField.selectedIndex].cards);
+        FillLanguageField(fullSchedule[dayField.selectedIndex].cards[timeField.selectedIndex]);
+        updateFields();
+    });
+    timeField.addEventListener("change", function () {
+        chosenTime = timeField.value;
+        FillLanguageField(fullSchedule[dayField.selectedIndex].cards[timeField.selectedIndex]);
+        updateFields();
+    });
+}
+
+function setupLanguageChange() {
+    const languageField = document.getElementById("language");
+    languageField.addEventListener("change", function () {
+        chosenLanguage = languageField.value;
+        updateFields();
+    });
+}
+
+function setupPriceChange() {
+    const familyTicket = document.getElementById("familyTicket");
+    const ticketCount = document.getElementById("count");
+
+    familyTicket.addEventListener("change", updateTicketPrice);
+    ticketCount.addEventListener("change", updateTicketPrice);
+}
+function setupTicketSubmit() {
+    const form = document.getElementById("form");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        createHistoryTicket();
+    });
+}
+
+// Call all setup functions
+function setupEventListeners() {
+    setupDatetimeChange();
+    setupLanguageChange();
+    setupPriceChange();
+    setupTicketSubmit();
+}
+
 

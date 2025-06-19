@@ -6,7 +6,12 @@
 <script src="assets/js/history.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        FetchSchedule();
+        <?php
+        if (isset($isMainTicketingPage) && $isMainTicketingPage) 
+        {
+            ?>setTicketingPage(true);<?php
+        }?>
+        FetchHistorySchedule();
         //Load the schedule
             
     });

@@ -12,14 +12,20 @@ class HistoryTicketController{
     }
     public function createTicket() {
         $data = json_decode(file_get_contents("php://input"), true);
-        if (isset($data['location']) && isset($data['time']) && isset($data['language']) && isset($data['ticket_type']) && isset($data['ticket_count'])) {
-            $result = $this->historyTicketModel->createTicket($data);
-            if ($result) {
-                ResponseHelper::sendJson('Successfully created ticket');
+        if (isset($data['location']) && isset($data['time']) && isset($data['language']) && isset($data['ticket_type']) && isset($data['ticket_count']) && isset($data['price'])) {
+            try {
+                $result = $this->historyTicketModel->createTicket($data);
+                if ($result) {
+                    ResponseHelper::sendJson('Successfully created ticket');
+                }
+            }
+            catch (Exception $e){
+                ResponseHelper::sendError($e->getMessage(), 400);
             }
         }
         else {
-            ResponseHelper::sendError('Missing field information', 404);
+            ResponseHelper::sendError(var_dump($data), 400);
+            //ResponseHelper::sendError('Missing field information', 400);
         }
     }
 }
