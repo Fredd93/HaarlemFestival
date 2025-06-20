@@ -94,6 +94,7 @@ class MailService {
             error_log("Mail about to be sent");
             try {
                 $mail->send();
+                echo  "Hello";
             } catch (Exception $e) {
                 error_log("❌ Mail sending failed: " . $mail->ErrorInfo);
             }
