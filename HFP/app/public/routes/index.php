@@ -12,6 +12,9 @@
     Route::add('/my-account', function () {
         require(__DIR__ . "/../views/pages/my-account.php");
     });
+    Route::add('/scan', function () {
+        require(__DIR__ . "/../views/pages/scanPage.php");
+    });
     Route::add('/yummy', function () {
         $controller = new ContentController();
         $page = 'yummy';
