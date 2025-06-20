@@ -26,3 +26,5 @@ Route::add('/api/orders/delete/([0-9]+)', function ($id) {
     $controller = new OrderApiController();
     $controller->deleteOrder($id);
 }, ['DELETE']);
+
+

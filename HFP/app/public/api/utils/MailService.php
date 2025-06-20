@@ -19,6 +19,23 @@ class MailService {
         $mail = new PHPMailer(true);
 
         try {
+            // Email content
+            $subject = "Your Invoice & QR Code";
+            $message = "<p>Thank you for your order. Scan the QR code below at the entrance:</p>";
+
+            $url = `https://localhost/api/orders/` . $orderId;
+
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            $data = json_decode($response, true);
+            $url = `https://localhost/api/personalProgram` . $data->User_Id;
+            foreach()
             // Prepare QR content
             $qrContent = "https://localhost.com/api/scan-invoice?invoice_id={$invoiceId}";
 
@@ -44,9 +61,6 @@ class MailService {
             $qrImagePath = __DIR__ . "/../../../temp_qr/invoice_{$invoiceId}.png";
             $result->saveToFile($qrImagePath);
 
-            // Email content
-            $subject = "Your Invoice & QR Code";
-            $message = "<p>Thank you for your order. Scan the QR code below at the entrance:</p>";
             $message .= "<img src='cid:qr_code'>";
 
             // Configure and send email

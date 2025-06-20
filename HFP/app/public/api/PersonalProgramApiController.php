@@ -11,21 +11,23 @@ class PersonalProgramApiController
     {
         $this->model = new PersonalProgramModel();
     }
-    public function getAllForUser(): void
+    public function getAllForUser($userId = null): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+        if(!$userId) {
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+            }
+
+            // Debug: Log the current session user ID (or missing)
+            error_log("🔍 PersonalProgramApiController - Session user_id: " . ($_SESSION['user_id'] ?? 'NOT SET'));
+
+            if (!isset($_SESSION['user_id'])) {
+                ResponseHelper::sendError("Unauthorized", 401);
+                return;
+            }
+
+            $userId = $_SESSION['user_id'];
         }
-
-        // Debug: Log the current session user ID (or missing)
-        error_log("🔍 PersonalProgramApiController - Session user_id: " . ($_SESSION['user_id'] ?? 'NOT SET'));
-
-        if (!isset($_SESSION['user_id'])) {
-            ResponseHelper::sendError("Unauthorized", 401);
-            return;
-        }
-
-        $userId = $_SESSION['user_id'];
 
         try {
             $items = $this->model->getProgramItemsByUser($userId);
