@@ -17,67 +17,68 @@ use PHPMailer\PHPMailer\Exception;
 class MailService {
     public function sendInvoiceMailWithQR($email, $invoiceId, $orderId) {
         $mail = new PHPMailer(true);
+        $mail->SMTPDebug = 2; // or 3 for more detail
+        $mail->Debugoutput = 'error_log'; // Log to PHP error log       
 
         try {
+
+            // $url = `https://localhost/api/orders/` . $orderId;
+            // $data = makeApiRequest($url);
+            // $url = `https://localhost/api/personalProgram` . $data->User_Id;
+            // $data = makeApiRequest($url);
+            // foreach ($data as $item) {
+            //     // Prepare QR content
+            //     $qrContent = "https://localhost.com/api/qr?programID={$item->Program_Id}";
+
+            //     // Configure QR code
+            //     $qrCode = new QrCode(
+            //         data: $qrContent,
+            //         encoding: new Encoding('UTF-8'),
+            //         errorCorrectionLevel: ErrorCorrectionLevel::Low,
+            //         size: 300,
+            //         margin: 10,
+            //         roundBlockSizeMode: RoundBlockSizeMode::Margin,
+            //         foregroundColor: new Color(0, 0, 0),
+            //         backgroundColor: new Color(255, 255, 255)
+            //     );
+            //     // Write QR code
+            //     $result = $writer->write($qrCode);
+
+            //     // Save QR image
+            //     $qrImagePath = __DIR__ . "/../../../temp_qr/program_{$item->Program_Id}.png";
+            //     $result->saveToFile($qrImagePath);
+
+            //     $message .= "<img src='cid:qr_code'>";
+            // }
+            // Prepare QR content
+            $qrContent = "https://localhost.com/api/scan-invoice?invoice_id={$invoiceId}";
+
+            // Configure QR code
+            $qrCode = new QrCode(
+                data: $qrContent,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: ErrorCorrectionLevel::Low,
+                size: 300,
+                margin: 10,
+                roundBlockSizeMode: RoundBlockSizeMode::Margin,
+                foregroundColor: new Color(0, 0, 0),
+                backgroundColor: new Color(255, 255, 255)
+            );
+            
+            // Write QR code
+            $writer = new PngWriter();
+            $result = $writer->write($qrCode);
+
+            // Save QR image
+            $qrImagePath = __DIR__ . "/../../../temp_qr/invoice_{$invoiceId}.png";
+            $result->saveToFile($qrImagePath);
+
             // Email content
             $subject = "Your Invoice & QR Code";
             $message = "<p>Thank you for your order. Scan the QR code below at the entrance:</p>";
-            $writer = new PngWriter();
+            $message .= "<img src='cid:qr_code'>";
 
-            $url = `https://localhost/api/orders/` . $orderId;
-            $data = makeApiRequest($url);
-            $url = `https://localhost/api/personalProgram` . $data->User_Id;
-            $data = makeApiRequest($url);
-            foreach ($data as $item) {
-                // Prepare QR content
-                $qrContent = "https://localhost.com/api/qr?programID={$item->Program_Id}";
-
-                // Configure QR code
-                $qrCode = new QrCode(
-                    data: $qrContent,
-                    encoding: new Encoding('UTF-8'),
-                    errorCorrectionLevel: ErrorCorrectionLevel::Low,
-                    size: 300,
-                    margin: 10,
-                    roundBlockSizeMode: RoundBlockSizeMode::Margin,
-                    foregroundColor: new Color(0, 0, 0),
-                    backgroundColor: new Color(255, 255, 255)
-                );
-                // Write QR code
-                $result = $writer->write($qrCode);
-
-                // Save QR image
-                $qrImagePath = __DIR__ . "/../../../temp_qr/program_{$item->Program_Id}.png";
-                $result->saveToFile($qrImagePath);
-
-                $message .= "<img src='cid:qr_code'>";
-            }
-            // // Prepare QR content
-            // $qrContent = "https://localhost.com/api/scan-invoice?invoice_id={$invoiceId}";
-
-            // // Configure QR code
-            // $qrCode = new QrCode(
-            //     data: $qrContent,
-            //     encoding: new Encoding('UTF-8'),
-            //     errorCorrectionLevel: ErrorCorrectionLevel::Low,
-            //     size: 300,
-            //     margin: 10,
-            //     roundBlockSizeMode: RoundBlockSizeMode::Margin,
-            //     foregroundColor: new Color(0, 0, 0),
-            //     backgroundColor: new Color(255, 255, 255)
-            // );
-            
-            // // Write QR code
-            // $writer = new PngWriter();
-            // $result = $writer->write($qrCode);
-
-            // // Save QR image
-            // $qrImagePath = __DIR__ . "/../../../temp_qr/invoice_{$invoiceId}.png";
-            // $result->saveToFile($qrImagePath);
-
-            // $message .= "<img src='cid:qr_code'>";
-
-            // Configure and send email
+            //Configure and send email
             $mail->isSMTP();
             $mail->Host = 'mailhog';
             $mail->Port = 1025;
@@ -90,7 +91,7 @@ class MailService {
             $mail->Subject = $subject;
             $mail->Body = $message;
             $mail->AddEmbeddedImage($qrImagePath, 'qr_code');
-
+            error_log("Mail about to be sent");
             try {
                 $mail->send();
             } catch (Exception $e) {
@@ -107,15 +108,11 @@ class MailService {
     }
     public function makeApiRequest($url) {
         $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
 
-            $response = curl_exec($ch);
-            curl_close($ch);
-
-            $data = json_decode($response, true);
-            return $data;
+        return json_decode($response);
     }
 }
 ?>

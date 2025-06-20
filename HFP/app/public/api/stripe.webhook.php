@@ -85,7 +85,7 @@ if ($event->type === 'checkout.session.completed') {
             ])), true);
 
             $invoiceId = $invoiceRes['invoice_id'];
-
+            
             $mailService = new MailService();
             $mailService->sendInvoiceMailWithQR($email, $invoiceId, $orderId);
 
