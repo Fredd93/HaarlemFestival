@@ -54,7 +54,7 @@ if ($event->type === 'checkout.session.completed') {
     }
 
         try {
-            $orderRes = json_decode(file_get_contents("https://medicare-ceiling-catalog-afghanistan.trycloudflare.com/api/orders/create", false, stream_context_create([
+            $orderRes = json_decode(file_get_contents("https://floral-cruz-significance-discount.trycloudflare.com/api/orders/create", false, stream_context_create([
                 'http' => [
                     'method'  => 'POST',
                     'header'  => "Content-Type: application/json\r\n",
@@ -73,7 +73,7 @@ if ($event->type === 'checkout.session.completed') {
             $orderId = $orderRes['order_id'];
 
             $dueDate = date('Y-m-d', strtotime('+7 days'));
-            $invoiceRes = json_decode(file_get_contents("https://medicare-ceiling-catalog-afghanistan.trycloudflare.com/api/invoices", false, stream_context_create([
+            $invoiceRes = json_decode(file_get_contents("https://floral-cruz-significance-discount.trycloudflare.com/api/invoices", false, stream_context_create([
                 'http' => [
                     'method'  => 'POST',
                     'header'  => "Content-Type: application/json\r\n",

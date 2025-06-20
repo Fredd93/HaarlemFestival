@@ -49,8 +49,8 @@ try {
     'metadata' => [
         'user_id' => $_SESSION['user_id'] ?? 0
     ],
-    'success_url' => 'https://medicare-ceiling-catalog-afghanistan.trycloudflare.com/paymentSuccess',
-    'cancel_url' => 'https://medicare-ceiling-catalog-afghanistan.trycloudflare.com/',
+    'success_url' => 'https://floral-cruz-significance-discount.trycloudflare.com/paymentSuccess',
+    'cancel_url' => 'https://floral-cruz-significance-discount.trycloudflare.com/',
 ]);
 
     echo json_encode(['sessionId' => $session->id]);
