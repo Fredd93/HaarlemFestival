@@ -49,8 +49,8 @@ try {
     'metadata' => [
         'user_id' => $_SESSION['user_id'] ?? 0
     ],
-    'success_url' => 'https://guild-howard-declined-fiber.trycloudflare.com/paymentSuccess',
-    'cancel_url' => 'https://yourdomain.com/cancel.html',
+    'success_url' => 'https://medicare-ceiling-catalog-afghanistan.trycloudflare.com/paymentSuccess',
+    'cancel_url' => 'https://localhost/cancel.html',
 ]);
 
     echo json_encode(['sessionId' => $session->id]);
